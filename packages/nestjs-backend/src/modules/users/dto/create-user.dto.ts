@@ -71,6 +71,6 @@ export class CreateUserDto {
 
   hash?: string | null;
 
-  createdBy?: string | null;
-  updatedBy?: string | null;
+  // createdBy?: string | null;
+  // updatedBy?: string | null;
 }

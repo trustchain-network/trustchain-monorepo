@@ -112,8 +112,8 @@ export class UsersService {
       }
     }
 
-    clonedPayload.createdBy = logedInUserId;
-    clonedPayload.updatedBy = logedInUserId;
+    // clonedPayload.createdBy = logedInUserId;
+    // clonedPayload.updatedBy = logedInUserId;
     return this.usersRepository.create(clonedPayload);
   }
 
@@ -244,7 +244,7 @@ export class UsersService {
         );
       }
     }
-    clonedPayload.updatedBy = logedInUserId ?? null;
+    // clonedPayload.updatedBy = logedInUserId ?? null;
 
     return this.usersRepository.update(id, clonedPayload);
   }
