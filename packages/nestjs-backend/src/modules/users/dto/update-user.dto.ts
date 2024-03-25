@@ -9,7 +9,7 @@ import { RoleDto } from 'src/modules/roles/dto/role.dto';
 import { StatusDto } from 'src/modules/statuses/dto/status.dto';
 import { FileDto } from 'src/modules/files/dto/file.dto';
 import { TwoFactor } from 'src/modules/two-factor/domain/two-factor';
-import { UpdateTeamDto } from 'src/modules/teams/dto/update-team.dto';
+// import { UpdateTeamDto } from 'src/modules/teams/dto/update-team.dto';
 import { Team } from 'src/modules/teams/domain/team';
 
 export class UpdateUserDto extends PartialType(CreateUserDto) {
@@ -73,5 +73,5 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
 
   hash?: string | null;
 
-  updatedBy?: string | null;
+  // updatedBy?: string | null;
 }

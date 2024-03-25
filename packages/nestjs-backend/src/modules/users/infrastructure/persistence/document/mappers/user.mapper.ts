@@ -33,8 +33,8 @@ export class UserMapper {
     user.createdAt = raw.createdAt;
     user.updatedAt = raw.updatedAt;
     user.deletedAt = raw.deletedAt;
-    user.createdBy = raw.createdBy;
-    user.updatedBy = raw.updatedBy;
+    // user.createdBy = raw.createdBy;
+    // user.updatedBy = raw.updatedBy;
     return user;
   }
 
