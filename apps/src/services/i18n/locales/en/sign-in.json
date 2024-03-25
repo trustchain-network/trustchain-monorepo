@@ -1,0 +1,36 @@
+{
+  "title": "Sign In",
+  "actions": {
+    "submit": "Sign In",
+    "createAccount": "Create Account",
+    "forgotPassword": "Forgot Password?"
+  },
+  "card": {
+    "title": "Sign In",
+    "description": "Enter your email below to login to your account"
+  },
+  "inputs": {
+    "email": {
+      "label": "Email",
+      "placeholder": "Enter your email address",
+      "validation": {
+        "required": "Email is required",
+        "invalid": "Email is not valid",
+        "server": {
+          "emailNotExists": "Email does not exist"
+        }
+      }
+    },
+    "password": {
+      "label": "Password",
+      "validation": {
+        "required": "Password is required",
+        "min": "Password must be at least 6 characters long",
+        "server": {
+          "incorrectPassword": "Password is not valid"
+        }
+      }
+    }
+  },
+  "or": "Or continue with"
+}

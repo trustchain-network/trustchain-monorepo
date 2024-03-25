@@ -1,0 +1,10 @@
+{
+  "title": "Dashboard",
+  "description": "Welcome to the dashboard panel.",
+  "cards": {
+    "totalScans": "Total Scans",
+    "ncfs": "Amount of Tags",
+    "apiCalls": "API Calls",
+    "recentScans": "Recent Scans"
+  }
+}

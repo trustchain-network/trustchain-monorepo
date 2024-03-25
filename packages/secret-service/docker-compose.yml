@@ -1,0 +1,31 @@
+version: '3.5'
+
+services:
+  postgres:
+    container_name: secret-service-postgres
+    image: postgres
+    environment:
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      PGDATA: /data/postgres
+    volumes:
+       - secret-service-postgres:/data/postgres
+    ports:
+      - ${DATABASE_PORT}:${DATABASE_PORT}
+    networks:
+      - trustchain
+    restart: always
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres -d secret-service']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+networks:
+  trustchain:
+    driver: bridge
+
+volumes:
+    secret-service-postgres:

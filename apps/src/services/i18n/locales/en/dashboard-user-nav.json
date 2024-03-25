@@ -1,0 +1,21 @@
+{
+  "profile": {
+    "title": "Profile",
+    "shortcut": "P"
+  },
+  "billing": {
+    "title": "Billing",
+    "shortcut": "B"
+  },
+  "settings": {
+    "title": "Settings",
+    "shortcut": "S"
+  },
+  "new_team": {
+    "title": "New Team"
+  },
+  "logout": {
+    "title": "Logout",
+    "shortcut": "Q"
+  }
+}

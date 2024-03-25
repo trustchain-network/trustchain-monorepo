@@ -1,0 +1,41 @@
+{
+  "name": "trustchain-monorepo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "Apache-2.0",
+  "scripts": {
+    "build": "turbo run build",
+    "b": "pnpm build",
+    "lint": "eslint \"{apps,packages}/**/*.{ts,tsx,js,jsx,cjs,mjs}\"",
+    "lint:fix": "pnpm lint --fix",
+    "test:unit": "turbo run test:unit",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\" && pnpm lint:fix",
+    "cleanup": "turbo run cleanup && rimraf node_modules",
+    "prepare": "husky install",
+    "preinstall": "npx only-allow pnpm",
+    "docker": "docker compose -f ./packages/nestjs-backend/docker-compose.yaml  -f ./packages/sdm-backend/docker-compose.yaml up -d"
+  },
+  "devDependencies": {
+    "@turbo/gen": "^1.12.4",
+    "@typescript-eslint/eslint-plugin": "7.0.2",
+    "@typescript-eslint/parser": "7.0.2",
+    "autoprefixer": "^10.4.17",
+    "eslint": "8.57.0",
+    "eslint-config-prettier": "9.1.0",
+    "eslint-plugin-import": "2.29.1",
+    "eslint-plugin-prettier": "5.1.3",
+    "eslint-plugin-simple-import-sort": "^12.0.0",
+    "husky": "9.0.11",
+    "prettier": "^3.2.5",
+    "rimraf": "5.0.5",
+    "turbo": "^1.12.4",
+    "turbowatch": "^2.29.4",
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  }
+}

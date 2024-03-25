@@ -1,0 +1,60 @@
+services:
+  postgres:
+    image: postgres:16.2-alpine
+    ports:
+      - ${DATABASE_PORT}:5432
+    volumes:
+      - trustchain-postgres-db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: ${DATABASE_USERNAME}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: ${DATABASE_NAME}
+    networks:
+      - trustchain
+    healthcheck:
+      test: ['CMD', 'pg_isready', '-U', 'postgres', '-d', 'trustchain-saas']
+      interval: 5s
+      timeout: 10s
+      retries: 5
+
+  maildev:
+    build:
+      context: .
+      dockerfile: maildev.Dockerfile
+    ports:
+      - ${MAIL_CLIENT_PORT}:1080
+      - ${MAIL_PORT}:1025
+    networks:
+      - trustchain
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+    networks:
+      - trustchain
+
+  # Uncomment to use redis
+  # redis:
+  #   image: redis:7-alpine
+  #   ports:
+  #     - 6379:6379
+
+  trustchain-backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - ${APP_PORT}:${APP_PORT}
+    networks:
+      - trustchain
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  trustchain-postgres-db:
+
+networks:
+  trustchain:

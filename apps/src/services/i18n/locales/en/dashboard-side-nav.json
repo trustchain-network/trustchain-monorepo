@@ -1,0 +1,31 @@
+{
+  "title": "Dashboard",
+  "dashboard": {
+    "title": "Dashboard",
+    "label": "Dashboard"
+  },
+  "tags": {
+    "title": "Tags",
+    "label": "Tags"
+  },
+  "categories": {
+    "title": "Categories",
+    "label": "Tag Categories"
+  },
+  "subscription": {
+    "title": "Subscription",
+    "label": "Subscription"
+  },
+  "payment": {
+    "title": "Payment Methods",
+    "label": "Payment Methods"
+  },
+  "profile": {
+    "title": "Profile",
+    "label": "User Profile"
+  },
+  "settings": {
+    "title": "Settings",
+    "label": "Settings"
+  }
+}

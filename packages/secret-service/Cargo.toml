@@ -1,0 +1,39 @@
+[package]
+name = "secret-service"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+anyhow = { version = "1.0.80", default-features = false }
+base64 = "0.22.0"
+chrono = "0.4.34"
+config = "0.14.0"
+dotenv = "0.15.0"
+rand = "0.8.5"
+rust-argon2 = "2.1.0"
+rust-crypto = "0.2.36"
+serde = { version = "1.0.197", features = ["derive"] }
+sqlx = "0.7.3"
+sqlx-macros = "0.7.3"
+tokio = "1.36.0"
+toml = "0.8.10"
+validator = "0.16.1"
+validator_derive = "0.16.0"
+
+[[bench]]
+name = "bench"
+harness = false
+
+[dev-dependencies]
+criterion = "0.5.1"
+iai = "0.1.1"
+
+[dependencies.uuid]
+version = "1.2.2"
+features = [
+    "v4",                # Lets you generate random UUIDs
+    "fast-rng",          # Use a faster (but still sufficiently random) RNG
+    "macro-diagnostics", # Enable better diagnostics for compile-time UUIDs
+]
