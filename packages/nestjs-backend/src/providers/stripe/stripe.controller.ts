@@ -3,9 +3,6 @@ import {
   Get,
   Post,
   Body,
-  Patch,
-  Param,
-  Delete,
   UseGuards,
   SerializeOptions,
   HttpStatus,
@@ -18,10 +15,11 @@ import { RoleEnum } from 'src/modules/roles/roles.enum';
 import { AuthGuard } from '@nestjs/passport';
 import { RolesGuard } from 'src/modules/roles/roles.guard';
 import CreateChargeDto from './dto/create-charge.dto';
+import { PaymentIntentDto } from './dto/payment-intent.dto';
+import { UserDecorator } from 'src/modules/users/user.decorator';
+import Stripe from 'stripe';
 
 @ApiBearerAuth()
-@Roles(RoleEnum.admin)
-@UseGuards(AuthGuard('jwt'), RolesGuard)
 @ApiTags('Stripe')
 @Controller({
   path: 'stripe',
@@ -34,6 +32,8 @@ export class StripeController {
     groups: ['admin'],
   })
   @Post()
+  @Roles(RoleEnum.admin)
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   @HttpCode(HttpStatus.CREATED)
   async createCharge(@Body() charge: CreateChargeDto) {
     await this.stripeService.charge(
@@ -41,5 +41,23 @@ export class StripeController {
       charge.paymentMethodId,
       charge.stripeCustomerId,
     );
+  }
+
+  @Get('product')
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(AuthGuard('jwt'))
+  async productList() {
+    await this.stripeService.productList();
+  }
+
+  @Post('checkout')
+  @UseGuards(AuthGuard('jwt'))
+  async checkout(
+    @Body() { productId }: PaymentIntentDto,
+    @UserDecorator('id') userId: string,
+  ): Promise<Pick<Stripe.Checkout.Session, 'url'>> {
+    const { url } = await this.stripeService.subscribe(productId, userId);
+
+    return { url };
   }
 }
