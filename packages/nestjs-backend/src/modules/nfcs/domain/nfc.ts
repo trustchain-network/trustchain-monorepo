@@ -1,6 +1,5 @@
 import { Exclude, Expose } from 'class-transformer';
-import { NfcStatusEnum } from 'src/modules/nfc-statuses';
-import { TagStatusEnum } from 'src/modules/nfc-statuses/tag-statuses.enum';
+import { NfcStatusEnum, TagStatusEnum } from 'src/modules/nfc-statuses';
 import { User } from 'src/modules/users/domain/user';
 
 export enum EncryptionMode {
