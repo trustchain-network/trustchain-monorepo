@@ -11,6 +11,7 @@ import { FileDto } from 'src/modules/files/dto/file.dto';
 import { TwoFactor } from 'src/modules/two-factor/domain/two-factor';
 // import { UpdateTeamDto } from 'src/modules/teams/dto/update-team.dto';
 import { Team } from 'src/modules/teams/domain/team';
+import { User } from '../domain/user';
 
 export class UpdateUserDto extends PartialType(CreateUserDto) {
   @ApiProperty({ example: 'test1@example.com' })
@@ -73,5 +74,5 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
 
   hash?: string | null;
 
-  // updatedBy?: string | null;
+  updatedBy?: User | null;
 }

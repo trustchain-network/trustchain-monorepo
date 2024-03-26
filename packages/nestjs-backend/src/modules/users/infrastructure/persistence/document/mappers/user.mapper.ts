@@ -33,8 +33,6 @@ export class UserMapper {
     user.createdAt = raw.createdAt;
     user.updatedAt = raw.updatedAt;
     user.deletedAt = raw.deletedAt;
-    // user.createdBy = raw.createdBy;
-    // user.updatedBy = raw.updatedBy;
     return user;
   }
 
@@ -89,8 +87,6 @@ export class UserMapper {
     userEntity.createdAt = user.createdAt;
     userEntity.updatedAt = user.updatedAt;
     userEntity.deletedAt = user.deletedAt;
-    userEntity.createdBy = user.id;
-    userEntity.updatedBy = user.id;
     return userEntity;
   }
 }

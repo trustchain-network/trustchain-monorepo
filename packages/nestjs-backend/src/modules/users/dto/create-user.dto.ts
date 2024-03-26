@@ -9,6 +9,7 @@ import { TwoFactor } from 'src/modules/two-factor/domain/two-factor';
 // import { Team } from 'src/modules/teams/domain/team';
 //import { CreateTeamDto } from 'src/modules/teams/dto/create-team.dto';
 import { Team } from 'src/modules/teams/domain/team';
+import { User } from '../domain/user';
 
 export class CreateUserDto {
   @ApiProperty({ example: 'test1@trustchain.network' })
@@ -71,6 +72,6 @@ export class CreateUserDto {
 
   hash?: string | null;
 
-  // createdBy?: string | null;
-  // updatedBy?: string | null;
+  createdBy?: User | null;
+  updatedBy?: User | null;
 }

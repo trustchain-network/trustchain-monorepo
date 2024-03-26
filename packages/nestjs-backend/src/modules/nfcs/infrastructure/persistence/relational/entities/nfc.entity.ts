@@ -3,6 +3,7 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  ManyToOne,
   // JoinColumn,
   // OneToOne,
   PrimaryGeneratedColumn,
@@ -11,6 +12,12 @@ import {
 import { EntityRelationalHelper } from 'src/utils/relational-entity-helper';
 import { EncryptionMode, NFC } from 'src/modules/nfcs/domain/nfc';
 import { Expose } from 'class-transformer';
+import { NfcStatusEntity } from 'src/modules/nfc-statuses/infrastructure/persistence/relational/entities/nfc-status.entity';
+import { TagStatusEntity } from 'src/modules/nfc-statuses/infrastructure/persistence/relational/entities/tag-status.entity';
+import { User } from 'src/modules/users/domain/user';
+import { UserEntity } from 'src/modules/users/infrastructure/persistence/relational/entities/user.entity';
+import { NfcStatusEnum } from 'src/modules/nfc-statuses/nfc-statuses.enum';
+import { TagStatusEnum } from 'src/modules/nfc-statuses/tag-statuses.enum';
 //import { NfcDetailEntity } from 'src/nfc-details/infrastructure/persistence/relational/entities/nfc-detail.entity';
 
 @Entity({
@@ -35,8 +42,11 @@ export class NfcEntity extends EntityRelationalHelper implements NFC {
   @Column()
   counter: number;
 
-  @Column({ type: String, nullable: false })
-  status: string;
+  @Column()
+  status: NfcStatusEnum;
+
+  @Column()
+  tagStatus: TagStatusEnum;
 
   @Column()
   encryptionMode: EncryptionMode;
@@ -54,12 +64,18 @@ export class NfcEntity extends EntityRelationalHelper implements NFC {
   @DeleteDateColumn()
   deletedAt: Date;
 
-  @Column({ type: String, nullable: true })
-  createdBy?: string | null;
+  @ManyToOne(() => UserEntity, {
+    eager: true,
+  })
+  createdBy?: User | null;
 
-  @Column({ type: String, nullable: true })
-  updatedBy?: string | null;
+  @ManyToOne(() => UserEntity, {
+    eager: true,
+  })
+  updatedBy?: User | null;
 
-  @Column({ type: String, nullable: true })
-  deletedBy?: string | null;
+  @ManyToOne(() => UserEntity, {
+    eager: true,
+  })
+  deletedBy?: User | null;
 }

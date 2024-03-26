@@ -1,6 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty } from 'class-validator';
 import { EncryptionMode } from '../domain/nfc';
+import { NfcStatusDto } from 'src/modules/nfc-statuses/dto/nfc-status.dto';
+import { Type } from 'class-transformer';
+import { User } from 'src/modules/users/domain/user';
+import { TagStatusDto } from 'src/modules/nfc-statuses/dto/tag-status.dto';
 
 export class CreateNfcDto {
   @ApiProperty()
@@ -23,9 +27,15 @@ export class CreateNfcDto {
   @IsNotEmpty()
   counter: number;
 
-  @ApiProperty()
+  @ApiProperty({ type: NfcStatusDto })
   @IsNotEmpty()
-  status: string;
+  @Type(() => NfcStatusDto)
+  status: NfcStatusDto;
+
+  @ApiProperty({ type: TagStatusDto })
+  @IsNotEmpty()
+  @Type(() => TagStatusDto)
+  tagStatus: TagStatusDto;
 
   @ApiProperty()
   @IsNotEmpty()
@@ -35,6 +45,6 @@ export class CreateNfcDto {
   @IsNotEmpty()
   encryptedShareKey: string;
 
-  createdBy?: string | null;
-  updatedBy?: string | null;
+  createdBy?: User | null;
+  updatedBy?: User | null;
 }

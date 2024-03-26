@@ -105,13 +105,12 @@ export class UserEntity extends EntityRelationalHelper implements User {
   @DeleteDateColumn()
   deletedAt: Date;
 
-  @ManyToOne(() => UserEntity, {
-    eager: true,
-  })
+  @ManyToOne(() => UserEntity)
   createdBy?: UserEntity | null;
 
-  @ManyToOne(() => UserEntity, {
-    eager: true,
-  })
+  @ManyToOne(() => UserEntity)
   updatedBy?: UserEntity | null;
+
+  @ManyToOne(() => UserEntity)
+  deletedBy?: UserEntity | null;
 }

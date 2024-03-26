@@ -5,7 +5,6 @@ import { Repository } from 'typeorm';
 import bcrypt from 'bcryptjs';
 import { UserEntity } from 'src/modules/users/infrastructure/persistence/relational/entities/user.entity';
 import { RoleEnum } from 'src/modules/roles/roles.enum';
-import { User } from 'src/modules/users/domain/user';
 
 @Injectable()
 export class UserSeedService {
@@ -23,7 +22,7 @@ export class UserSeedService {
       },
     });
 
-    let adminUser: UserEntity | null = null;
+    // let adminUser: UserEntity | null = null;
 
     if (!countAdmin) {
       const salt = await bcrypt.genSalt();
@@ -47,9 +46,9 @@ export class UserSeedService {
       );
     }
 
-    adminUser = await this.repository.findOne({
-      where: { email: 'admin@example.com' },
-    });
+    // adminUser = await this.repository.findOne({
+    //   where: { email: 'admin@example.com' },
+    // });
 
     const countUser = await this.repository.count({
       where: {
@@ -59,7 +58,7 @@ export class UserSeedService {
       },
     });
 
-    if (!countUser && adminUser) {
+    if (!countUser) {
       const salt = await bcrypt.genSalt();
       const password = await bcrypt.hash('secret', salt);
 
@@ -77,8 +76,6 @@ export class UserSeedService {
             id: StatusEnum.active,
             name: 'Active',
           },
-          createdBy: adminUser,
-          updatedBy: adminUser,
         }),
       );
 
@@ -96,8 +93,6 @@ export class UserSeedService {
             id: StatusEnum.active,
             name: 'Active',
           },
-          createdBy: adminUser,
-          updatedBy: adminUser,
         }),
       );
     }

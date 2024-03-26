@@ -43,4 +43,5 @@ export class User {
   deletedAt: Date;
   createdBy?: User | null;
   updatedBy?: User | null;
+  deletedBy?: User | null;
 }
