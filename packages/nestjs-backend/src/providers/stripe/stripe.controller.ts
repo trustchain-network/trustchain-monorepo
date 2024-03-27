@@ -18,6 +18,7 @@ import CreateChargeDto from './dto/create-charge.dto';
 import { PaymentIntentDto } from './dto/payment-intent.dto';
 import { UserDecorator } from 'src/modules/users/user.decorator';
 import Stripe from 'stripe';
+import { StripeEventDto } from './dto/stripe-event.dto';
 
 @ApiBearerAuth()
 @ApiTags('Stripe')
@@ -46,8 +47,8 @@ export class StripeController {
   @Get('product')
   @HttpCode(HttpStatus.OK)
   @UseGuards(AuthGuard('jwt'))
-  async productList() {
-    await this.stripeService.productList();
+  productList() {
+    return this.stripeService.productList();
   }
 
   @Post('checkout')
@@ -59,5 +60,10 @@ export class StripeController {
     const { url } = await this.stripeService.subscribe(productId, userId);
 
     return { url };
+  }
+
+  @Post('events-webhook')
+  eventsWebhook(@Body() { data, type }: StripeEventDto): void {
+    this.stripeService.handleEvent(type, data);
   }
 }

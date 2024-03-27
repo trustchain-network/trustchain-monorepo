@@ -1,11 +1,11 @@
 import { FileSchemaClass } from 'src/modules/files/infrastructure/persistence/document/entities/file.schema';
 import { FileMapper } from 'src/modules/files/infrastructure/persistence/document/mappers/file.mapper';
-import { Membership } from 'src/modules/memberships/domain/membership';
 import { Role } from 'src/modules/roles/domain/role';
 import { Status } from 'src/modules/statuses/domain/status';
 import { TwoFactor } from 'src/modules/two-factor/domain/two-factor';
 import { User } from '../../../../domain/user';
 import { UserSchemaClass } from '../entities/user.schema';
+import { Membership } from 'src/modules/membership/entities/membership.entity';
 
 export class UserMapper {
   static toDomain(raw: UserSchemaClass): User {
@@ -29,7 +29,6 @@ export class UserMapper {
     user.twoFactorPhone = raw.twoFactorPhone;
     user.twoFactorSecret = raw.twoFactorSecret;
     user.status = raw.status;
-    user.membership = raw.membership;
     user.createdAt = raw.createdAt;
     user.updatedAt = raw.updatedAt;
     user.deletedAt = raw.deletedAt;
@@ -83,7 +82,6 @@ export class UserMapper {
     userEntity.twoFactorPhone = user.twoFactorPhone;
     userEntity.twoFactorSecret = user.twoFactorSecret;
     userEntity.status = status;
-    userEntity.membership = membership;
     userEntity.createdAt = user.createdAt;
     userEntity.updatedAt = user.updatedAt;
     userEntity.deletedAt = user.deletedAt;

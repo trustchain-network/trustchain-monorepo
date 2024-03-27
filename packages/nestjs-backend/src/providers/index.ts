@@ -7,5 +7,4 @@ export * from './mailer';
 export * from './mina';
 export * from './s3';
 export * from './sdm';
-export * from './stripe';
 export * from './twilio';

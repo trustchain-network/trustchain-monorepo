@@ -28,10 +28,8 @@ import {
   AuthTwitterModule,
   DomainsModule,
   FilesModule,
-  InvoicesModule,
   SessionsModule,
   TokensModule,
-  MembershipsModule,
   MultiFactorAuthenticationModule,
   NfcCategoriesModule,
   NfcGroupsModule,
@@ -65,7 +63,6 @@ import {
   MinaModule,
   S3Module,
   SdmModule,
-  StripeModule,
   TwilioModule,
 } from './providers/';
 
@@ -73,6 +70,8 @@ import {
   MongooseConfigService,
   TypeOrmConfigService,
 } from './providers/database/';
+import { StripeModule } from './providers/stripe/stripe.module';
+import { MembershipsModule } from './modules/membership/memberships.module';
 
 @Module({
   imports: [
@@ -138,12 +137,11 @@ import {
     ElasticsearchModule,
     FilesModule,
     HomeModule,
-    InvoicesModule,
     KeysModule,
     MailerModule,
     MailModule,
-    MembershipsModule,
     MinaModule,
+    MembershipsModule,
     MultiFactorAuthenticationModule,
     NfcCategoriesModule,
     NfcGroupsModule,

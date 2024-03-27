@@ -9,7 +9,6 @@ import { AuthProvidersEnum } from 'src/modules/auth/auth-providers.enum';
 // in your project and return an schema entity directly in response.
 import { EntityDocumentHelper } from 'src/utils/document-entity-helper';
 import { FileSchemaClass } from 'src/modules/files/infrastructure/persistence/document/entities/file.schema';
-import { Membership } from 'src/modules/memberships/domain/membership';
 
 export type UserSchemaDocument = HydratedDocument<UserSchemaClass>;
 
@@ -102,9 +101,6 @@ export class UserSchemaClass extends EntityDocumentHelper {
     type: Status,
   })
   status?: Status;
-
-  @Prop({ type: Membership })
-  membership?: Membership | null;
 
   @Prop({ default: now })
   createdAt: Date;

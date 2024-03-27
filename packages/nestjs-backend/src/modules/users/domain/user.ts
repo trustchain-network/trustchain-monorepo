@@ -1,9 +1,9 @@
 import { Exclude, Expose } from 'class-transformer';
 import { FileType } from 'src/modules/files/domain/file';
-import { Membership } from 'src/modules/memberships/domain/membership';
 import { Role } from 'src/modules/roles/domain/role';
 import { Status } from 'src/modules/statuses/domain/status';
 import { TwoFactor } from 'src/modules/two-factor/domain/two-factor';
+import { Membership } from 'src/modules/membership/entities/membership.entity';
 
 export class User {
   id: string;

@@ -1,5 +1,4 @@
 import { FileEntity } from 'src/modules/files/infrastructure/persistence/relational/entities/file.entity';
-import { MembershipEntity } from 'src/modules/memberships/infrastructure/persistence/relational/entities/membership.entity';
 import { RoleEntity } from 'src/modules/roles/infrastructure/persistence/relational/entities/role.entity';
 import { StatusEntity } from 'src/modules/statuses/infrastructure/persistence/relational/entities/status.entity';
 import { FileMapper } from 'src/modules/files/infrastructure/persistence/relational/mappers/file.mapper';
@@ -61,8 +60,6 @@ export class UserMapper {
       status.id = user.status.id;
     }
 
-    let membership: MembershipEntity | undefined = undefined;
-
     if (user.createdBy) {
       createdByuser = new UserEntity();
       createdByuser.id = user.createdBy.id;
@@ -96,7 +93,6 @@ export class UserMapper {
     userEntity.twoFactorPhone = user.twoFactorPhone;
     userEntity.twoFactorSecret = user.twoFactorSecret;
     userEntity.status = status;
-    userEntity.membership = membership;
     userEntity.createdAt = user.createdAt;
     userEntity.updatedAt = user.updatedAt;
     userEntity.deletedAt = user.deletedAt;
