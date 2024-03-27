@@ -8,12 +8,13 @@ Switching between TypeORM and Mongoose is implemented based on the [Dependency I
 
 ## Table of Contents <!-- omit in toc -->
 
-- [Comfortable development (PostgreSQL + TypeORM)](#comfortable-development-postgresql--typeorm)
-- [Comfortable development (MongoDB + Mongoose)](#comfortable-development-mongodb--mongoose)
-- [Quick run (PostgreSQL + TypeORM)](#quick-run-postgresql--typeorm)
-  - [Video guideline](#video-guideline)
-- [Quick run (MongoDB + Mongoose)](#quick-run-mongodb--mongoose)
-- [Links](#links)
+- [Installation](#installation)
+  - [Comfortable development (PostgreSQL + TypeORM)](#comfortable-development-postgresql--typeorm)
+  - [Comfortable development (MongoDB + Mongoose)](#comfortable-development-mongodb--mongoose)
+  - [Quick run (PostgreSQL + TypeORM)](#quick-run-postgresql--typeorm)
+    - [Video guideline](#video-guideline)
+  - [Quick run (MongoDB + Mongoose)](#quick-run-mongodb--mongoose)
+  - [Links](#links)
 
 ---
 
@@ -48,30 +49,40 @@ Switching between TypeORM and Mongoose is implemented based on the [Dependency I
    npm install
    ```
 
+   or using bun
+
+   ```bash
+
+   ```
+
 1. Run app configuration
 
    > You should run this command only the first time on initialization of your project, all next time skip it.
 
    ```bash
    npm run app:config
+   bun run app:config
    ```
 
 1. Run migrations
 
    ```bash
    npm run migration:run
+   bun run migration:run
    ```
 
 1. Run seeds
 
    ```bash
    npm run seed:run:relational
+   bun run seed:run:relational
    ```
 
 1. Run app in dev mode
 
    ```bash
    npm run start:dev
+   bun run start:dev
    ```
 
 1. Open <http://localhost:3000>

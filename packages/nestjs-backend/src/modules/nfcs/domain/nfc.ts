@@ -1,5 +1,6 @@
 import { Exclude, Expose } from 'class-transformer';
-// import { NfcDetail } from 'src/nfc-details/domain/nfc-detail';
+import { NfcStatusEnum, TagStatusEnum } from 'src/modules/nfc-statuses';
+import { User } from 'src/modules/users/domain/user';
 
 export enum EncryptionMode {
   AES = 'AES',
@@ -13,7 +14,8 @@ export class NFC {
   piccData: string;
   fileData: string;
   counter: number;
-  status: string;
+  status: NfcStatusEnum;
+  tagStatus: TagStatusEnum;
   encryptionMode: EncryptionMode;
 
   @Exclude({ toPlainOnly: true })
@@ -23,7 +25,7 @@ export class NFC {
   createdAt: Date;
   updatedAt: Date;
   deletedAt: Date;
-  createdBy?: string | null;
-  updatedBy?: string | null;
-  deletedBy?: string | null;
+  createdBy?: User | null;
+  updatedBy?: User | null;
+  deletedBy?: User | null;
 }

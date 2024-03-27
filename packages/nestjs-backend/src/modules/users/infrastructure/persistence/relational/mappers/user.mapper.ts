@@ -30,14 +30,14 @@ export class UserMapper {
     user.createdAt = raw.createdAt;
     user.updatedAt = raw.updatedAt;
     user.deletedAt = raw.deletedAt;
-    user.createdBy = raw.createdBy;
-    user.updatedBy = raw.updatedBy;
     return user;
   }
 
   static toPersistence(user: User): UserEntity {
     let role: RoleEntity | undefined = undefined;
-    //let team: Team | undefined = undefined;
+    let createdByuser: UserEntity | undefined = undefined;
+    let updatedByuser: UserEntity | undefined = undefined;
+    let deletedByuser: UserEntity | undefined = undefined;
 
     if (user.role) {
       role = new RoleEntity();
@@ -63,14 +63,21 @@ export class UserMapper {
 
     let membership: MembershipEntity | undefined = undefined;
 
-    let createdBy: UserEntity | undefined = new UserEntity();
     if (user.createdBy) {
-      createdBy.id = user.createdBy.id;
+      createdByuser = new UserEntity();
+      createdByuser.id = user.createdBy.id;
     }
-    let updatedBy: UserEntity | undefined = new UserEntity();
+
     if (user.updatedBy) {
-      updatedBy.id = user.updatedBy.id;
+      updatedByuser = new UserEntity();
+      updatedByuser.id = user.updatedBy.id;
     }
+
+    if (user.deletedBy) {
+      deletedByuser = new UserEntity();
+      deletedByuser.id = user.deletedBy.id;
+    }
+
     const userEntity = new UserEntity();
     if (user.id && typeof user.id === 'string') {
       userEntity.id = user.id;
@@ -93,8 +100,9 @@ export class UserMapper {
     userEntity.createdAt = user.createdAt;
     userEntity.updatedAt = user.updatedAt;
     userEntity.deletedAt = user.deletedAt;
-    userEntity.createdBy = createdBy;
-    userEntity.updatedBy = updatedBy;
+    userEntity.createdBy = createdByuser;
+    userEntity.updatedBy = updatedByuser;
+    userEntity.deletedBy = deletedByuser;
     return userEntity;
   }
 }

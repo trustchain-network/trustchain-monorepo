@@ -1,9 +1,9 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { now, HydratedDocument } from 'mongoose';
 import { EntityDocumentHelper } from 'src/utils/document-entity-helper';
-// import { NfcDetail } from 'src/nfc-details/domain/nfc-detail';
-// import { OneToOne } from 'typeorm';
 import { EncryptionMode } from 'src/modules/nfcs/domain/nfc';
+import { NfcStatusEnum } from 'src/modules/nfc-statuses';
+import { User } from 'src/modules/users/domain/user';
 
 export type NfcSchemaDocument = HydratedDocument<NfcSchemaClass>;
 
@@ -18,8 +18,6 @@ export class NfcSchemaClass extends EntityDocumentHelper {
   @Prop({ required: true })
   uid: string;
 
-  // @Prop({ required: true })
-  // @OneToOne(() => NfcDetail)
   @Prop()
   nfcDetail: string;
 
@@ -33,7 +31,7 @@ export class NfcSchemaClass extends EntityDocumentHelper {
   counter: number;
 
   @Prop({ required: true })
-  status: string;
+  status: NfcStatusEnum;
 
   @Prop({ required: true })
   encryptionMode: EncryptionMode;
@@ -50,9 +48,9 @@ export class NfcSchemaClass extends EntityDocumentHelper {
   @Prop()
   deletedAt: Date;
 
-  createdBy?: string | null;
-  updatedBy?: string | null;
-  deletedBy?: string | null;
+  createdBy?: User | null;
+  updatedBy?: User | null;
+  deletedBy?: User | null;
 }
 
 export const NfcSchema = SchemaFactory.createForClass(NfcSchemaClass);

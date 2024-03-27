@@ -13,8 +13,8 @@ export class NfcsService {
     logedInUserId: string,
   ): Promise<NFC> {
     const clonedPayload = { ...createNfcDto };
-    clonedPayload.createdBy = logedInUserId ?? null;
-    clonedPayload.updatedBy = logedInUserId ?? null;
+    // clonedPayload.createdBy = logedInUserId ?? null;
+    // clonedPayload.updatedBy = logedInUserId ?? null;
 
     return this.nfcRepository.create(clonedPayload);
   }
@@ -33,7 +33,7 @@ export class NfcsService {
     logedInUserId: string,
   ): Promise<NFC | null> {
     const clonedPayload = { ...updateNfcDto };
-    clonedPayload.updatedBy = logedInUserId ?? null;
+    // clonedPayload.updatedBy = logedInUserId ?? null;
     return this.nfcRepository.update(id, clonedPayload);
   }
 

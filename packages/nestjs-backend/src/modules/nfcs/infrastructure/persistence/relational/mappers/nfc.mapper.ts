@@ -1,6 +1,6 @@
 import { NFC } from 'src/modules/nfcs/domain/nfc';
 import { NfcEntity } from '../entities/nfc.entity';
-// import { NfcDetail } from 'src/nfc-details/domain/nfc-detail';
+import { UserEntity } from 'src/modules/users/infrastructure/persistence/relational/entities/user.entity';
 
 export class NfcMapper {
   static toDomain(raw: NfcEntity): NFC {
@@ -12,6 +12,7 @@ export class NfcMapper {
     nfc.fileData = raw.fileData;
     nfc.counter = raw.counter;
     nfc.status = raw.status;
+    nfc.tagStatus = raw.tagStatus;
     nfc.encryptionMode = raw.encryptionMode;
     nfc.encryptedShareKey = raw.encryptedShareKey;
     nfc.createdAt = raw.createdAt;
@@ -32,19 +33,26 @@ export class NfcMapper {
     if (nfc.nfcDetail && typeof nfc.nfcDetail === 'string') {
       nfcEntity.nfcDetail = nfc.nfcDetail;
     }
+
     nfcEntity.piccData = nfc.piccData;
     nfcEntity.fileData = nfc.fileData;
     nfcEntity.counter = nfc.counter;
     nfcEntity.status = nfc.status;
+    nfcEntity.tagStatus = nfc.tagStatus;
     nfcEntity.encryptionMode = nfc.encryptionMode;
     nfcEntity.encryptedShareKey = nfc.encryptedShareKey;
 
     nfcEntity.createdAt = nfc.createdAt;
     nfcEntity.updatedAt = nfc.updatedAt;
     nfcEntity.deletedAt = nfc.deletedAt;
-    nfcEntity.createdBy = nfc.createdBy;
-    nfcEntity.updatedBy = nfc.updatedBy;
-    nfcEntity.deletedBy = nfc.deletedBy;
+
+    ['createdBy', 'updatedBy', 'deletedBy'].forEach((prop) => {
+      if (nfc[prop]) {
+        nfcEntity[prop] = new UserEntity();
+        nfcEntity[prop].id = nfc[prop].id;
+      }
+    });
+
     return nfcEntity;
   }
 }
