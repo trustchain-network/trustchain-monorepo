@@ -1,9 +1,6 @@
 import { NFC } from 'src/modules/nfcs/domain/nfc';
 import { NfcEntity } from '../entities/nfc.entity';
 import { UserEntity } from 'src/modules/users/infrastructure/persistence/relational/entities/user.entity';
-import { NfcStatusEnum } from 'src/modules/nfc-statuses';
-import { TagStatusEnum } from 'src/modules/nfc-statuses/tag-statuses.enum';
-// import { NfcDetail } from 'src/nfc-details/domain/nfc-detail';
 
 export class NfcMapper {
   static toDomain(raw: NfcEntity): NFC {
@@ -28,27 +25,6 @@ export class NfcMapper {
   }
 
   static toPersistence(nfc: NFC): NfcEntity {
-    let status: NfcStatusEnum = 1;
-    let tagStatus: TagStatusEnum = 1;
-    let createdByuser: UserEntity | undefined = undefined;
-    let updatedByuser: UserEntity | undefined = undefined;
-    let deletedByuser: UserEntity | undefined = undefined;
-
-    if (nfc.createdBy) {
-      createdByuser = new UserEntity();
-      createdByuser.id = nfc.createdBy.id;
-    }
-
-    if (nfc.updatedBy) {
-      updatedByuser = new UserEntity();
-      updatedByuser.id = nfc.updatedBy.id;
-    }
-
-    if (nfc.deletedBy) {
-      deletedByuser = new UserEntity();
-      deletedByuser.id = nfc.deletedBy.id;
-    }
-
     const nfcEntity = new NfcEntity();
     if (nfc.id && typeof nfc.id === 'string') {
       nfcEntity.id = nfc.id;
@@ -61,17 +37,22 @@ export class NfcMapper {
     nfcEntity.piccData = nfc.piccData;
     nfcEntity.fileData = nfc.fileData;
     nfcEntity.counter = nfc.counter;
-    nfcEntity.status = status;
-    nfcEntity.tagStatus = tagStatus;
+    nfcEntity.status = nfc.status;
+    nfcEntity.tagStatus = nfc.tagStatus;
     nfcEntity.encryptionMode = nfc.encryptionMode;
     nfcEntity.encryptedShareKey = nfc.encryptedShareKey;
 
     nfcEntity.createdAt = nfc.createdAt;
     nfcEntity.updatedAt = nfc.updatedAt;
     nfcEntity.deletedAt = nfc.deletedAt;
-    nfcEntity.createdBy = createdByuser;
-    nfcEntity.updatedBy = updatedByuser;
-    nfcEntity.deletedBy = deletedByuser;
+
+    ['createdBy', 'updatedBy', 'deletedBy'].forEach((prop) => {
+      if (nfc[prop]) {
+        nfcEntity[prop] = new UserEntity();
+        nfcEntity[prop].id = nfc[prop].id;
+      }
+    });
+
     return nfcEntity;
   }
 }

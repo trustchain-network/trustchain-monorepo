@@ -9,7 +9,6 @@ import { RoleDto } from 'src/modules/roles/dto/role.dto';
 import { StatusDto } from 'src/modules/statuses/dto/status.dto';
 import { FileDto } from 'src/modules/files/dto/file.dto';
 import { TwoFactor } from 'src/modules/two-factor/domain/two-factor';
-// import { UpdateTeamDto } from 'src/modules/teams/dto/update-team.dto';
 import { Team } from 'src/modules/teams/domain/team';
 import { User } from '../domain/user';
 
@@ -37,16 +36,16 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
   @IsOptional()
   lastName?: string | null;
 
-  @ApiProperty({ type: FileDto })
+  @ApiProperty({ type: () => FileDto })
   @IsOptional()
   photo?: FileDto | null;
 
-  @ApiProperty({ type: RoleDto })
+  @ApiProperty({ type: () => RoleDto })
   @IsOptional()
   @Type(() => RoleDto)
   role?: RoleDto | null;
 
-  @ApiProperty({ type: Team })
+  @ApiProperty({ type: () => Team })
   @IsOptional()
   @Type(() => Team)
   team?: Team | null;
@@ -67,7 +66,7 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
   @IsOptional()
   twoFactorSecret?: string | null;
 
-  @ApiProperty({ type: StatusDto })
+  @ApiProperty({ type: () => StatusDto })
   @IsOptional()
   @Type(() => StatusDto)
   status?: StatusDto;

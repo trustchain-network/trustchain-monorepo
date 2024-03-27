@@ -6,9 +6,6 @@ import { RoleDto } from 'src/modules/roles/dto/role.dto';
 import { StatusDto } from 'src/modules/statuses/dto/status.dto';
 import { FileDto } from 'src/modules/files/dto/file.dto';
 import { TwoFactor } from 'src/modules/two-factor/domain/two-factor';
-// import { Team } from 'src/modules/teams/domain/team';
-//import { CreateTeamDto } from 'src/modules/teams/dto/create-team.dto';
-import { Team } from 'src/modules/teams/domain/team';
 import { User } from '../domain/user';
 
 export class CreateUserDto {
@@ -38,7 +35,7 @@ export class CreateUserDto {
   @IsOptional()
   photo?: FileDto | null;
 
-  @ApiProperty({ type: RoleDto })
+  @ApiProperty({ type: () => RoleDto })
   @IsOptional()
   @Type(() => RoleDto)
   role?: RoleDto | null;
@@ -65,7 +62,7 @@ export class CreateUserDto {
   @IsOptional()
   twoFactorSecret?: string | null;
 
-  @ApiProperty({ type: StatusDto })
+  @ApiProperty({ type: () => StatusDto })
   @IsOptional()
   @Type(() => StatusDto)
   status?: StatusDto;

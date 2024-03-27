@@ -25,11 +25,11 @@ export class CreateNfcDto {
   @IsNotEmpty()
   counter: number;
 
-  @ApiProperty({ type: NfcStatusEnum })
+  @ApiProperty({ enum: NfcStatusEnum })
   @IsNotEmpty()
   status: NfcStatusEnum;
 
-  @ApiProperty({ type: TagStatusEnum })
+  @ApiProperty({ enum: TagStatusEnum })
   @IsNotEmpty()
   tagStatus: TagStatusEnum;
 

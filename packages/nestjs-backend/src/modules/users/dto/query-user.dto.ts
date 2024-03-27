@@ -10,7 +10,7 @@ import { User } from '../domain/user';
 import { RoleDto } from 'src/modules/roles/dto/role.dto';
 
 export class FilterUserDto {
-  @ApiProperty({ type: RoleDto })
+  @ApiProperty({ type: () => RoleDto })
   @IsOptional()
   @ValidateNested({ each: true })
   @Type(() => RoleDto)

@@ -4,21 +4,17 @@ import {
   DeleteDateColumn,
   Entity,
   ManyToOne,
-  // JoinColumn,
-  // OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { EntityRelationalHelper } from 'src/utils/relational-entity-helper';
 import { EncryptionMode, NFC } from 'src/modules/nfcs/domain/nfc';
 import { Expose } from 'class-transformer';
-import { NfcStatusEntity } from 'src/modules/nfc-statuses/infrastructure/persistence/relational/entities/nfc-status.entity';
-import { TagStatusEntity } from 'src/modules/nfc-statuses/infrastructure/persistence/relational/entities/tag-status.entity';
+
 import { User } from 'src/modules/users/domain/user';
 import { UserEntity } from 'src/modules/users/infrastructure/persistence/relational/entities/user.entity';
 import { NfcStatusEnum } from 'src/modules/nfc-statuses/nfc-statuses.enum';
 import { TagStatusEnum } from 'src/modules/nfc-statuses/tag-statuses.enum';
-//import { NfcDetailEntity } from 'src/nfc-details/infrastructure/persistence/relational/entities/nfc-detail.entity';
 
 @Entity({
   name: 'nfc',
