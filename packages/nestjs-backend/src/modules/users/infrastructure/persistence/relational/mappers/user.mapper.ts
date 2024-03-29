@@ -25,7 +25,6 @@ export class UserMapper {
     user.twoFactorPhone = raw.twoFactorPhone;
     user.twoFactorSecret = raw.twoFactorSecret;
     user.status = raw.status;
-    user.membership = raw.membership;
     user.createdAt = raw.createdAt;
     user.updatedAt = raw.updatedAt;
     user.deletedAt = raw.deletedAt;

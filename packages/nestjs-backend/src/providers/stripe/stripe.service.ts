@@ -76,7 +76,10 @@ export class StripeService {
   }
 
   async productList(): Promise<Stripe.Product[]> {
-    const { data } = await this.stripe.products.list({ active: true });
+    const { data } = await this.stripe.products.list({
+      active: true,
+      expand: ['data.default_price'],
+    });
 
     return data;
   }
@@ -114,7 +117,10 @@ export class StripeService {
       ? this.stripe.customers.retrieve(user?.membership?.customerId as string, {
           expand: ['subscriptions'],
         })
-      : this.stripe.customers.create({ email: user.email as string });
+      : this.stripe.customers.create({
+          email: user.email as string,
+          name: `${user.firstName} ${user.lastName}`,
+        });
 
     const { id: customerId } = await customerPromise;
 

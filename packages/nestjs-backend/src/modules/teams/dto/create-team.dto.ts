@@ -3,10 +3,6 @@ import { IsNotEmpty, IsOptional } from 'class-validator';
 import { User } from 'src/modules/users/domain/user';
 
 export class CreateTeamDto {
-  // @ApiProperty()
-  // @IsNotEmpty()
-  user: User;
-
   @ApiProperty()
   @IsNotEmpty()
   name: string;
@@ -14,6 +10,10 @@ export class CreateTeamDto {
   @ApiProperty()
   @IsOptional()
   description?: string | null;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  user: User;
 
   createdBy?: User | null;
   updatedBy?: User | null;

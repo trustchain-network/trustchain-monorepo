@@ -5,7 +5,6 @@ import { Status } from 'src/modules/statuses/domain/status';
 import { TwoFactor } from 'src/modules/two-factor/domain/two-factor';
 import { User } from '../../../../domain/user';
 import { UserSchemaClass } from '../entities/user.schema';
-import { Membership } from 'src/modules/membership/entities/membership.entity';
 
 export class UserMapper {
   static toDomain(raw: UserSchemaClass): User {
@@ -56,12 +55,6 @@ export class UserMapper {
     if (user.status) {
       status = new Status();
       status.id = user.status.id;
-    }
-
-    let membership: Membership | undefined = undefined;
-    if (user.membership) {
-      membership = new Membership();
-      membership.id = user.membership.id;
     }
 
     const userEntity = new UserSchemaClass();

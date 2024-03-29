@@ -7,15 +7,15 @@ import { User } from 'src/modules/users/domain/user';
 export class UpdateTeamDto extends PartialType(CreateTeamDto) {
   @ApiProperty()
   @IsNotEmpty()
-  userId: string;
-
-  @ApiProperty()
-  @IsNotEmpty()
   name: string;
 
   @ApiProperty()
   @IsOptional()
   description?: string | null;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  user: User;
 
   updatedBy?: User | null;
 }

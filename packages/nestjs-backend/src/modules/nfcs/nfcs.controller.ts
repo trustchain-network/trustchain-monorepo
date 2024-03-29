@@ -5,12 +5,12 @@ import {
   Body,
   Patch,
   Param,
-  Delete,
   UseGuards,
   SerializeOptions,
   HttpCode,
   HttpStatus,
   HttpException,
+  Query,
 } from '@nestjs/common';
 import { NfcsService } from './nfcs.service';
 import { CreateNfcDto } from './dto/create-nfc.dto';
@@ -20,9 +20,13 @@ import { Roles } from 'src/modules/roles/roles.decorator';
 import { RoleEnum } from 'src/modules/roles/roles.enum';
 import { AuthGuard } from '@nestjs/passport';
 import { RolesGuard } from 'src/modules/roles/roles.guard';
-import { NFC } from './domain/nfc';
 import { UserDecorator } from '../users/user.decorator';
 import { UsersService } from '../users/users.service';
+import { QueryNfcDto } from './dto/query-nfc.dto';
+import { NFC } from './domain/nfc';
+import { InfinityPaginationResultType } from 'src/utils/types/infinity-pagination-result.type';
+import { infinityPagination } from 'src/utils/infinity-pagination';
+import { NullableType } from 'src/utils/types/nullable.type';
 
 @ApiBearerAuth()
 @Roles(RoleEnum.admin, RoleEnum.member)
@@ -69,21 +73,39 @@ export class NfcsController {
   })
   @Get()
   @HttpCode(HttpStatus.OK)
-  async findAll() {
-    return this.nfcsService.findAll();
+  async findAll(
+    @Query() query: QueryNfcDto,
+  ): Promise<InfinityPaginationResultType<NFC>> {
+    const page = query?.page ?? 1;
+    let limit = query?.limit ?? 10;
+    if (limit > 50) {
+      limit = 50;
+    }
+
+    return infinityPagination(
+      await this.nfcsService.findManyWithPagination({
+        sortOptions: query?.sort,
+        paginationOptions: {
+          page,
+          limit,
+        },
+      }),
+      { page, limit },
+    );
   }
 
   @SerializeOptions({
     groups: ['admin', 'member'],
   })
   @Get(':id')
+  @HttpCode(HttpStatus.OK)
   @ApiParam({
     name: 'id',
     type: String,
     required: true,
   })
-  findOne(@Param('id') id: string) {
-    return this.nfcsService.findOne(+id);
+  findOne(@Param('id') id: NFC['id']): Promise<NullableType<NFC>> {
+    return this.nfcsService.findOne({ id });
   }
 
   @SerializeOptions({

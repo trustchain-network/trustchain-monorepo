@@ -1,16 +1,14 @@
 import { Exclude, Expose } from 'class-transformer';
-import { NfcStatusEnum, TagStatusEnum } from 'src/modules/nfc-statuses';
+import { NfcDetail } from 'src/modules/nfc-details/domain/nfc-detail';
+import { NfcStatusEnum } from '../enums/nfc-statuses.enum';
+import { TagStatusEnum } from '../enums/tag-statuses.enum';
 import { User } from 'src/modules/users/domain/user';
-
-export enum EncryptionMode {
-  AES = 'AES',
-  LRP = 'LRP',
-}
+import { EncryptionMode } from '../enums/encryption-mode.enum';
 
 export class NFC {
   id: number | string;
+  detail?: NfcDetail | null;
   uid: string;
-  nfcDetail: string;
   piccData: string;
   fileData: string;
   counter: number;

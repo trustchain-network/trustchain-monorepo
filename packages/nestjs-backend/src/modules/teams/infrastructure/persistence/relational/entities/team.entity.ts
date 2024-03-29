@@ -19,15 +19,15 @@ export class TeamEntity extends EntityRelationalHelper implements Team {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => UserEntity, { eager: true })
-  user?: UserEntity | null;
-
   @Column({ type: String, unique: true, nullable: false })
   @Expose({ groups: ['me', 'admin'] })
   name: string;
 
   @Column({ type: String, nullable: true })
   description?: string | null;
+
+  @ManyToOne(() => UserEntity, { eager: true })
+  user: UserEntity;
 
   @CreateDateColumn()
   createdAt: Date;
@@ -43,4 +43,7 @@ export class TeamEntity extends EntityRelationalHelper implements Team {
 
   @ManyToOne(() => UserEntity, { eager: true })
   updatedBy?: UserEntity | null;
+
+  @ManyToOne(() => UserEntity, { eager: true })
+  deletedBy?: UserEntity | null;
 }

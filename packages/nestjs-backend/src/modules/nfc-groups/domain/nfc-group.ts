@@ -1,7 +1,8 @@
+import { User } from 'src/modules/users/domain/user';
 import { Key } from 'src/providers/keys/domain/key';
 
 export class NfcGroup {
-  id: number | string;
+  id: string;
   name: string;
   description?: string | null;
   publicKey: string | null;
@@ -10,7 +11,7 @@ export class NfcGroup {
   createdAt: Date;
   updatedAt: Date;
   deletedAt: Date;
-  createdBy?: string | null;
-  updatedBy?: string | null;
-  deletedBy?: string | null;
+  createdBy?: User | null;
+  updatedBy?: User | null;
+  deletedBy?: User | null;
 }

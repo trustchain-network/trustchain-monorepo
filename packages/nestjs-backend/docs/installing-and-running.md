@@ -52,6 +52,7 @@ Switching between TypeORM and Mongoose is implemented based on the [Dependency I
    or using bun
 
    ```bash
+   bun install
 
    ```
 

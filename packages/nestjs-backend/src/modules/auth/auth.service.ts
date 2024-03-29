@@ -564,7 +564,7 @@ export class AuthService {
    * Get the two-factor authentication QR code
    * @returns Data URI string with QR code image
    */
-  async getTotpQrCode(userId: number): Promise<string> {
+  getTotpQrCode(userId: number): Promise<string> {
     const secret = this.authenticator.generateSecret();
     // await this.prisma.user.update({
     //   where: { id: userId },

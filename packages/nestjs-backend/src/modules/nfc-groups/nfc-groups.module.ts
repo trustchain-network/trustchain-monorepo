@@ -4,6 +4,7 @@ import { NfcGroupsController } from './nfc-groups.controller';
 
 @Module({
   providers: [NfcGroupsService],
-  controllers: [NfcGroupsController]
+  controllers: [NfcGroupsController],
+  exports: [NfcGroupsService],
 })
 export class NfcGroupsModule {}
