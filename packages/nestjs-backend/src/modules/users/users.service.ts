@@ -137,6 +137,21 @@ export class UsersService {
     return this.usersRepository.findOne(fields);
   }
 
+  async findOneOrFail(fields: EntityCondition<User>): Promise<User> {
+    const user = await this.findOne(fields);
+    if (!user) {
+      throw new HttpException(
+        {
+          status: HttpStatus.NOT_FOUND,
+          error: `notFound`,
+        },
+        HttpStatus.NOT_FOUND,
+      );
+    }
+
+    return user;
+  }
+
   async findUserId(userId: string): Promise<string> {
     const user = await this.findOne({
       id: userId,

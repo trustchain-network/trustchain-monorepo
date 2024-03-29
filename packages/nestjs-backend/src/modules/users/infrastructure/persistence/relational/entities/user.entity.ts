@@ -12,15 +12,16 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
+  OneToOne,
 } from 'typeorm';
 import { AuthProvidersEnum } from 'src/modules/auth/auth-providers.enum';
 import { EntityRelationalHelper } from 'src/utils/relational-entity-helper';
 import { FileEntity } from 'src/modules/files/infrastructure/persistence/relational/entities/file.entity';
-import { MembershipEntity } from 'src/modules/memberships/infrastructure/persistence/relational/entities/membership.entity';
 import { RoleEntity } from 'src/modules/roles/infrastructure/persistence/relational/entities/role.entity';
 import { StatusEntity } from 'src/modules/statuses/infrastructure/persistence/relational/entities/status.entity';
 import { TwoFactor } from 'src/modules/two-factor/domain/two-factor';
 import { User } from 'src/modules/users/domain/user';
+import { Membership } from 'src/modules/membership/entities/membership.entity';
 
 @Entity({
   name: 'user',
@@ -91,10 +92,8 @@ export class UserEntity extends EntityRelationalHelper implements User {
   })
   status?: StatusEntity;
 
-  @ManyToOne(() => MembershipEntity, {
-    eager: true,
-  })
-  membership?: MembershipEntity | null;
+  @OneToOne(() => Membership, (membership) => membership.user, { eager: true })
+  membership?: Membership | null;
 
   @CreateDateColumn()
   createdAt: Date;

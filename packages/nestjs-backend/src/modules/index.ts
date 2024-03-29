@@ -8,8 +8,6 @@ export * from './auth-twitter/';
 export * from './domains/';
 export * from './files/';
 export * from './ic-types/';
-export * from './invoices/';
-export * from './memberships/';
 export * from './multi-factor-authentication/';
 export * from './nfc-categories/';
 export * from './nfc-groups';
