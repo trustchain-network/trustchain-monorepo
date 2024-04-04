@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 
 import { NfcsService } from './nfcs.service';
 import { NfcsController } from './nfcs.controller';
-import { UsersModule } from '../users';
+import { UsersModule } from '../users/users.module';
 import { RelationalNfcPersistenceModule } from './infrastructure/persistence/relational/relational-persistence.module';
 
 const infrastructurePersistenceModule = RelationalNfcPersistenceModule;

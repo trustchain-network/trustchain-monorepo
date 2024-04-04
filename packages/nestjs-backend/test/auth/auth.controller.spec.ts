@@ -15,11 +15,17 @@ describe('Modules (e2e)', () => {
     });
     userFactory = testApp.app.get(UserFactoryService);
     await userFactory.clearTable();
+  });
+
+  beforeEach(async () => {
     user = await userFactory.create();
   });
 
-  afterAll(async () => {
+  afterEach(async () => {
     await userFactory.clearTable();
+  });
+
+  afterAll(async () => {
     await testApp.closeApp();
   });
 

@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { RelationalTeamPersistenceModule } from './infrastructure/persistence/relational/relational-persistence.module';
 import { TeamsService } from './teams.service';
 import { TeamsController } from './teams.controller';
-import { UsersModule } from '../users';
+import { UsersModule } from '../users/users.module';
 
 const infrastructurePersistenceModule = RelationalTeamPersistenceModule;
 

@@ -1,6 +1,5 @@
 import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { MongooseModule } from '@nestjs/mongoose';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { I18nModule } from 'nestjs-i18n/dist/i18n.module';
 import { HeaderResolver } from 'nestjs-i18n';
@@ -24,12 +23,7 @@ import s3Config from './providers/s3/config/s3.config';
 import stripeConfig from './providers/stripe/config/stripe.config';
 import twilioConfig from './providers/twilio/config/twilio.config';
 
-import { DatabaseConfig } from './providers/database/config/database-config.type';
-
-import {
-  MongooseConfigService,
-  TypeOrmConfigService,
-} from './providers/database/';
+import { TypeOrmConfigService } from './providers/database/typeorm-config.service';
 
 //middlewares
 import { JsonBodyMiddleware } from './middleware/json-body.middleware';
@@ -89,16 +83,12 @@ import { UsersModule } from './modules/users/users.module';
       ],
       envFilePath: ['.env'],
     }),
-    (databaseConfig() as DatabaseConfig).isDocumentDatabase
-      ? MongooseModule.forRootAsync({
-          useClass: MongooseConfigService,
-        })
-      : TypeOrmModule.forRootAsync({
-          useClass: TypeOrmConfigService,
-          dataSourceFactory: async (options: DataSourceOptions) => {
-            return new DataSource(options).initialize();
-          },
-        }),
+    TypeOrmModule.forRootAsync({
+      useClass: TypeOrmConfigService,
+      dataSourceFactory: async (options: DataSourceOptions) => {
+        return new DataSource(options).initialize();
+      },
+    }),
     I18nModule.forRootAsync({
       useFactory: (configService: ConfigService<AllConfigType>) => ({
         fallbackLanguage: configService.getOrThrow('app.fallbackLanguage', {

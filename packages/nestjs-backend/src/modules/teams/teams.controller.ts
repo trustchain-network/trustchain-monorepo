@@ -14,7 +14,9 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiTags, ApiParam } from '@nestjs/swagger';
-import { RoleEnum, Roles, RolesGuard } from '../roles';
+import { RoleEnum } from '../roles/roles.enum';
+import { RolesGuard } from '../roles/roles.guard';
+import { Roles } from '../roles/roles.decorator';
 import { TeamsService } from './teams.service';
 import { UserDecorator } from '../users/user.decorator';
 import { CreateTeamDto } from './dto/create-team.dto';
