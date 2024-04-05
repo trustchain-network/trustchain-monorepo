@@ -1,21 +1,16 @@
 import { Module } from '@nestjs/common';
-import databaseConfig from 'src/providers/database/config/database.config';
-import { DatabaseConfig } from 'src/providers/database/config/database-config.type';
 
 import { NfcsService } from './nfcs.service';
-import { NfcsController } from './nfcs.controller';
-import { UsersModule } from '../users';
-import { DocumentNfcPersistenceModule } from './infrastructure/document/document-persistence.module';
+import { NfcsController } from './controllers/nfcs.controller';
+import { NfcsPublicController } from './controllers/nfcs-public.controller';
+import { UsersModule } from '../users/users.module';
 import { RelationalNfcPersistenceModule } from './infrastructure/persistence/relational/relational-persistence.module';
-
-const infrastructurePersistenceModule = (databaseConfig() as DatabaseConfig)
-  .isDocumentDatabase
-  ? DocumentNfcPersistenceModule
-  : RelationalNfcPersistenceModule;
+import { SdmModule } from 'src/providers/sdm/sdm.module';
 
 @Module({
-  imports: [infrastructurePersistenceModule, UsersModule],
-  controllers: [NfcsController],
+  imports: [RelationalNfcPersistenceModule, UsersModule, SdmModule],
+  controllers: [NfcsController, NfcsPublicController],
   providers: [NfcsService],
+  exports: [NfcsService],
 })
 export class NfcsModule {}

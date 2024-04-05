@@ -1,51 +1,35 @@
-// import { NfcDetail } from 'src/nfc-details/domain/nfc-detail';
-// import { NfcDetailEntity } from '../entities/nfc-detail.entity';
-// import { IcTypeEntity } from 'src/ic-types/infrastructure/persistence/relational/entities/ic-type.entity';
+import { NfcDetail } from 'src/modules/nfc-details/domain/nfc-detail';
+import { NfcDetailEntity } from '../entities/nfc-detail.entity';
+import { UserEntity } from 'src/modules/users/infrastructure/persistence/relational/entities/user.entity';
+import { UserMapper } from 'src/modules/users/infrastructure/persistence/relational/mappers/user.mapper';
+import { User } from 'src/modules/users/domain/user';
 
-// export class NfcDetailMapper {
-//   static toDomain(raw: NfcDetailEntity): NfcDetail {
-//     const nfcDetail = new NfcDetail();
-//     nfcDetail.id = raw.id;
-//     nfcDetail.icManifacturer = raw.icManifacturer;
-//     nfcDetail.icType = raw.icType;
-//     nfcDetail.memoryInfo = raw.memoryInfo;
-//     nfcDetail.technologies = raw.technologies;
-//     nfcDetail.majorVersion = raw.majorVersion;
-//     nfcDetail.minorVersion = raw.minorVersion;
+export class NfcDetailMapper {
+  static toDomain(raw: NfcDetailEntity): NfcDetail {
+    return Object.assign(new NfcDetail(), raw, {
+      ...(raw.createdBy && {
+        createdBy: UserMapper.toDomain(raw.createdBy as UserEntity),
+      }),
+      ...(raw.updatedBy && {
+        updatedBy: UserMapper.toDomain(raw.updatedBy as UserEntity),
+      }),
+      ...(raw.deletedBy && {
+        deletedBy: UserMapper.toDomain(raw.deletedBy as UserEntity),
+      }),
+    });
+  }
 
-//     nfcDetail.createdAt = raw.createdAt;
-//     nfcDetail.updatedAt = raw.updatedAt;
-//     nfcDetail.deletedAt = raw.deletedAt;
-//     nfcDetail.createdBy = raw.createdBy;
-//     nfcDetail.updatedBy = raw.updatedBy;
-//     nfcDetail.deletedBy = raw.deletedBy;
-//     return nfcDetail;
-//   }
-
-//   static toPersistence(nfcDetail: NfcDetail): NfcDetailEntity {
-//     let icType: IcTypeEntity | undefined = undefined;
-
-//     if (nfcDetail.icType) {
-//       icType = new IcTypeEntity();
-//       icType.id = nfcDetail.icType.id;
-//     }
-
-//     const nfcDetailEntity = new NfcDetailEntity();
-//     if (nfcDetail.id && typeof nfcDetail.id === 'string') {
-//       nfcDetailEntity.id = nfcDetail.id;
-//     }
-//     nfcDetailEntity.icManifacturer = nfcDetail.icManifacturer;
-//     nfcDetailEntity.memoryInfo = nfcDetail.memoryInfo;
-//     nfcDetailEntity.technologies = nfcDetail.technologies;
-//     nfcDetailEntity.majorVersion = nfcDetail.majorVersion;
-//     nfcDetailEntity.minorVersion = nfcDetail.minorVersion;
-
-//     nfcDetailEntity.createdAt = nfcDetail.createdAt;
-//     nfcDetailEntity.updatedAt = nfcDetail.updatedAt;
-//     nfcDetailEntity.deletedAt = nfcDetail.deletedAt;
-//     nfcDetailEntity.createdBy = nfcDetail.createdBy;
-//     nfcDetailEntity.updatedBy = nfcDetail.updatedBy;
-//     nfcDetailEntity.deletedBy = nfcDetail.deletedBy;
-//     return nfcDetailEntity;
-//   }
-// }
+  static toPersistence(nfcDetail: NfcDetail): NfcDetailEntity {
+    return Object.assign(new NfcDetailEntity(), nfcDetail, {
+      ...(nfcDetail.createdBy && {
+        createdBy: UserMapper.toPersistence(nfcDetail.createdBy as User),
+      }),
+      ...(nfcDetail.updatedBy && {
+        updatedBy: UserMapper.toPersistence(nfcDetail.updatedBy as User),
+      }),
+      ...(nfcDetail.deletedBy && {
+        deletedBy: UserMapper.toPersistence(nfcDetail.deletedBy as User),
+      }),
+    });
+  }
+}

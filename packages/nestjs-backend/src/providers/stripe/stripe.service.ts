@@ -1,4 +1,4 @@
-import { Injectable, HttpException, HttpStatus, Inject } from '@nestjs/common';
+import { Injectable, Inject } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { AllConfigType } from 'src/config/config.type';
 import { UsersService } from 'src/modules/users/users.service';
@@ -9,6 +9,7 @@ import { EventBus } from '@nestjs/cqrs';
 import { UserEntity } from 'src/modules/users/infrastructure/persistence/relational/entities/user.entity';
 import { UpdateMembershipEvent } from './cqrs/update-membership.event';
 import { MembershipService } from 'src/modules/membership/membership.service';
+import { UnprocessableEntityError } from 'src/utils/errors';
 
 @Injectable()
 export class StripeService {
@@ -46,13 +47,7 @@ export class StripeService {
   ): Promise<Stripe.Checkout.Session> {
     const user = await this.usersService.findOneOrFail({ id: userId });
     if (!user?.email) {
-      throw new HttpException(
-        {
-          status: HttpStatus.UNPROCESSABLE_ENTITY,
-          errors: { user: { email: 'noEmail' } },
-        },
-        HttpStatus.NOT_FOUND,
-      );
+      throw new UnprocessableEntityError({ user: { email: 'noEmail' } });
     }
 
     const customerId = await this.getOrCreateCustomerId(user);
@@ -76,7 +71,10 @@ export class StripeService {
   }
 
   async productList(): Promise<Stripe.Product[]> {
-    const { data } = await this.stripe.products.list({ active: true });
+    const { data } = await this.stripe.products.list({
+      active: true,
+      expand: ['data.default_price'],
+    });
 
     return data;
   }
@@ -114,7 +112,10 @@ export class StripeService {
       ? this.stripe.customers.retrieve(user?.membership?.customerId as string, {
           expand: ['subscriptions'],
         })
-      : this.stripe.customers.create({ email: user.email as string });
+      : this.stripe.customers.create({
+          email: user.email as string,
+          name: `${user.firstName} ${user.lastName}`,
+        });
 
     const { id: customerId } = await customerPromise;
 

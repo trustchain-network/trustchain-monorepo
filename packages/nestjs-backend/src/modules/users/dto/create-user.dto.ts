@@ -40,11 +40,6 @@ export class CreateUserDto {
   @Type(() => RoleDto)
   role?: RoleDto | null;
 
-  // @ApiProperty({ type: Team })
-  // @IsOptional()
-  // @Type(() => Team)
-  // team?: Team | null;
-
   @ApiProperty()
   @IsOptional()
   countryCode?: string | null;

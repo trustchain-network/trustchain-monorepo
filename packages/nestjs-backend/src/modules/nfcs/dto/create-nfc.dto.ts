@@ -1,17 +1,19 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty } from 'class-validator';
-import { EncryptionMode } from '../domain/nfc';
+import { IsNotEmpty, IsOptional } from 'class-validator';
+import { EncryptionMode } from '../enums/encryption-mode.enum';
+import { NfcStatusEnum } from '../enums/nfc-statuses.enum';
+import { TagStatusEnum } from '../enums/tag-statuses.enum';
+import { NfcDetail } from 'src/modules/nfc-details/domain/nfc-detail';
 import { User } from 'src/modules/users/domain/user';
-import { NfcStatusEnum, TagStatusEnum } from 'src/modules/nfc-statuses';
 
 export class CreateNfcDto {
   @ApiProperty()
-  @IsNotEmpty()
-  uid: string;
+  @IsOptional()
+  detailId?: NfcDetail | null;
 
   @ApiProperty()
   @IsNotEmpty()
-  nfcDetail: string;
+  uid: string;
 
   @ApiProperty()
   @IsNotEmpty()

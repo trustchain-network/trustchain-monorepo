@@ -1,46 +1,60 @@
-// import { Injectable } from '@nestjs/common';
-// import { NfcDetailRepository } from './infrastructure/persistence/nfc-details.repository';
-// import { NfcDetail } from './domain/nfc-detail';
-// import { NullableType } from 'src/utils/types/nullable.type';
-// import {
-//   FilterNfcDetailDto,
-//   SortNfcDetailDto,
-// } from './dto/query-nfc-detail.dto';
-// import { IPaginationOptions } from 'src/utils/types/pagination-options';
+import { Injectable } from '@nestjs/common';
+import { NfcDetail } from './domain/nfc-detail';
+import { NullableType } from 'src/utils/types/nullable.type';
+import { NfcDetailRepository } from './infrastructure/persistence/nfc-details.repository';
+import { UsersService } from '../users/users.service';
+import { DeepPartial } from 'typeorm';
+import { CreateNfcDetailsDto } from './dto/create-nfc-details.dto';
 
-// @Injectable()
-// export class NfcDetailsService {
-//   constructor(private readonly nfcDetailRepository: NfcDetailRepository) {}
+@Injectable()
+export class NfcDetailsService {
+  // private logger = new Logger(NfcDetailsService.name);
 
-//   async create(createNfcDetailDto: any): Promise<any> {
-//     return this.nfcDetailRepository.create(createNfcDetailDto);
-//   }
+  constructor(
+    private readonly nfcDetailRepository: NfcDetailRepository,
+    private readonly usersService: UsersService,
+  ) {}
 
-//   // findManyWithPagination({
-//   //   filterOptions,
-//   //   sortOptions,
-//   //   paginationOptions,
-//   // }: {
-//   //   filterOptions?: FilterNfcDetailDto | null;
-//   //   sortOptions?: SortNfcDetailDto[] | null;
-//   //   paginationOptions: IPaginationOptions;
-//   // }): Promise<NfcDetail[]> {
-//   //   return this.nfcDetailRepository.findManyWithPagination({
-//   //     filterOptions,
-//   //     sortOptions,
-//   //     paginationOptions,
-//   //   });
-//   // }
+  async create(
+    createNfcDetailDto: CreateNfcDetailsDto,
+    logedInUserId?: string,
+  ): Promise<any> {
+    const clonedPayload = {
+      ...createNfcDetailDto,
+    };
 
-//   findOne(fields: any): Promise<NullableType<NfcDetail>> {
-//     return this.nfcDetailRepository.findOne(fields);
-//   }
+    if (logedInUserId) {
+      const logedInUser = await this.usersService.findOne({
+        id: logedInUserId,
+      });
+      clonedPayload.createdBy = logedInUser;
+      clonedPayload.updatedBy = logedInUser;
+    }
 
-//   async update(id: NfcDetail['id'], payload: any): Promise<any> {
-//     return this.nfcDetailRepository.update(id, payload);
-//   }
+    return this.nfcDetailRepository.create(clonedPayload);
+  }
 
-//   async softDelete(id: NfcDetail['id']): Promise<void> {
-//     return this.nfcDetailRepository.softDelete(id);
-//   }
-// }
+  findOne(fields: any): Promise<NullableType<NfcDetail>> {
+    return this.nfcDetailRepository.findOne(fields);
+  }
+
+  async update(
+    id: NfcDetail['id'],
+    payload: DeepPartial<NfcDetail>,
+    logedInUserId?: string,
+  ): Promise<any> {
+    const clonedPayload = { ...payload };
+
+    if (logedInUserId) {
+      const logedInUser = await this.usersService.findOne({
+        id: logedInUserId,
+      });
+      clonedPayload.updatedBy = logedInUser;
+    }
+    return this.nfcDetailRepository.update(id, payload);
+  }
+
+  async softDelete(id: NfcDetail['id']): Promise<void> {
+    return this.nfcDetailRepository.softDelete(id);
+  }
+}

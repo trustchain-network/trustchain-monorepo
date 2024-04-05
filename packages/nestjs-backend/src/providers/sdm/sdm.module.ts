@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { HttpModule } from '@nestjs/axios';
+import { HttpModule } from '../http/http.module';
 import { SdmService } from './sdm.service';
 import { SdmController } from './sdm.controller';
 import { ConfigService } from '@nestjs/config';
@@ -8,5 +8,6 @@ import { ConfigService } from '@nestjs/config';
   imports: [HttpModule],
   providers: [SdmService, ConfigService],
   controllers: [SdmController],
+  exports: [SdmService],
 })
 export class SdmModule {}

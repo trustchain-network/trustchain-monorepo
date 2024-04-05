@@ -9,7 +9,6 @@ import { RoleDto } from 'src/modules/roles/dto/role.dto';
 import { StatusDto } from 'src/modules/statuses/dto/status.dto';
 import { FileDto } from 'src/modules/files/dto/file.dto';
 import { TwoFactor } from 'src/modules/two-factor/domain/two-factor';
-import { Team } from 'src/modules/teams/domain/team';
 import { User } from '../domain/user';
 
 export class UpdateUserDto extends PartialType(CreateUserDto) {
@@ -44,11 +43,6 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
   @IsOptional()
   @Type(() => RoleDto)
   role?: RoleDto | null;
-
-  @ApiProperty({ type: () => Team })
-  @IsOptional()
-  @Type(() => Team)
-  team?: Team | null;
 
   @ApiProperty()
   @IsOptional()

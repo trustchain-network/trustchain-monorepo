@@ -1,6 +1,9 @@
-import { Controller, Get, HttpCode, HttpStatus, Param } from '@nestjs/common';
+import { Controller, Get, HttpCode, HttpStatus, Query } from '@nestjs/common';
 import { SdmService } from './sdm.service';
 import { ApiTags } from '@nestjs/swagger';
+import { TagDataDto } from './dto/tag-data.dto';
+import { TagDataEncryptedDto } from './dto/tag-data-encrypted.dto';
+import { TSDMResponse } from './types';
 
 @ApiTags('sdm')
 @Controller({
@@ -12,31 +15,19 @@ export class SdmController {
 
   @Get('tagpt')
   @HttpCode(HttpStatus.OK)
-  getTag(
-    @Param('uid') uid: String,
-    @Param('ctr') ctr: String,
-    @Param('cmac') cmac: String,
-  ): any {
-    return this.sdmService.getTagUID(uid, ctr, cmac);
+  getTag(@Query() data: TagDataDto): Promise<TSDMResponse> {
+    return this.sdmService.getTagUID(data);
   }
 
   @Get('tag')
   @HttpCode(HttpStatus.OK)
-  getTagEncrypted(
-    @Param('picc_data') picc_data: String,
-    @Param('enc') enc: String,
-    @Param('cmac') cmac: String,
-  ): any {
-    return this.sdmService.getTagEncrypted(picc_data, enc, cmac);
+  getTagEncrypted(@Query() data: TagDataEncryptedDto): Promise<TSDMResponse> {
+    return this.sdmService.getTagEncrypted(data);
   }
 
   @Get('tagtt')
   @HttpCode(HttpStatus.OK)
-  getTagTamper(
-    @Param('picc_data') picc_data: String,
-    @Param('enc') enc: String,
-    @Param('cmac') cmac: String,
-  ): any {
-    return this.sdmService.getTagTamper(picc_data, enc, cmac);
+  getTagTamper(@Query() data: TagDataEncryptedDto): Promise<TSDMResponse> {
+    return this.sdmService.getTagTamper(data);
   }
 }

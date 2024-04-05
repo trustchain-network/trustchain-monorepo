@@ -7,14 +7,14 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { EntityRelationalHelper } from 'src/utils/relational-entity-helper';
-import { EncryptionMode, NFC } from 'src/modules/nfcs/domain/nfc';
 import { Expose } from 'class-transformer';
-
-import { User } from 'src/modules/users/domain/user';
+import { EntityRelationalHelper } from 'src/utils/relational-entity-helper';
+import { NFC } from 'src/modules/nfcs/domain/nfc';
+import { EncryptionMode } from 'src/modules/nfcs/enums/encryption-mode.enum';
+import { NfcStatusEnum } from 'src/modules/nfcs/enums/nfc-statuses.enum';
+import { TagStatusEnum } from 'src/modules/nfcs/enums/tag-statuses.enum';
 import { UserEntity } from 'src/modules/users/infrastructure/persistence/relational/entities/user.entity';
-import { NfcStatusEnum } from 'src/modules/nfc-statuses/nfc-statuses.enum';
-import { TagStatusEnum } from 'src/modules/nfc-statuses/tag-statuses.enum';
+import { NfcDetailEntity } from 'src/modules/nfc-details/infrastructure/persistence/relational/entities/nfc-detail.entity';
 
 @Entity({
   name: 'nfc',
@@ -23,11 +23,13 @@ export class NfcEntity extends EntityRelationalHelper implements NFC {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: String, nullable: false })
-  uid: string;
+  @ManyToOne(() => NfcDetailEntity, {
+    eager: true,
+  })
+  detail?: NfcDetailEntity | null;
 
   @Column({ type: String, nullable: false })
-  nfcDetail: string;
+  uid: string;
 
   @Column({ type: String, nullable: false })
   piccData: string;
@@ -38,13 +40,27 @@ export class NfcEntity extends EntityRelationalHelper implements NFC {
   @Column()
   counter: number;
 
-  @Column()
+  @Column({
+    type: 'enum',
+    enum: NfcStatusEnum,
+    nullable: false,
+    default: NfcStatusEnum.ACTIVE,
+  })
   status: NfcStatusEnum;
 
-  @Column()
+  @Column({
+    type: 'enum',
+    enum: TagStatusEnum,
+    nullable: false,
+    default: TagStatusEnum.BLANK,
+  })
   tagStatus: TagStatusEnum;
 
-  @Column()
+  @Column({
+    type: 'enum',
+    enum: EncryptionMode,
+    default: EncryptionMode.AES,
+  })
   encryptionMode: EncryptionMode;
 
   @Column({ type: String, nullable: false })
@@ -63,15 +79,15 @@ export class NfcEntity extends EntityRelationalHelper implements NFC {
   @ManyToOne(() => UserEntity, {
     eager: true,
   })
-  createdBy?: User | null;
+  createdBy?: UserEntity | null;
 
   @ManyToOne(() => UserEntity, {
     eager: true,
   })
-  updatedBy?: User | null;
+  updatedBy?: UserEntity | null;
 
   @ManyToOne(() => UserEntity, {
     eager: true,
   })
-  deletedBy?: User | null;
+  deletedBy?: UserEntity | null;
 }

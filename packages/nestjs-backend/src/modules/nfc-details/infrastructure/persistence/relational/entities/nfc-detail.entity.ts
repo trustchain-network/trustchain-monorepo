@@ -1,61 +1,71 @@
-// import {
-//   Column,
-//   CreateDateColumn,
-//   DeleteDateColumn,
-//   Entity,
-//   ManyToOne,
-//   PrimaryGeneratedColumn,
-//   UpdateDateColumn,
-// } from 'typeorm';
-// import { EntityRelationalHelper } from 'src/utils/relational-entity-helper';
-// import { NfcDetail } from 'src/nfc-details/domain/nfc-detail';
-// import { IcType } from 'src/ic-types/domain/ic-types';
+import {
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+import { EntityRelationalHelper } from 'src/utils/relational-entity-helper';
+import { NfcDetail } from 'src/modules/nfc-details/domain/nfc-detail';
+import { UserEntity } from 'src/modules/users/infrastructure/persistence/relational/entities/user.entity';
+import { IcTypeEnum } from 'src/modules/nfc-details/enums/ic-types.enum';
 
-// @Entity({
-//   name: 'nfcDetail',
-// })
-// export class NfcDetailEntity
-//   extends EntityRelationalHelper
-//   implements NfcDetail
-// {
-//   @PrimaryGeneratedColumn('uuid')
-//   id: string;
+@Entity({
+  name: 'nfcDetail',
+})
+export class NfcDetailEntity
+  extends EntityRelationalHelper
+  implements NfcDetail
+{
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
-//   @Column()
-//   icManifacturer?: string | null;
+  @Column({ type: String, nullable: true })
+  icManifacturer?: string | null;
 
-//   @ManyToOne(() => IcType, {
-//     eager: true,
-//   })
-//   icType?: IcType | null;
+  @Column({
+    type: 'enum',
+    enum: IcTypeEnum,
+    nullable: true,
+    default: IcTypeEnum.NTAG,
+  })
+  icType?: IcTypeEnum;
 
-//   @Column()
-//   memoryInfo?: string | null;
+  @Column({ type: String, nullable: true })
+  memoryInfo?: string | null;
 
-//   @Column('simple-array')
-//   technologies?: string[] | null;
+  @Column({ type: 'jsonb' })
+  technologies?: string[] | null;
 
-//   @Column()
-//   majorVersion?: string | null;
+  @Column({ type: String, nullable: true })
+  majorVersion?: string | null;
 
-//   @Column()
-//   minorVersion?: string | null;
+  @Column({ type: String, nullable: true })
+  minorVersion?: string | null;
 
-//   @CreateDateColumn()
-//   createdAt: Date;
+  @CreateDateColumn()
+  createdAt: Date;
 
-//   @UpdateDateColumn()
-//   updatedAt: Date;
+  @UpdateDateColumn()
+  updatedAt: Date;
 
-//   @DeleteDateColumn()
-//   deletedAt: Date;
+  @DeleteDateColumn()
+  deletedAt: Date;
 
-//   @Column({ nullable: true })
-//   createdBy?: number | string | null;
+  @ManyToOne(() => UserEntity, {
+    eager: true,
+  })
+  createdBy?: UserEntity | null;
 
-//   @Column({ nullable: true })
-//   updatedBy?: number | string | null;
+  @ManyToOne(() => UserEntity, {
+    eager: true,
+  })
+  updatedBy?: UserEntity | null;
 
-//   @Column({ nullable: true })
-//   deletedBy?: number | string | null;
-// }
+  @ManyToOne(() => UserEntity, {
+    eager: true,
+  })
+  deletedBy?: UserEntity | null;
+}

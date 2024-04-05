@@ -1,107 +1,120 @@
-// import {
-//   Controller,
-//   Get,
-//   Post,
-//   Body,
-//   Patch,
-//   Param,
-//   Delete,
-//   UseGuards,
-//   Query,
-//   HttpStatus,
-//   HttpCode,
-//   SerializeOptions,
-// } from '@nestjs/common';
-// import { ApiBearerAuth, ApiParam, ApiTags } from '@nestjs/swagger';
-// import { Roles } from '../roles/roles.decorator';
-// import { RoleEnum } from '../roles/roles.enum';
-// import { AuthGuard } from '@nestjs/passport';
-// import { RolesGuard } from 'src/roles/roles.guard';
-// import { infinityPagination } from 'src/utils/infinity-pagination';
-// import { InfinityPaginationResultType } from '../utils/types/infinity-pagination-result.type';
-// import { NullableType } from '../utils/types/nullable.type';
-// import { NfcDetailsService } from './nfc-details.service';
-// import { NfcDetail } from './domain/nfc-detail';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+  Query,
+  HttpStatus,
+  HttpCode,
+  SerializeOptions,
+  HttpException,
+} from '@nestjs/common';
+import { ApiBearerAuth, ApiParam, ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from '@nestjs/passport/dist/auth.guard';
+import { RolesGuard } from '../roles/roles.guard';
+import { Roles } from '../roles/roles.decorator';
+import { RoleEnum } from '../roles/roles.enum';
+import { NullableType } from 'src/utils/types/nullable.type';
+import { CreateNfcDetailsDto } from './dto/create-nfc-details.dto';
+import { NfcDetailsService } from './nfc-details.service';
+import { NfcDetail } from './domain/nfc-detail';
+import { UserDecorator } from '../users/user.decorator';
+import { UsersService } from '../users/users.service';
 
-// @Controller('nfc-details')
-// export class NfcDetailsController {
-//   constructor(private readonly nfcDetailsService: NfcDetailsService) {}
+@ApiBearerAuth()
+@Roles(RoleEnum.admin, RoleEnum.member)
+@UseGuards(AuthGuard('jwt'), RolesGuard)
+@ApiTags('Users')
+@Controller({
+  path: 'nfc-details',
+  version: '1',
+})
+export class NfcDetailsController {
+  constructor(
+    private readonly nfcDetailsService: NfcDetailsService,
+    private readonly usersService: UsersService,
+  ) {}
 
-//   @SerializeOptions({
-//     groups: ['admin'],
-//   })
-//   @Post()
-//   @HttpCode(HttpStatus.CREATED)
-//   create(@Body() createNfcDetailsDto: any): Promise<NfcDetail> {
-//     return this.nfcDetailsService.create(createNfcDetailsDto);
-//   }
+  @SerializeOptions({
+    groups: ['admin', 'member'],
+  })
+  @Post()
+  @HttpCode(HttpStatus.CREATED)
+  async create(
+    @Body() createNfcDetailsDto: CreateNfcDetailsDto,
+    @UserDecorator('id') logedInUserId: string,
+  ): Promise<NfcDetail> {
+    const logedInUser = await this.usersService.findUserId(logedInUserId);
+    if (!logedInUser) {
+      throw new HttpException(
+        {
+          status: HttpStatus.UNPROCESSABLE_ENTITY,
+          errors: {
+            logedInUserId: 'logedInUserDoenstExists',
+          },
+        },
+        HttpStatus.UNPROCESSABLE_ENTITY,
+      );
+    }
+    return this.nfcDetailsService.create(createNfcDetailsDto);
+  }
 
-//   // @SerializeOptions({
-//   //   groups: ['admin'],
-//   // })
-//   // @Get()
-//   // @HttpCode(HttpStatus.OK)
-//   // async findAll(
-//   //   @Query() query: any,
-//   // ): Promise<InfinityPaginationResultType<NfcDetail>> {
-//   //   const page = query?.page ?? 1;
-//   //   let limit = query?.limit ?? 10;
-//   //   if (limit > 50) {
-//   //     limit = 50;
-//   //   }
+  @SerializeOptions({
+    groups: ['admin', 'member'],
+  })
+  @Get(':id')
+  @HttpCode(HttpStatus.OK)
+  @ApiParam({
+    name: 'id',
+    type: String,
+    required: true,
+  })
+  findOne(@Param('id') id: NfcDetail['id']): Promise<NullableType<NfcDetail>> {
+    return this.nfcDetailsService.findOne({ id });
+  }
 
-//   //   return infinityPagination(
-//   //     await this.nfcDetailsService.findManyWithPagination({
-//   //       filterOptions: query?.filters,
-//   //       sortOptions: query?.sort,
-//   //       paginationOptions: {
-//   //         page,
-//   //         limit,
-//   //       },
-//   //     }),
-//   //     { page, limit },
-//   //   );
-//   // }
+  @SerializeOptions({
+    groups: ['admin', 'member'],
+  })
+  @Patch(':id')
+  @HttpCode(HttpStatus.OK)
+  @ApiParam({
+    name: 'id',
+    type: String,
+    required: true,
+  })
+  async update(
+    @Param('id') id: NfcDetail['id'],
+    @Body() updateProfileDto: any,
+    @UserDecorator('id') logedInUserId: string,
+  ): Promise<NfcDetail | null> {
+    const logedInUser = await this.usersService.findUserId(logedInUserId);
+    if (!logedInUser) {
+      throw new HttpException(
+        {
+          status: HttpStatus.UNPROCESSABLE_ENTITY,
+          errors: {
+            logedInUserId: 'logedInUserDoenstExists',
+          },
+        },
+        HttpStatus.UNPROCESSABLE_ENTITY,
+      );
+    }
+    return this.nfcDetailsService.update(id, updateProfileDto);
+  }
 
-//   @SerializeOptions({
-//     groups: ['admin'],
-//   })
-//   @Get(':id')
-//   @HttpCode(HttpStatus.OK)
-//   @ApiParam({
-//     name: 'id',
-//     type: String,
-//     required: true,
-//   })
-//   findOne(@Param('id') id: NfcDetail['id']): Promise<NullableType<NfcDetail>> {
-//     return this.nfcDetailsService.findOne({ id });
-//   }
-
-//   @SerializeOptions({
-//     groups: ['admin'],
-//   })
-//   @Patch(':id')
-//   @HttpCode(HttpStatus.OK)
-//   @ApiParam({
-//     name: 'id',
-//     type: String,
-//     required: true,
-//   })
-//   update(
-//     @Param('id') id: NfcDetail['id'],
-//     @Body() updateProfileDto: any,
-//   ): Promise<NfcDetail | null> {
-//     return this.nfcDetailsService.update(id, updateProfileDto);
-//   }
-
-//   @Delete(':id')
-//   @ApiParam({
-//     name: 'id',
-//     type: String,
-//     required: true,
-//   })
-//   @HttpCode(HttpStatus.NO_CONTENT)
-//   remove(@Param('id') id: NfcDetail['id']): Promise<void> {
-//     return this.nfcDetailsService.softDelete(id);
-//   }
-// }
+  @Delete(':id')
+  @ApiParam({
+    name: 'id',
+    type: String,
+    required: true,
+  })
+  @HttpCode(HttpStatus.NO_CONTENT)
+  remove(@Param('id') id: NfcDetail['id']): Promise<void> {
+    return this.nfcDetailsService.softDelete(id);
+  }
+}

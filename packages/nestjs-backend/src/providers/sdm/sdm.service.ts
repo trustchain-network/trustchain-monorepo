@@ -1,6 +1,10 @@
-import { HttpService } from '@nestjs/axios';
+import { HttpService } from '../http/http.service';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { ITagDataEncrypted } from './dto/tag-data-encrypted.dto';
+import { ITagData } from './dto/tag-data.dto';
+import { TSDMResponse } from './types';
+import { UnprocessableEntityError } from 'src/utils/errors';
 
 @Injectable()
 export class SdmService {
@@ -9,26 +13,30 @@ export class SdmService {
     private readonly httpService: HttpService,
   ) {}
 
-  getSDMDomain(): String {
-    return this.configService.getOrThrow<String>('SDM_DOMAIN');
-  }
-
   // NTAG 424 DNA: Plaintext tag UID, read counter mirroring with SDMMAC (CMAC)
-  getTagUID(uid: String, ctr: String, cmac: String): any {
-    return this.httpService.get(
-      `${this.getSDMDomain}/api/tagpt?uid=${uid}&ctr=${ctr}&cmac=${cmac}`,
-    );
+  getTagUID(data: ITagData): Promise<TSDMResponse> {
+    return this.getTag(data, 'tagpt');
   }
 
-  getTagEncrypted(picc_data: String, enc: String, cmac: String): any {
-    return this.httpService.get(
-      `${this.getSDMDomain}/api/tag?picc_data=${picc_data}&enc=${enc}&cmac=${cmac}`,
-    );
+  getTagEncrypted(data: ITagDataEncrypted): Promise<TSDMResponse> {
+    return this.getTag(data, 'tag');
   }
 
-  getTagTamper(picc_data: String, enc: String, cmac: String): any {
-    return this.httpService.get(
-      `${this.getSDMDomain}/api/tagtt?picc_data=${picc_data}&enc=${enc}&cmac=${cmac}`,
-    );
+  getTagTamper(data: ITagDataEncrypted): Promise<TSDMResponse> {
+    return this.getTag(data, 'tagtt');
+  }
+
+  getTag(
+    data: ITagData | ITagDataEncrypted,
+    route: 'tagpt' | 'tag' | 'tagtt',
+  ): Promise<TSDMResponse> {
+    return this.httpService
+      .get<TSDMResponse>(
+        `${this.configService.getOrThrow('app.sdmDomain', { infer: true })}/api/${route}`,
+        data,
+      )
+      .catch((): never => {
+        throw new UnprocessableEntityError('tagValidationFailed');
+      });
   }
 }

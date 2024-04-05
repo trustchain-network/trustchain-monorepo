@@ -31,6 +31,14 @@ export class UsersService {
       ...createProfileDto,
     };
 
+    if (logedInUserId) {
+      const logedInUser = await this.usersRepository.findOne({
+        id: logedInUserId,
+      });
+      clonedPayload.createdBy = logedInUser;
+      clonedPayload.updatedBy = logedInUser;
+    }
+
     if (clonedPayload.password) {
       const salt = await bcrypt.genSalt();
       clonedPayload.password = await bcrypt.hash(clonedPayload.password, salt);
@@ -91,9 +99,6 @@ export class UsersService {
       }
     }
 
-    // if (clonedPayload.team?.id) {
-    // }
-
     if (clonedPayload.status?.id) {
       const statusObject = Object.values(StatusEnum).includes(
         clonedPayload.status.id,
@@ -112,8 +117,6 @@ export class UsersService {
       }
     }
 
-    // clonedPayload.createdBy = logedInUserId;
-    // clonedPayload.updatedBy = logedInUserId;
     return this.usersRepository.create(clonedPayload);
   }
 
@@ -177,6 +180,13 @@ export class UsersService {
     logedInUserId?: string,
   ): Promise<User | null> {
     const clonedPayload = { ...payload };
+
+    if (logedInUserId) {
+      const logedInUser = await this.usersRepository.findOne({
+        id: logedInUserId,
+      });
+      clonedPayload.updatedBy = logedInUser;
+    }
 
     if (
       clonedPayload.password &&
@@ -259,7 +269,6 @@ export class UsersService {
         );
       }
     }
-    // clonedPayload.updatedBy = logedInUserId ?? null;
 
     return this.usersRepository.update(id, clonedPayload);
   }
