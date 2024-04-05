@@ -1,6 +1,7 @@
 import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { HttpModule as AxiosModule } from '@nestjs/axios';
 import { I18nModule } from 'nestjs-i18n/dist/i18n.module';
 import { HeaderResolver } from 'nestjs-i18n';
 import { DataSource, DataSourceOptions } from 'typeorm';
@@ -16,7 +17,7 @@ import databaseConfig from './providers/database/config/database.config';
 import fileConfig from './modules/files/config/file.config';
 import googleConfig from './modules/auth-google/config/google.config';
 import twitterConfig from './modules/auth-twitter/config/twitter.config';
-
+import httpConfig from './providers/http/config/http.config';
 import mailConfig from './providers/mail/config/mail.config';
 import minaConfig from './providers/mina/config/mina.config';
 import s3Config from './providers/s3/config/s3.config';
@@ -52,7 +53,6 @@ import { AuthModule } from './modules/auth/auth.module';
 import { AuthTwitterModule } from './modules/auth-twitter/auth-twitter.module';
 import { MultiFactorAuthenticationModule } from './modules/multi-factor-authentication/multi-factor-authentication.module';
 import { NfcCategoriesModule } from './modules/nfc-categories/nfc-categories.module';
-import { NfcGroupsModule } from './modules/nfc-groups/nfc-groups.module';
 import { PlansModule } from './modules/plans/plans.module';
 import { SessionsModule } from './modules/sessions/sessions.module';
 import { TeamsModule } from './modules/teams/teams.module';
@@ -62,6 +62,7 @@ import { FilesModule } from './modules/files/files.module';
 import { NfcsModule } from './modules/nfcs/nfcs.module';
 import { NfcDetailsModule } from './modules/nfc-details/nfc-details.module';
 import { UsersModule } from './modules/users/users.module';
+import { HttpModule } from './providers/http/http.module';
 
 @Module({
   imports: [
@@ -74,6 +75,7 @@ import { UsersModule } from './modules/users/users.module';
         databaseConfig,
         fileConfig,
         googleConfig,
+        httpConfig,
         mailConfig,
         minaConfig,
         s3Config,
@@ -88,6 +90,14 @@ import { UsersModule } from './modules/users/users.module';
       dataSourceFactory: async (options: DataSourceOptions) => {
         return new DataSource(options).initialize();
       },
+    }),
+    AxiosModule.registerAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        timeout: configService.get('http.timeout', { infer: true }),
+        maxRedirects: configService.get('http.maxRedirects', { infer: true }),
+      }),
     }),
     I18nModule.forRootAsync({
       useFactory: (configService: ConfigService<AllConfigType>) => ({
@@ -121,13 +131,13 @@ import { UsersModule } from './modules/users/users.module';
     ElasticsearchModule,
     FilesModule,
     HomeModule,
+    HttpModule,
     KeysModule,
     MailerModule,
     MailModule,
     MinaModule,
     MultiFactorAuthenticationModule,
     NfcCategoriesModule,
-    NfcGroupsModule,
     NfcsModule,
     NfcDetailsModule,
     PlansModule,

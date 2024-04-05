@@ -1,7 +1,8 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Membership } from './entities/membership.entity';
 import { DeepPartial, FindOptionsWhere, Repository } from 'typeorm';
+import { NotFoundError } from 'src/utils/errors';
 
 @Injectable()
 export class MembershipService {
@@ -25,13 +26,7 @@ export class MembershipService {
   ): Promise<Membership> {
     const membership = await this.findOne(conditions);
     if (!membership) {
-      throw new HttpException(
-        {
-          status: HttpStatus.NOT_FOUND,
-          error: 'notFound',
-        },
-        HttpStatus.NOT_FOUND,
-      );
+      throw new NotFoundError();
     }
 
     return membership;

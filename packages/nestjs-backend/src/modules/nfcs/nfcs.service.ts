@@ -8,12 +8,18 @@ import { EntityCondition } from 'src/utils/types/entity-condition.type';
 import { NullableType } from 'src/utils/types/nullable.type';
 import { IPaginationOptions } from 'src/utils/types/pagination-options';
 import { SortNfcDto } from './dto/query-nfc.dto';
+import { SdmService } from 'src/providers/sdm/sdm.service';
+import { ITagDataEncrypted } from 'src/providers/sdm/dto/tag-data-encrypted.dto';
+import { ITagData } from 'src/providers/sdm/dto/tag-data.dto';
+import { TSDMResponse } from 'src/providers/sdm/types';
+import { NotFoundError } from 'src/utils/errors';
 
 @Injectable()
 export class NfcsService {
   constructor(
     private readonly nfcRepository: NfcRepository,
     private readonly usersRepository: UserRepository,
+    private readonly sdm: SdmService,
   ) {}
 
   async create(
@@ -50,7 +56,7 @@ export class NfcsService {
   }
 
   async update(
-    id: number,
+    id: string,
     updateNfcDto: UpdateNfcDto,
     logedInUserId: string,
   ): Promise<NFC | null> {
@@ -66,5 +72,18 @@ export class NfcsService {
 
   async softDelete(id: NFC['id']): Promise<void> {
     await this.nfcRepository.softDelete(id);
+  }
+
+  async getValidatedData(
+    id: string,
+    data: ITagData | ITagDataEncrypted,
+    type: 'tagpt' | 'tag' | 'tagtt',
+  ): Promise<TSDMResponse> {
+    const nfc = await this.findOne({ id });
+    if (!nfc) {
+      throw new NotFoundError();
+    }
+
+    return this.sdm.getTag(data, type);
   }
 }

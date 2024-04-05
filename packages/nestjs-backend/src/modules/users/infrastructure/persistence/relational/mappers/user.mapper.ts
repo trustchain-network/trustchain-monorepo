@@ -28,6 +28,7 @@ export class UserMapper {
     user.createdAt = raw.createdAt;
     user.updatedAt = raw.updatedAt;
     user.deletedAt = raw.deletedAt;
+    user.membership = raw.membership;
     return user;
   }
 
@@ -92,6 +93,7 @@ export class UserMapper {
     userEntity.twoFactorPhone = user.twoFactorPhone;
     userEntity.twoFactorSecret = user.twoFactorSecret;
     userEntity.status = status;
+    userEntity.membership = user.membership;
     userEntity.createdAt = user.createdAt;
     userEntity.updatedAt = user.updatedAt;
     userEntity.deletedAt = user.deletedAt;

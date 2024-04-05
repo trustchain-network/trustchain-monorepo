@@ -44,10 +44,9 @@ export class StripeController {
     );
   }
 
-  @Get('product')
+  @Get('products')
   @HttpCode(HttpStatus.OK)
-  @UseGuards(AuthGuard('jwt'))
-  productList() {
+  productList(): Promise<Stripe.Product[]> {
     return this.stripeService.productList();
   }
 

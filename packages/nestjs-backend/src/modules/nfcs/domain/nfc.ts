@@ -6,7 +6,7 @@ import { User } from 'src/modules/users/domain/user';
 import { EncryptionMode } from '../enums/encryption-mode.enum';
 
 export class NFC {
-  id: number | string;
+  id: string;
   detail?: NfcDetail | null;
   uid: string;
   piccData: string;
