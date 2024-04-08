@@ -13,6 +13,8 @@ import { ITagDataEncrypted } from 'src/providers/sdm/dto/tag-data-encrypted.dto'
 import { ITagData } from 'src/providers/sdm/dto/tag-data.dto';
 import { TSDMResponse } from 'src/providers/sdm/types';
 import { NotFoundError } from 'src/utils/errors';
+import { EventBus } from '@nestjs/cqrs';
+import { UpdateNfcEvent } from './cqrs/update-nfc.event';
 
 @Injectable()
 export class NfcsService {
@@ -20,6 +22,7 @@ export class NfcsService {
     private readonly nfcRepository: NfcRepository,
     private readonly usersRepository: UserRepository,
     private readonly sdm: SdmService,
+    private readonly eventBus: EventBus,
   ) {}
 
   async create(
@@ -84,6 +87,10 @@ export class NfcsService {
       throw new NotFoundError();
     }
 
-    return this.sdm.getTag(data, type);
+    const sdmData = await this.sdm.getTag(data, type);
+
+    this.eventBus.publish(new UpdateNfcEvent({ nfc, sdmData }));
+
+    return sdmData;
   }
 }
