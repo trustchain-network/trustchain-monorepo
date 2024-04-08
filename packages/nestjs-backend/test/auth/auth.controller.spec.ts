@@ -3,7 +3,7 @@ import { FakeMailer } from '#test/utils/fake-mailer';
 import { TestApp } from '#test/utils/test-app';
 import { User } from 'src/modules/users/domain/user';
 
-describe('Modules (e2e)', () => {
+describe('AuthController (e2e)', () => {
   let testApp: TestApp;
   let user: User;
   let userFactory: UserFactoryService;
@@ -30,7 +30,7 @@ describe('Modules (e2e)', () => {
   });
 
   describe('Login: /auth/email/login (POST)', () => {
-    it('OK. Should login user', async () => {
+    it('OK 200. Should login user', async () => {
       const { body } = await testApp
         .httpClient()
         .post('/auth/email/login')

@@ -15,8 +15,10 @@ import { MailService } from 'src/providers/mail/mail.service';
 import { RelationalUserPersistenceModule } from 'src/modules/users/infrastructure/persistence/relational/relational-persistence.module';
 import { RelationalSessionPersistenceModule } from 'src/modules/sessions/infrastructure/persistence/relational/relational-persistence.module';
 import { RelationalFilePersistenceModule } from 'src/modules/files/infrastructure/persistence/relational/relational-persistence.module';
+import { NfcsFactoryService } from './nfcs.factory.service';
+import { NfcEntity } from 'src/modules/nfcs/infrastructure/persistence/relational/entities/nfc.entity';
 
-const factories = [UserFactoryService];
+const factories = [UserFactoryService, NfcsFactoryService];
 
 @Module({
   imports: [
@@ -25,6 +27,7 @@ const factories = [UserFactoryService];
       SessionEntity,
       FileEntity,
       Membership,
+      NfcEntity,
     ]),
     JwtModule.register({}),
     RelationalUserPersistenceModule,
