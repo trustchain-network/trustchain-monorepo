@@ -18,7 +18,9 @@ export class SdmMapper {
       ...(sdm.uid && { uid: sdm.uid }),
       ...(sdm.enc_mode && { encryptionMode: sdm.enc_mode as EncryptionMode }),
       ...(sdm.read_ctr && { counter: sdm.read_ctr }),
-      ...(sdm.file_data && { fileData: sdm.file_data }),
+      ...((sdm.file_data || sdm.file_data === null) && {
+        fileData: sdm.file_data,
+      }),
     };
   }
 }

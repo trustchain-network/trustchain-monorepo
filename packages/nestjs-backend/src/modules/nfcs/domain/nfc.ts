@@ -10,7 +10,7 @@ export class NFC {
   detail?: NfcDetail | null;
   uid: string;
   piccData: string;
-  fileData: string;
+  fileData: string | null;
   counter: number;
   status: NfcStatusEnum;
   tagStatus: TagStatusEnum;

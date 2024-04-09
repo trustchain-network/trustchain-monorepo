@@ -11,39 +11,21 @@ export class MailerService {
 
   private readonly transporter: nodemailer.Transporter;
   constructor(private readonly configService: ConfigService<AllConfigType>) {
-    const mailHost = configService.getOrThrow('mail.host', { infer: true });
-    const mailPort = configService.getOrThrow('mail.port', { infer: true });
-    const mailIgnoreTLS = configService.getOrThrow('mail.ignoreTLS', {
-      infer: true,
-    });
-    const mailSecure = configService.getOrThrow('mail.secure', { infer: true });
-    const mailRequireTLS = configService.getOrThrow('mail.requireTLS', {
-      infer: true,
-    });
-    const mailUser = configService.getOrThrow('mail.user', { infer: true });
-    const mailPassword = configService.getOrThrow('mail.password', {
+    const host = configService.getOrThrow('mail.host', { infer: true });
+    const port = configService.getOrThrow('mail.port', { infer: true });
+    const user = configService.getOrThrow('mail.user', { infer: true });
+    const pass = configService.getOrThrow('mail.password', {
       infer: true,
     });
 
-    if (
-      mailHost &&
-      mailPort &&
-      mailIgnoreTLS &&
-      mailSecure &&
-      mailRequireTLS &&
-      mailUser &&
-      mailPassword
-    ) {
+    if (host && port && user && pass) {
       this.transporter = nodemailer.createTransport({
-        host: configService.get('mail.host', { infer: true }),
-        port: configService.get('mail.port', { infer: true }),
+        host,
+        port,
         ignoreTLS: configService.get('mail.ignoreTLS', { infer: true }),
         secure: configService.get('mail.secure', { infer: true }),
         requireTLS: configService.get('mail.requireTLS', { infer: true }),
-        auth: {
-          user: configService.get('mail.user', { infer: true }),
-          pass: configService.get('mail.password', { infer: true }),
-        },
+        auth: { user, pass },
       });
     } else {
       this.logger.error('MailerService config is not set');
