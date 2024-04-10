@@ -17,8 +17,14 @@ import { RelationalSessionPersistenceModule } from 'src/modules/sessions/infrast
 import { RelationalFilePersistenceModule } from 'src/modules/files/infrastructure/persistence/relational/relational-persistence.module';
 import { NfcsFactoryService } from './nfcs.factory.service';
 import { NfcEntity } from 'src/modules/nfcs/infrastructure/persistence/relational/entities/nfc.entity';
+import { NfcScan } from 'src/modules/nfc-scan/entities/nfc-scan.entity';
+import { NfcScanFactoryService } from './nfcs-scan.factory.service';
 
-const factories = [UserFactoryService, NfcsFactoryService];
+const factories = [
+  UserFactoryService,
+  NfcsFactoryService,
+  NfcScanFactoryService,
+];
 
 @Module({
   imports: [
@@ -28,6 +34,7 @@ const factories = [UserFactoryService, NfcsFactoryService];
       FileEntity,
       Membership,
       NfcEntity,
+      NfcScan,
     ]),
     JwtModule.register({}),
     RelationalUserPersistenceModule,

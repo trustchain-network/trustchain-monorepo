@@ -4,6 +4,7 @@ import {
   DeleteDateColumn,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -15,6 +16,7 @@ import { NfcStatusEnum } from 'src/modules/nfcs/enums/nfc-statuses.enum';
 import { TagStatusEnum } from 'src/modules/nfcs/enums/tag-statuses.enum';
 import { UserEntity } from 'src/modules/users/infrastructure/persistence/relational/entities/user.entity';
 import { NfcDetailEntity } from 'src/modules/nfc-details/infrastructure/persistence/relational/entities/nfc-detail.entity';
+import { NfcScan } from 'src/modules/nfc-scan/entities/nfc-scan.entity';
 
 @Entity({
   name: 'nfc',
@@ -66,6 +68,9 @@ export class NfcEntity extends EntityRelationalHelper implements NFC {
   @Column({ type: String, nullable: false })
   @Expose({ groups: ['admin'] })
   encryptedShareKey: string;
+
+  @OneToMany(() => NfcScan, (scan) => scan.nfc)
+  sacns?: NfcScan[];
 
   @CreateDateColumn()
   createdAt: Date;

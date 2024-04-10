@@ -82,7 +82,7 @@ export class NfcsService {
     data: ITagData | ITagDataEncrypted,
     type: 'tagpt' | 'tag' | 'tagtt',
   ): Promise<TSDMResponse> {
-    const nfc = await this.findOne({ id });
+    const nfc = await this.findOne({ id }).catch(() => null);
     if (!nfc) {
       throw new NotFoundError();
     }

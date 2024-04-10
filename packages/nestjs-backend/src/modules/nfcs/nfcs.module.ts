@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 
 import { NfcsService } from './nfcs.service';
 import { NfcsController } from './controllers/nfcs.controller';
@@ -8,11 +8,26 @@ import { RelationalNfcPersistenceModule } from './infrastructure/persistence/rel
 import { SdmModule } from 'src/providers/sdm/sdm.module';
 import { CqrsModule } from '@nestjs/cqrs';
 import { UpdateNfcEventHandler } from './cqrs/update-nfc.event';
+import {
+  AddNfcScanEventHandler,
+  AddNfcScanMiddleware,
+} from './cqrs/add-nfc-sacn.event';
+import { NfcScanModule } from '../nfc-scan/nfc-scan.module';
 
 @Module({
-  imports: [RelationalNfcPersistenceModule, UsersModule, SdmModule, CqrsModule],
+  imports: [
+    RelationalNfcPersistenceModule,
+    UsersModule,
+    SdmModule,
+    CqrsModule,
+    NfcScanModule,
+  ],
   controllers: [NfcsController, NfcsPublicController],
-  providers: [NfcsService, UpdateNfcEventHandler],
+  providers: [NfcsService, UpdateNfcEventHandler, AddNfcScanEventHandler],
   exports: [NfcsService],
 })
-export class NfcsModule {}
+export class NfcsModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(AddNfcScanMiddleware).forRoutes(NfcsPublicController);
+  }
+}

@@ -61,6 +61,7 @@ import { DomainsModule } from './modules/domains/domains.module';
 import { FilesModule } from './modules/files/files.module';
 import { NfcsModule } from './modules/nfcs/nfcs.module';
 import { NfcDetailsModule } from './modules/nfc-details/nfc-details.module';
+import { NfcScanModule } from './modules/nfc-scan/nfc-scan.module';
 import { UsersModule } from './modules/users/users.module';
 import { HttpModule } from './providers/http/http.module';
 
@@ -140,6 +141,7 @@ import { HttpModule } from './providers/http/http.module';
     NfcCategoriesModule,
     NfcsModule,
     NfcDetailsModule,
+    NfcScanModule,
     PlansModule,
     S3Module,
     SdmModule,
