@@ -79,6 +79,22 @@ export class StripeService {
     return data;
   }
 
+  async subscriptionList(userId: string): Promise<Stripe.Subscription[]> {
+    const membership = await this.membershipService
+      .findOneOrFail({ userId })
+      .catch(() => null);
+
+    if (!membership?.customerId) {
+      return [];
+    }
+
+    const { data } = await this.stripe.subscriptions.list({
+      customer: membership.customerId,
+    });
+
+    return data;
+  }
+
   handleEvent(type: Stripe.Event.Type, data: Stripe.Event.Data): void {
     if (type === 'customer.subscription.updated') {
       const {

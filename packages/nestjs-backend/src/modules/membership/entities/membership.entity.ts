@@ -11,6 +11,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { MembershipTier } from '../enums/membership-tier.enum';
 
 @Entity()
 export class Membership extends EntityRelationalHelper {
@@ -18,19 +19,19 @@ export class Membership extends EntityRelationalHelper {
   id: number;
 
   @Column({ type: String, nullable: true })
-  customerId?: string;
+  customerId?: string | null;
 
   @Column({ type: String, nullable: true })
-  status?: Stripe.Subscription.Status;
+  status?: Stripe.Subscription.Status | null;
 
   @Column({ type: String, nullable: true })
   subscriptionId?: string;
 
   @Column({ type: String, nullable: true })
-  productId?: string;
+  productId?: string | null;
 
   @Column({ type: String, nullable: true })
-  priceId?: string;
+  priceId?: string | null;
 
   @Column({ type: 'timestamp', nullable: true })
   currentPeriodStart?: Date;
@@ -39,8 +40,14 @@ export class Membership extends EntityRelationalHelper {
   currentPeriodEnd?: Date;
 
   @OneToOne(() => UserEntity, (user) => user.membership)
-  @JoinColumn()
+  @JoinColumn({ name: 'userId' })
   user: UserEntity;
+
+  @Column()
+  userId: string;
+
+  @Column({ type: String, nullable: true })
+  tier?: MembershipTier | null;
 
   get isActive(): boolean {
     return this.status === 'active';

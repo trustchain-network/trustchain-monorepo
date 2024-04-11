@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class CreateApp1712761930707 implements MigrationInterface {
-  name = 'CreateApp1712761930707';
+export class CreateApp1712910451407 implements MigrationInterface {
+  name = 'CreateApp1712910451407';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
@@ -14,10 +14,10 @@ export class CreateApp1712761930707 implements MigrationInterface {
       `CREATE TABLE "status" ("id" integer NOT NULL, "name" character varying NOT NULL, CONSTRAINT "PK_e12743a7086ec826733f54e1d95" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
-      `CREATE TABLE "membership" ("id" SERIAL NOT NULL, "customerId" character varying, "status" character varying, "subscriptionId" character varying, "productId" character varying, "priceId" character varying, "currentPeriodStart" TIMESTAMP, "currentPeriodEnd" TIMESTAMP, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "deletedAt" TIMESTAMP, "userId" uuid, CONSTRAINT "REL_eef2d9d9c70cd13bed868afedf" UNIQUE ("userId"), CONSTRAINT "PK_83c1afebef3059472e7c37e8de8" PRIMARY KEY ("id"))`,
+      `CREATE TABLE "membership" ("id" SERIAL NOT NULL, "customerId" character varying, "status" character varying, "subscriptionId" character varying, "productId" character varying, "priceId" character varying, "currentPeriodStart" TIMESTAMP, "currentPeriodEnd" TIMESTAMP, "userId" uuid NOT NULL, "tier" character varying, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "deletedAt" TIMESTAMP, CONSTRAINT "REL_eef2d9d9c70cd13bed868afedf" UNIQUE ("userId"), CONSTRAINT "PK_83c1afebef3059472e7c37e8de8" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
-      `CREATE TABLE "user" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "email" character varying, "password" character varying, "provider" character varying NOT NULL DEFAULT 'email', "socialId" character varying, "firstName" character varying, "lastName" character varying, "countryCode" character varying, "twoFactor" character varying, "twoFactorPhone" character varying, "twoFactorSecret" character varying, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "deletedAt" TIMESTAMP, "photoId" uuid, "roleId" integer, "statusId" integer, "createdById" uuid, "updatedById" uuid, "deletedById" uuid, CONSTRAINT "UQ_e12875dfb3b1d92d7d7c5377e22" UNIQUE ("email"), CONSTRAINT "PK_cace4a159ff9f2512dd42373760" PRIMARY KEY ("id"))`,
+      `CREATE TABLE "user" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "email" character varying, "password" character varying, "provider" character varying NOT NULL DEFAULT 'email', "socialId" character varying, "firstName" character varying, "lastName" character varying, "countryCode" character varying, "twoFactor" character varying, "twoFactorPhone" character varying, "twoFactorSecret" character varying, "roleId" integer, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "deletedAt" TIMESTAMP, "photoId" uuid, "statusId" integer, "createdById" uuid, "updatedById" uuid, "deletedById" uuid, CONSTRAINT "UQ_e12875dfb3b1d92d7d7c5377e22" UNIQUE ("email"), CONSTRAINT "PK_cace4a159ff9f2512dd42373760" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
       `CREATE INDEX "IDX_9bd2fe7a8e694dedc4ec2f666f" ON "user" ("socialId") `,
@@ -47,16 +47,19 @@ export class CreateApp1712761930707 implements MigrationInterface {
       `CREATE TABLE "nfc" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "uid" character varying NOT NULL, "piccData" character varying NOT NULL, "fileData" character varying, "counter" integer NOT NULL, "status" "public"."nfc_status_enum" NOT NULL DEFAULT 'active', "tagStatus" "public"."nfc_tagstatus_enum" NOT NULL DEFAULT 'blank', "encryptionMode" "public"."nfc_encryptionmode_enum" NOT NULL DEFAULT 'AES', "encryptedShareKey" character varying NOT NULL, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "deletedAt" TIMESTAMP, "detailId" uuid, "createdById" uuid, "updatedById" uuid, "deletedById" uuid, CONSTRAINT "PK_42e5e8f523339faa405808e63a1" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
-      `CREATE TABLE "nfcScan" ("id" SERIAL NOT NULL, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "nfcId" uuid, CONSTRAINT "PK_89b17ae844ea2514ba8c84af4fa" PRIMARY KEY ("id"))`,
+      `CREATE TABLE "nfcScan" ("id" SERIAL NOT NULL, "nfcId" uuid, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), CONSTRAINT "PK_89b17ae844ea2514ba8c84af4fa" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
       `CREATE TABLE "key" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "key" character varying NOT NULL, "publicKey" character varying, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "deletedAt" TIMESTAMP, "createdBy" character varying, "updatedBy" character varying, "deletedBy" character varying, CONSTRAINT "PK_5bd67cf28791e02bf07b0367ace" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
+      `CREATE TABLE "two_factor" ("id" integer NOT NULL, "name" character varying NOT NULL, CONSTRAINT "PK_d9e707ebc943c110fcaab7cdd8c" PRIMARY KEY ("id"))`,
+    );
+    await queryRunner.query(
       `CREATE TABLE "team" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "name" character varying NOT NULL, "description" character varying, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "deletedAt" TIMESTAMP, "userId" uuid, "createdById" uuid, "updatedById" uuid, "deletedById" uuid, CONSTRAINT "UQ_cf461f5b40cf1a2b8876011e1e1" UNIQUE ("name"), CONSTRAINT "PK_f57d8293406df4af348402e4b74" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
-      `CREATE TABLE "two_factor" ("id" integer NOT NULL, "name" character varying NOT NULL, CONSTRAINT "PK_d9e707ebc943c110fcaab7cdd8c" PRIMARY KEY ("id"))`,
+      `CREATE TABLE "plan" ("id" SERIAL NOT NULL, "name" character varying NOT NULL, "description" character varying, "price" double precision NOT NULL, "currency" character varying NOT NULL, "duration" integer, "durationType" character varying, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "deletedAt" TIMESTAMP, "updatedById" uuid, "createdById" uuid, CONSTRAINT "PK_54a2b686aed3b637654bf7ddbb3" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
       `CREATE TABLE "session" ("id" SERIAL NOT NULL, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "deletedAt" TIMESTAMP, "userId" uuid, CONSTRAINT "PK_f55da76ac1c3ac420f444d2ff11" PRIMARY KEY ("id"))`,
@@ -65,16 +68,13 @@ export class CreateApp1712761930707 implements MigrationInterface {
       `CREATE INDEX "IDX_3d2f174ef04fb312fdebd0ddc5" ON "session" ("userId") `,
     );
     await queryRunner.query(
-      `CREATE TABLE "plan" ("id" SERIAL NOT NULL, "name" character varying NOT NULL, "description" character varying, "price" double precision NOT NULL, "currency" character varying NOT NULL, "duration" integer, "durationType" character varying, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "deletedAt" TIMESTAMP, "updatedById" uuid, "createdById" uuid, CONSTRAINT "PK_54a2b686aed3b637654bf7ddbb3" PRIMARY KEY ("id"))`,
-    );
-    await queryRunner.query(
-      `CREATE TABLE "mfa" ("id" SERIAL NOT NULL, "token" character varying, "phone" character varying, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "deletedAt" TIMESTAMP, "createdBy" character varying, "updatedBy" character varying, "deletedBy" character varying, CONSTRAINT "UQ_3c926cd5d64fc7778a767f9a2d7" UNIQUE ("token"), CONSTRAINT "UQ_3b3c753944019b73eb6e9ea0b7e" UNIQUE ("phone"), CONSTRAINT "PK_f4e180ccc1f351057978f46d458" PRIMARY KEY ("id"))`,
-    );
-    await queryRunner.query(
       `CREATE TABLE "nfcCategory" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "name" character varying NOT NULL, "description" character varying, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "deletedAt" TIMESTAMP, "createdBy" character varying, "updatedBy" character varying, "deletedBy" character varying, CONSTRAINT "PK_e3d8fa77176be4c9dcb09a5f0d7" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
       `CREATE INDEX "IDX_0b8ef9583319363b07c51a9006" ON "nfcCategory" ("name") `,
+    );
+    await queryRunner.query(
+      `CREATE TABLE "mfa" ("id" SERIAL NOT NULL, "token" character varying, "phone" character varying, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "deletedAt" TIMESTAMP, "createdBy" character varying, "updatedBy" character varying, "deletedBy" character varying, CONSTRAINT "UQ_3c926cd5d64fc7778a767f9a2d7" UNIQUE ("token"), CONSTRAINT "UQ_3b3c753944019b73eb6e9ea0b7e" UNIQUE ("phone"), CONSTRAINT "PK_f4e180ccc1f351057978f46d458" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
       `CREATE TABLE "apiKey" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "name" character varying, "description" character varying, "scopes" text, "ipAllowlist" text, "ipRestrictions" text, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "deletedAt" TIMESTAMP, "updatedBy" character varying, "createdBy" character varying, "deletedBy" character varying, CONSTRAINT "PK_2ae3a5e8e04fb402b2dc8d6ce4b" PRIMARY KEY ("id"))`,
@@ -137,25 +137,25 @@ export class CreateApp1712761930707 implements MigrationInterface {
       `ALTER TABLE "team" ADD CONSTRAINT "FK_a740aada0e5c9ed5b6344897706" FOREIGN KEY ("deletedById") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
     );
     await queryRunner.query(
-      `ALTER TABLE "session" ADD CONSTRAINT "FK_3d2f174ef04fb312fdebd0ddc53" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
-    );
-    await queryRunner.query(
       `ALTER TABLE "plan" ADD CONSTRAINT "FK_24492da525e9ce18f17b33ccd2d" FOREIGN KEY ("updatedById") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
     );
     await queryRunner.query(
       `ALTER TABLE "plan" ADD CONSTRAINT "FK_cbe8761b5233cde633f403d97b8" FOREIGN KEY ("createdById") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
     );
+    await queryRunner.query(
+      `ALTER TABLE "session" ADD CONSTRAINT "FK_3d2f174ef04fb312fdebd0ddc53" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE CASCADE ON UPDATE NO ACTION`,
+    );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.query(
+      `ALTER TABLE "session" DROP CONSTRAINT "FK_3d2f174ef04fb312fdebd0ddc53"`,
+    );
     await queryRunner.query(
       `ALTER TABLE "plan" DROP CONSTRAINT "FK_cbe8761b5233cde633f403d97b8"`,
     );
     await queryRunner.query(
       `ALTER TABLE "plan" DROP CONSTRAINT "FK_24492da525e9ce18f17b33ccd2d"`,
-    );
-    await queryRunner.query(
-      `ALTER TABLE "session" DROP CONSTRAINT "FK_3d2f174ef04fb312fdebd0ddc53"`,
     );
     await queryRunner.query(
       `ALTER TABLE "team" DROP CONSTRAINT "FK_a740aada0e5c9ed5b6344897706"`,
@@ -215,18 +215,18 @@ export class CreateApp1712761930707 implements MigrationInterface {
       `ALTER TABLE "membership" DROP CONSTRAINT "FK_eef2d9d9c70cd13bed868afedf4"`,
     );
     await queryRunner.query(`DROP TABLE "apiKey"`);
+    await queryRunner.query(`DROP TABLE "mfa"`);
     await queryRunner.query(
       `DROP INDEX "public"."IDX_0b8ef9583319363b07c51a9006"`,
     );
     await queryRunner.query(`DROP TABLE "nfcCategory"`);
-    await queryRunner.query(`DROP TABLE "mfa"`);
-    await queryRunner.query(`DROP TABLE "plan"`);
     await queryRunner.query(
       `DROP INDEX "public"."IDX_3d2f174ef04fb312fdebd0ddc5"`,
     );
     await queryRunner.query(`DROP TABLE "session"`);
-    await queryRunner.query(`DROP TABLE "two_factor"`);
+    await queryRunner.query(`DROP TABLE "plan"`);
     await queryRunner.query(`DROP TABLE "team"`);
+    await queryRunner.query(`DROP TABLE "two_factor"`);
     await queryRunner.query(`DROP TABLE "key"`);
     await queryRunner.query(`DROP TABLE "nfcScan"`);
     await queryRunner.query(`DROP TABLE "nfc"`);
