@@ -2,18 +2,20 @@ import { NfcsFactoryService } from '#test/factory/nfcs.factory.service';
 import { TestApp } from '#test/utils/test-app';
 import { ConfigService } from '@nestjs/config';
 import { EventBus } from '@nestjs/cqrs';
+import { AddNfcScanEvent } from 'src/modules/nfcs/cqrs/add-nfc-sacn.event';
+import { UpdateNfcEvent } from 'src/modules/nfcs/cqrs/update-nfc.event';
 import { NFC } from 'src/modules/nfcs/domain/nfc';
 import { NfcsModule } from 'src/modules/nfcs/nfcs.module';
 import { HttpService } from 'src/providers/http/http.service';
-
-const spyEventBus = jest.spyOn(EventBus.prototype, 'publish');
-const spyHttpService = jest.spyOn(HttpService.prototype, 'get');
 
 describe('NfcsPublicController (e2e)', () => {
   let testApp: TestApp;
   let nfcFactory: NfcsFactoryService;
   let sdmDomain: string;
   let nfc: NFC;
+
+  let spyEventBus: jest.SpyInstance;
+  let spyHttpService: jest.SpyInstance;
 
   const testTagValidation = (
     tagType: 'tagpt' | 'tag' | 'tagtt',
@@ -39,19 +41,20 @@ describe('NfcsPublicController (e2e)', () => {
         query,
       );
 
-      expect(spyEventBus).toHaveBeenCalledTimes(1);
+      expect(spyEventBus).toHaveBeenCalledTimes(2);
       expect(spyEventBus).toHaveBeenCalledWith(
-        expect.objectContaining({
-          payload: {
-            nfc: expect.objectContaining({
-              id: nfc.id,
-              counter: nfc.counter,
-              encryptionMode: nfc.encryptionMode,
-              uid: nfc.uid,
-            }),
-            sdmData,
-          },
+        new UpdateNfcEvent({
+          nfc: expect.objectContaining({
+            id: nfc.id,
+            counter: nfc.counter,
+            encryptionMode: nfc.encryptionMode,
+            uid: nfc.uid,
+          }),
+          sdmData,
         }),
+      );
+      expect(spyEventBus).toHaveBeenCalledWith(
+        new AddNfcScanEvent({ nfcId: nfc.id }),
       );
     });
 
@@ -72,18 +75,25 @@ describe('NfcsPublicController (e2e)', () => {
         query,
       );
 
-      expect(spyEventBus).not.toHaveBeenCalled();
+      expect(spyEventBus).toHaveBeenCalledTimes(1);
+      expect(spyEventBus).toHaveBeenCalledWith(
+        new AddNfcScanEvent({ nfcId: nfc.id }),
+      );
     });
 
     it('FAIL. Tag not found', async () => {
+      const nfcId = 'db37afd8-1764-3b0e-b4b1-7247d11a1ea7';
+
       await testApp
         .httpClient()
-        .get(`${url}/db37afd8-1764-3b0e-b4b1-7247d11a1ea7`)
+        .get(`${url}/${nfcId}`)
         .query(query)
         .expect(404);
 
       expect(spyHttpService).not.toHaveBeenCalled();
-      expect(spyEventBus).not.toHaveBeenCalled();
+
+      expect(spyEventBus).toHaveBeenCalledTimes(1);
+      expect(spyEventBus).toHaveBeenCalledWith(new AddNfcScanEvent({ nfcId }));
     });
   };
 
@@ -96,6 +106,11 @@ describe('NfcsPublicController (e2e)', () => {
     sdmDomain = testApp.app.get(ConfigService).get('app.sdmDomain') || '';
 
     await nfcFactory.clearTable();
+
+    spyEventBus = jest.spyOn(testApp.app.get(EventBus), 'publish');
+    spyEventBus.mockImplementation();
+
+    spyHttpService = jest.spyOn(testApp.app.get(HttpService), 'get');
   });
 
   beforeEach(async () => {
