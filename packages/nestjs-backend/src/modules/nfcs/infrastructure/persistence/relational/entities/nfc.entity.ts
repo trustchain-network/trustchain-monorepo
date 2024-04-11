@@ -34,8 +34,8 @@ export class NfcEntity extends EntityRelationalHelper implements NFC {
   @Column({ type: String, nullable: false })
   piccData: string;
 
-  @Column({ type: String, nullable: false })
-  fileData: string;
+  @Column({ type: String, nullable: true })
+  fileData: string | null;
 
   @Column()
   counter: number;

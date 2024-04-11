@@ -24,9 +24,8 @@ import { AuthModule } from 'src/modules/auth/auth.module';
     }),
     TypeOrmModule.forRootAsync({
       useClass: TypeOrmConfigService,
-      dataSourceFactory: async (options: DataSourceOptions) => {
-        return new DataSource(options).initialize();
-      },
+      dataSourceFactory: async (options: DataSourceOptions) =>
+        new DataSource({ ...options, logging: false }).initialize(),
     }),
     I18nModule.forRootAsync({
       useFactory: (configService: ConfigService<AllConfigType>) => ({
