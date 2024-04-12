@@ -6,9 +6,12 @@ import {
 } from '#test/factory/user.factory.service';
 import { StripeMock } from '#test/utils/stripe.mock';
 import TestApp from '#test/utils/test-app';
+import { EventBus } from '@nestjs/cqrs';
+import { MembershipTier } from 'src/modules/membership/enums/membership-tier.enum';
 import { MembershipsModule } from 'src/modules/membership/memberships.module';
 import { RoleEnum } from 'src/modules/roles/roles.enum';
 import { User } from 'src/modules/users/domain/user';
+import { UpdateMembershipEvent } from 'src/providers/stripe/cqrs/update-membership.event';
 import { StripeModule } from 'src/providers/stripe/stripe.module';
 import { stripeProvisionToken } from 'src/providers/stripe/stripe.provider';
 
@@ -22,6 +25,8 @@ describe('StripeController (e2e)', () => {
   let user: User;
   let authData: TAuthData;
 
+  let spyEventBus: jest.SpyInstance;
+
   beforeAll(async () => {
     testApp = await TestApp.init({
       testingModules: [StripeModule, MembershipsModule],
@@ -32,6 +37,9 @@ describe('StripeController (e2e)', () => {
     membershipFactory = testApp.app.get(MembershipFactoryService);
 
     stripeMock = testApp.app.get<StripeMock>(stripeProvisionToken);
+
+    spyEventBus = jest.spyOn(testApp.app.get(EventBus), 'publish');
+    spyEventBus.mockImplementation();
 
     await membershipFactory.clearTable();
     await userFactory.clearTable();
@@ -89,7 +97,6 @@ describe('StripeController (e2e)', () => {
         .httpClient()
         .get('/stripe/subscriptions')
         .auth(...authData)
-        .auth(await userFactory.getAuthToken(user), { type: 'bearer' })
         .expect(200);
 
       expect(body).toEqual(data);
@@ -103,7 +110,6 @@ describe('StripeController (e2e)', () => {
         .httpClient()
         .get('/stripe/subscriptions')
         .auth(...authData)
-        .auth(await userFactory.getAuthToken(user), { type: 'bearer' })
         .expect(200);
 
       expect(body).toEqual([]);
@@ -115,6 +121,48 @@ describe('StripeController (e2e)', () => {
       await testApp.httpClient().get('/stripe/subscriptions').expect(401);
 
       expect(stripeMock.subscriptions.list).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('Stripe webhook: /stripe/events-webhook (POST)', () => {
+    it('OK 204. Emmited valid event. Mapped stripe data correctly', async () => {
+      const period = Date.now() / 1000;
+      await testApp
+        .httpClient()
+        .post('/stripe/events-webhook')
+        .send({
+          type: 'customer.subscription.updated',
+          data: {
+            object: {
+              id: 'sub_id',
+              customer: 'cus_id',
+              current_period_start: period,
+              current_period_end: period,
+              status: 'active',
+              plan: {
+                id: 'price_id',
+                product: 'prod_id',
+                metadata: { tier: 'LITE' },
+              },
+            },
+          },
+        })
+        .expect(204);
+
+      const date = new Date(period * 1000);
+      expect(spyEventBus).toHaveBeenCalledTimes(1);
+      expect(spyEventBus).toHaveBeenCalledWith(
+        new UpdateMembershipEvent({
+          customerId: 'cus_id',
+          status: 'active',
+          subscriptionId: 'sub_id',
+          productId: 'prod_id',
+          priceId: 'price_id',
+          tier: MembershipTier.LITE,
+          currentPeriodStart: date,
+          currentPeriodEnd: date,
+        }),
+      );
     });
   });
 });

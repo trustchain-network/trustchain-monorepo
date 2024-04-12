@@ -1,7 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Membership } from './entities/membership.entity';
-import { DeepPartial, FindOptionsWhere, Repository } from 'typeorm';
+import {
+  DeepPartial,
+  FindOptionsRelations,
+  FindOptionsWhere,
+  Repository,
+} from 'typeorm';
 import { NotFoundError } from 'src/utils/errors';
 
 @Injectable()
@@ -17,14 +22,19 @@ export class MembershipService {
 
   findOne(
     conditions: FindOptionsWhere<Membership>,
+    relations?: FindOptionsRelations<Membership>,
   ): Promise<Membership | null> {
-    return this.repo.findOne({ where: conditions });
+    return this.repo.findOne({
+      where: conditions,
+      ...(relations && { relations }),
+    });
   }
 
   async findOneOrFail(
     conditions: FindOptionsWhere<Membership>,
+    relations?: FindOptionsRelations<Membership>,
   ): Promise<Membership> {
-    const membership = await this.findOne(conditions);
+    const membership = await this.findOne(conditions, relations);
     if (!membership) {
       throw new NotFoundError();
     }

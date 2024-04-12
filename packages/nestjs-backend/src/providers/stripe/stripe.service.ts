@@ -10,6 +10,7 @@ import { UserEntity } from 'src/modules/users/infrastructure/persistence/relatio
 import { UpdateMembershipEvent } from './cqrs/update-membership.event';
 import { MembershipService } from 'src/modules/membership/membership.service';
 import { UnprocessableEntityError } from 'src/utils/errors';
+import { MembershipTier } from 'src/modules/membership/enums/membership-tier.enum';
 
 @Injectable()
 export class StripeService {
@@ -104,7 +105,11 @@ export class StripeService {
         current_period_start,
         status,
       } = data.object as Stripe.Subscription;
-      const { id: priceId, product } = (data.object as any).plan as Stripe.Plan;
+      const {
+        id: priceId,
+        product,
+        metadata,
+      } = (data.object as any).plan as Stripe.Plan;
 
       this.eventBus.publish(
         new UpdateMembershipEvent({
@@ -113,6 +118,7 @@ export class StripeService {
           subscriptionId,
           productId: product as string,
           priceId,
+          tier: metadata?.tier as MembershipTier,
           currentPeriodStart: new Date(current_period_start * 1000),
           currentPeriodEnd: new Date(current_period_end * 1000),
         }),
