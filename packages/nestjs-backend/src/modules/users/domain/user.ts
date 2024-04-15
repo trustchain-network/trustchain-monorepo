@@ -4,6 +4,7 @@ import { Role } from 'src/modules/roles/domain/role';
 import { Status } from 'src/modules/statuses/domain/status';
 import { TwoFactor } from 'src/modules/two-factor/domain/two-factor';
 import { Membership } from 'src/modules/membership/entities/membership.entity';
+import { RoleEnum } from 'src/modules/roles/roles.enum';
 
 export class User {
   id: string;
@@ -29,6 +30,8 @@ export class User {
   role?: Role | null;
   status?: Status;
   countryCode?: string | null;
+
+  roleId?: RoleEnum | null;
 
   twoFactor?: TwoFactor | null;
   @Expose({ groups: ['admin'] })

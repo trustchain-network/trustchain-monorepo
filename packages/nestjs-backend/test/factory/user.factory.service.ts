@@ -7,6 +7,8 @@ import { UserEntity } from 'src/modules/users/infrastructure/persistence/relatio
 import { User } from 'src/modules/users/domain/user';
 import bcrypt from 'bcryptjs';
 
+export type TAuthData = [string, { type: 'bearer' }];
+
 export class UserFactoryService extends BaseFactoryService<UserEntity> {
   constructor(
     @InjectRepository(UserEntity)
@@ -24,8 +26,6 @@ export class UserFactoryService extends BaseFactoryService<UserEntity> {
           lastName: faker.person.lastName(),
           password: 'secret',
           email: faker.internet.email().toLowerCase(),
-          biography: faker.person.bio(),
-          studentId: faker.string.uuid(),
         },
         data,
       ),
@@ -48,5 +48,14 @@ export class UserFactoryService extends BaseFactoryService<UserEntity> {
     });
 
     return token;
+  }
+
+  public async createLoggedIn(
+    data?: Partial<User>,
+  ): Promise<[User, TAuthData]> {
+    const user = await this.create(data);
+    const token = await this.getAuthToken(user);
+
+    return [user, [token, { type: 'bearer' }]];
   }
 }

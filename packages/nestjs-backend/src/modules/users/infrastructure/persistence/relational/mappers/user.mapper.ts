@@ -20,6 +20,7 @@ export class UserMapper {
       user.photo = FileMapper.toDomain(raw.photo);
     }
     user.role = raw.role;
+    user.roleId = raw.roleId;
     user.countryCode = raw.countryCode;
     user.twoFactor = raw.twoFactor;
     user.twoFactorPhone = raw.twoFactorPhone;
@@ -88,6 +89,7 @@ export class UserMapper {
     userEntity.lastName = user.lastName;
     userEntity.photo = photo;
     userEntity.role = role;
+    userEntity.roleId = user.roleId;
     userEntity.countryCode = user.countryCode;
     userEntity.twoFactor = user.twoFactor;
     userEntity.twoFactorPhone = user.twoFactorPhone;

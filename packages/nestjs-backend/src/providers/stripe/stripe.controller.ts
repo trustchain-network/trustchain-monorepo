@@ -50,8 +50,18 @@ export class StripeController {
     return this.stripeService.productList();
   }
 
+  @Get('subscriptions')
+  @UseGuards(AuthGuard('jwt'))
+  @HttpCode(HttpStatus.OK)
+  subscriptionList(
+    @UserDecorator('id') userId: string,
+  ): Promise<Stripe.Subscription[]> {
+    return this.stripeService.subscriptionList(userId);
+  }
+
   @Post('checkout')
   @UseGuards(AuthGuard('jwt'))
+  @HttpCode(HttpStatus.OK)
   async checkout(
     @Body() { productId }: PaymentIntentDto,
     @UserDecorator('id') userId: string,
@@ -62,6 +72,7 @@ export class StripeController {
   }
 
   @Post('events-webhook')
+  @HttpCode(HttpStatus.NO_CONTENT)
   eventsWebhook(@Body() { data, type }: StripeEventDto): void {
     this.stripeService.handleEvent(type, data);
   }

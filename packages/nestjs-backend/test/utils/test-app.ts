@@ -14,10 +14,13 @@ import { useContainer } from 'class-validator';
 import { TestModule } from './test.module';
 import validationOptions from 'src/utils/validation-options';
 import { MailerService } from 'src/providers/mailer/mailer.service';
+import { stripeProvisionToken } from 'src/providers/stripe/stripe.provider';
+import { StripeMock } from './stripe.mock';
 
 interface IModuleInit {
   testingModules: Type<unknown>[];
   fakeMailer?: FakeMailer;
+  stripeMock?: StripeMock;
 }
 
 export class TestApp {
@@ -25,13 +28,17 @@ export class TestApp {
     protected _app: INestApplication,
     protected _module: TestingModule,
   ) {}
-  static async init({ testingModules, fakeMailer }: IModuleInit) {
+  static async init({ testingModules, fakeMailer, stripeMock }: IModuleInit) {
     const moduleBuilder = Test.createTestingModule({
       imports: [TestModule, ...testingModules],
     });
 
     if (fakeMailer) {
       moduleBuilder.overrideProvider(MailerService).useValue(fakeMailer);
+    }
+
+    if (stripeMock) {
+      moduleBuilder.overrideProvider(stripeProvisionToken).useValue(stripeMock);
     }
 
     const moduleFixture = await moduleBuilder.compile();

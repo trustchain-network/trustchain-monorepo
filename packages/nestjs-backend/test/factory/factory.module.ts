@@ -19,11 +19,16 @@ import { NfcsFactoryService } from './nfcs.factory.service';
 import { NfcEntity } from 'src/modules/nfcs/infrastructure/persistence/relational/entities/nfc.entity';
 import { NfcScan } from 'src/modules/nfc-scan/entities/nfc-scan.entity';
 import { NfcScanFactoryService } from './nfcs-scan.factory.service';
+import { RoleFactoryService } from './role.factory.service';
+import { RoleEntity } from 'src/modules/roles/infrastructure/persistence/relational/entities/role.entity';
+import { MembershipFactoryService } from './membership.factory.service';
 
 const factories = [
   UserFactoryService,
   NfcsFactoryService,
   NfcScanFactoryService,
+  RoleFactoryService,
+  MembershipFactoryService,
 ];
 
 @Module({
@@ -35,6 +40,8 @@ const factories = [
       Membership,
       NfcEntity,
       NfcScan,
+      RoleEntity,
+      Membership,
     ]),
     JwtModule.register({}),
     RelationalUserPersistenceModule,
