@@ -64,6 +64,7 @@ import { NfcDetailsModule } from './modules/nfc-details/nfc-details.module';
 import { NfcScanModule } from './modules/nfc-scan/nfc-scan.module';
 import { UsersModule } from './modules/users/users.module';
 import { HttpModule } from './providers/http/http.module';
+import { OffchainStorageModule } from './providers/offchain-storage/offchain-storage.module';
 
 @Module({
   imports: [
@@ -142,6 +143,7 @@ import { HttpModule } from './providers/http/http.module';
     NfcsModule,
     NfcDetailsModule,
     NfcScanModule,
+    OffchainStorageModule,
     PlansModule,
     S3Module,
     SdmModule,
