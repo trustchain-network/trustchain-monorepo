@@ -19,6 +19,7 @@ import { PaymentIntentDto } from './dto/payment-intent.dto';
 import { UserDecorator } from 'src/modules/users/user.decorator';
 import Stripe from 'stripe';
 import { StripeEventDto } from './dto/stripe-event.dto';
+import { StripeSignatureGuard } from './guards/stripe-signature.guard';
 
 @ApiBearerAuth()
 @ApiTags('Stripe')
@@ -72,6 +73,7 @@ export class StripeController {
   }
 
   @Post('events-webhook')
+  @UseGuards(StripeSignatureGuard)
   @HttpCode(HttpStatus.NO_CONTENT)
   eventsWebhook(@Body() { data, type }: StripeEventDto): void {
     this.stripeService.handleEvent(type, data);
