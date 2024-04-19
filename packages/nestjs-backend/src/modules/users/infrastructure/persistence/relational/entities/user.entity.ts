@@ -14,6 +14,7 @@ import {
   UpdateDateColumn,
   OneToOne,
   JoinColumn,
+  OneToMany,
 } from 'typeorm';
 import { AuthProvidersEnum } from 'src/modules/auth/auth-providers.enum';
 import { EntityRelationalHelper } from 'src/utils/relational-entity-helper';
@@ -24,6 +25,7 @@ import { TwoFactor } from 'src/modules/two-factor/domain/two-factor';
 import { User } from 'src/modules/users/domain/user';
 import { Membership } from 'src/modules/membership/entities/membership.entity';
 import { RoleEnum } from 'src/modules/roles/roles.enum';
+import { KeyEntity } from 'src/providers/keys/infrastructure/persistence/relational/entities/key.entity';
 
 @Entity({
   name: 'user',
@@ -100,6 +102,9 @@ export class UserEntity extends EntityRelationalHelper implements User {
 
   @OneToOne(() => Membership, (membership) => membership.user, { eager: true })
   membership?: Membership | null;
+
+  @OneToMany(() => KeyEntity, (key) => key.user)
+  keys?: KeyEntity[];
 
   @CreateDateColumn()
   createdAt: Date;

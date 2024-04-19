@@ -9,4 +9,12 @@ export class CreateKeyDto {
   @ApiProperty()
   @IsOptional()
   publicKey: string;
+
+  @ApiProperty()
+  @IsOptional()
+  userId?: string;
+
+  @ApiProperty()
+  @IsOptional()
+  subscriptionId?: string;
 }

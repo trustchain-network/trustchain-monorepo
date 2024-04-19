@@ -31,7 +31,7 @@ export interface IOffchainStorage {
 
   update(smartContractAddress: string, data: TSmartContractData): Promise<void>;
 
-  craateSignature(data: [Field, Field]): Signature;
+  createSignature(data: [Field, Field]): Signature;
 
   loadDb(): Promise<void>;
 }
@@ -77,8 +77,10 @@ export class OffchainStorage implements IOffchainStorage {
     await this.saveDb();
   }
 
-  craateSignature(data: [Field, Field]): Signature {
-    return Signature.create(this.privateKey, data);
+  createSignature(data: [Field, Field]): Signature {
+    const newSignature = Signature.create(this.privateKey, data);
+    console.log('newSignature', newSignature.r.toString());
+    return newSignature;
   }
 
   async loadDb(): Promise<void> {

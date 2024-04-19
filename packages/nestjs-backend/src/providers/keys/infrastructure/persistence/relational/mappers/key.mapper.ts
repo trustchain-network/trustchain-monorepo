@@ -7,6 +7,8 @@ export class KeyMapper {
     key.id = raw.id;
     key.key = raw.key;
     key.publicKey = raw.publicKey;
+    key.subscriptionId = raw.subscriptionId;
+    key.userId = raw.userId;
     key.createdAt = raw.createdAt;
     key.updatedAt = raw.updatedAt;
     key.deletedAt = raw.deletedAt;
@@ -25,6 +27,8 @@ export class KeyMapper {
       keyEntity.publicKey = key.publicKey;
     }
     keyEntity.key = key.key;
+    keyEntity.subscriptionId = key.subscriptionId;
+    keyEntity.userId = key.userId;
     keyEntity.createdAt = key.createdAt;
     keyEntity.updatedAt = key.updatedAt;
     keyEntity.deletedAt = key.deletedAt;
