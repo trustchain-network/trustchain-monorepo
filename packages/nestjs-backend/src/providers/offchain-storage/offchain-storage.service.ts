@@ -50,7 +50,7 @@ export class OffchainStorageService {
       result: [
         newRootNumber.toString(),
         this.store
-          .craateSignature([newRoot, newRootNumber])
+          .createSignature([newRoot, newRootNumber])
           .toFields()
           .map((field) => field.toString()),
       ],

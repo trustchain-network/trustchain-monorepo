@@ -70,7 +70,7 @@ export class NfcEntity extends EntityRelationalHelper implements NFC {
   encryptedShareKey: string;
 
   @OneToMany(() => NfcScan, (scan) => scan.nfc)
-  sacns?: NfcScan[];
+  scans?: NfcScan[];
 
   @CreateDateColumn()
   createdAt: Date;

@@ -1,7 +1,14 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 // We test here with Add contract
-import { AccountUpdate, Field, Mina, PrivateKey, fetchAccount } from 'o1js';
+import {
+  AccountUpdate,
+  Field,
+  Mina,
+  PrivateKey,
+  Signature,
+  fetchAccount,
+} from 'o1js';
 import { Add } from './Add';
 import { KeysService } from 'src/providers/keys/keys.service';
 import { CreateKeyDto } from 'src/providers/keys/dto/create-key.dto';
@@ -15,17 +22,30 @@ interface VerificationKeyData {
 
 @Injectable()
 export class MinaService {
-  private logger = new Logger(MinaService.name);
+  private readonly logger = new Logger(MinaService.name);
+  private readonly serverPrivatekey: PrivateKey;
 
   constructor(
     private configService: ConfigService<AllConfigType>,
     private keyService: KeysService,
   ) {
-    //TODO: Add the configService.getOrThrow for the mina.serverPrivateKey
-    //TODO: Mina.setActiveInstance(network);
+    const secretKeyFromConfig = this.configService.getOrThrow<string>(
+      'mina.serverPrivateKey',
+      { infer: true },
+    );
+    this.serverPrivatekey = PrivateKey.fromBase58(secretKeyFromConfig);
+
+    const network = Mina.Network({
+      mina: this.configService.getOrThrow<string>('mina.networkUrl', {
+        infer: true,
+      }),
+    });
+    Mina.setActiveInstance(network);
+
+    this.logger.log('Mina network setted up');
   }
 
-  async generateKeyPair(): Promise<String> {
+  async generateKeyPair(): Promise<string> {
     const key = PrivateKey.random();
     const publicKey = key.toPublicKey().toBase58().toString();
     const createKeyDto: CreateKeyDto = {
@@ -36,8 +56,14 @@ export class MinaService {
     return publicKey;
   }
 
-  async deployContract(): Promise<Contract> {
-    const zkAppKey = PrivateKey.random();
+  createSignature(data: [Field, Field]): Signature {
+    const newSignature = Signature.create(this.serverPrivatekey, data);
+    this.logger.log('newSignature', newSignature.r.toString());
+
+    return newSignature;
+  }
+
+  async deployContract(zkAppKey: PrivateKey): Promise<Contract> {
     const zkAppAddress = zkAppKey.toPublicKey();
     const transactionFee = 100_000_000;
 
@@ -49,25 +75,14 @@ export class MinaService {
     );
     const sender = senderKey.toPublicKey();
 
-    // Network configuration
-    const network = Mina.Network({
-      mina: this.configService.getOrThrow<string>('mina.networkUrl', {
-        infer: true,
-      }),
-    });
-    Mina.setActiveInstance(network);
-
     const accountDetails = (await fetchAccount({ publicKey: sender })).account;
     const nonce: number = Number(accountDetails?.nonce) + 1;
     this.logger.log(
       `Using the fee payer account ${sender.toBase58()} with nonce: ${nonce} and balance: ${accountDetails?.balance}.`,
     );
-    console.log(
-      `Using the fee payer account ${sender.toBase58()} with nonce: ${nonce} and balance: ${accountDetails?.balance}.`,
-    );
 
     // zkApp compilation
-    console.log('Compiling the smart contract.');
+    this.logger.log('Compiling the smart contract.');
     const { verificationKey } = await Add.compile();
     const zkApp = new Add(zkAppAddress);
 
@@ -75,8 +90,10 @@ export class MinaService {
     this.logger.log(
       `Deploying zkApp for public key ${zkAppAddress.toBase58()}.`,
     );
-    console.log(`Deploying zkApp for public key ${zkAppAddress.toBase58()}.`);
-    let transaction = await Mina.transaction(
+    this.logger.log(
+      `Deploying zkApp for public key ${zkAppAddress.toBase58()}.`,
+    );
+    const transaction = await Mina.transaction(
       { sender, fee: transactionFee },
       () => {
         AccountUpdate.fundNewAccount(sender);
@@ -89,7 +106,7 @@ export class MinaService {
 
     transaction.sign([senderKey, zkAppKey]);
     this.logger.log('Sending the transaction.', transaction);
-    console.log('Sending the transaction.');
+
     await transaction.send();
 
     const contract: Contract = {

@@ -24,7 +24,7 @@ export class NfcScan extends EntityRelationalHelper implements INfcScan {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => NfcEntity, (nfc) => nfc, {
+  @ManyToOne(() => NfcEntity, (nfc) => nfc.scans, {
     onDelete: 'SET NULL',
     nullable: true,
   })

@@ -1,8 +1,9 @@
-import { EventsHandler, IEvent, IEventHandler } from '@nestjs/cqrs';
+import { EventBus, EventsHandler, IEvent, IEventHandler } from '@nestjs/cqrs';
 import { MembershipTier } from 'src/modules/membership/enums/membership-tier.enum';
 import { MembershipService } from 'src/modules/membership/membership.service';
 import { RoleEnum } from 'src/modules/roles/roles.enum';
 import { UsersService } from 'src/modules/users/users.service';
+import { DeploySmartContractEvent } from 'src/providers/mina/cqrs/deploy-smart-contract.event';
 import Stripe from 'stripe';
 
 export type TUpdateMembershipInput = {
@@ -29,6 +30,7 @@ export class UpdateMembershipEventHandler
   constructor(
     private readonly membershipService: MembershipService,
     private readonly usersService: UsersService,
+    private readonly eventBus: EventBus,
   ) {}
 
   async handle({ payload }: UpdateMembershipEvent): Promise<void> {
@@ -38,6 +40,19 @@ export class UpdateMembershipEventHandler
 
     if (!membership) {
       return;
+    }
+
+    if (
+      payload.status === 'active' &&
+      payload.subscriptionId &&
+      membership.userId
+    ) {
+      this.eventBus.publish(
+        new DeploySmartContractEvent({
+          userId: membership.userId,
+          subscriptionId: payload.subscriptionId,
+        }),
+      );
     }
 
     const updatesPromise: Promise<any>[] = [

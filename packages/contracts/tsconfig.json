@@ -19,6 +19,8 @@
     "noFallthroughCasesInSwitch": true,
     "allowSyntheticDefaultImports": true,
     "useDefineForClassFields": false,
+    "isolatedModules": true
   },
   "include": ["./src"],
+  "exclude": ["./src/**/*.test.ts"]
 }

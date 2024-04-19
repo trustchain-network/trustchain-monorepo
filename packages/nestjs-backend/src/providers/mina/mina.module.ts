@@ -7,5 +7,6 @@ import { KeysModule } from 'src/providers/keys/keys.module';
   imports: [KeysModule],
   providers: [MinaService],
   controllers: [MinaController],
+  exports: [MinaService],
 })
 export class MinaModule {}

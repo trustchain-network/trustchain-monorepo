@@ -25,7 +25,7 @@ export class Membership extends EntityRelationalHelper {
   status?: Stripe.Subscription.Status | null;
 
   @Column({ type: String, nullable: true })
-  subscriptionId?: string;
+  subscriptionId?: string | null;
 
   @Column({ type: String, nullable: true })
   productId?: string | null;
