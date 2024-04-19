@@ -1,0 +1,135 @@
+{
+  "onboarding": {
+    "1": {
+      "title": "Bienvenido a Trustchain",
+      "description": "TrustChain utiliza ZK Smart NFC para un protocolo avanzado contra la falsificación"
+    },
+    "2": {
+      "title": "Encuentra la Etiqueta NFC",
+      "description": "Encuentra la etiqueta NFC en el producto. Suele estar en la etiqueta del producto"
+    },
+    "3": {
+      "title": "Escanear Etiqueta",
+      "description": "Escanea la etiqueta acercando tu teléfono para una autenticación rápida y sencilla"
+    },
+    "4": {
+      "title": "Verificar Producto",
+      "description": "Verifica la autenticidad de un producto a través de un sistema Blockchain."
+    },
+    "next": "Siguiente",
+    "getStarted": "Comenzar",
+    "back": "Atrás",
+    "language": {
+      "english": "Inglés",
+      "indonesia": "Bahasa Indonesia",
+      "spanish": "Español",
+      "dutch": "Holandés",
+      "chinese": "Chino"
+    },
+    "authentication": {
+      "guest": "Continuar como Invitado",
+      "google": "Continuar con Google",
+      "apple": "Continuar con Apple",
+      "or": "o",
+      "note": "Al completar el proceso de registro, aceptas los",
+      "termsAndConditions": "Términos y Condiciones"
+    }
+  },
+  "home": {
+    "home": "Inicio",
+    "scanQuota": "Cuota de Escaneo",
+    "writeQuota": "Cuota de Escritura",
+    "write": "Escribir",
+    "scan": "Escanear",
+    "history": "Historial",
+    "subscribe": "Suscribirse"
+  },
+  "scan": {
+    "title": "Comenzar a Escanear",
+    "description": "Comienza de inmediato tocando el botón 'Escanear' y leyendo la etiqueta NFC asociada a un producto",
+    "ready": "Listo para Escanear",
+    "cancel": "Cancelar",
+    "hold": "Mantén tu dispositivo cerca de la Etiqueta NFC",
+    "success": "Se ha escaneado correctamente la Etiqueta NFC",
+    "failed": "Fallo al escanear la Etiqueta NFC"
+  },
+  "product": {
+    "productDetail": "Detalle del Producto",
+    "detail": "Detalle",
+    "productId": "ID del Producto",
+    "brandId": "ID de la Marca",
+    "brand": "Marca",
+    "modelName": "Nombre del Modelo",
+    "releaseYear": "Año de Lanzamiento",
+    "color": "Color",
+    "size": "Tamaño",
+    "view": "Ver Verificación Onchain",
+    "onchainVerification": "Verificación Onchain",
+    "proofOfAuthenticity": "Prueba de Autenticidad",
+    "blockchainTransactionID": "ID de Transacción Blockchain",
+    "timestamp": "Marca de Tiempo",
+    "digitalSignature": "Firma Digital",
+    "status": "Estado",
+    "supplyChainTransparency": "Transparencia de la Cadena de Suministro",
+    "manufacturer": "Fabricante",
+    "productionDate": "Fecha de Producción",
+    "shippingCarrier": "Transportista de Envío",
+    "deliveryDate": "Fecha de Entrega",
+    "seller": "Vendedor",
+    "ownershipConfirmation": "Confirmación de Propiedad",
+    "ownerName": "Nombre del Propietario",
+    "transactionId": "ID de Transacción",
+    "immutableRecord": "Registro Inmutable"
+  },
+  "write": {
+    "writeNFCTags": "Escribir Etiquetas NFC",
+    "title": "Título",
+    "url": "URL a ser incrustada en la etiqueta",
+    "content": "Contenido",
+    "addMoreFields": "¿Quieres añadir más campos?",
+    "upgrade": "¡Actualizar!",
+    "authentication": "Clave Maestra de Autenticación",
+    "ready": "Listo para Escanear",
+    "successTitle": "Escritura de Etiquetas NFC Exitosa",
+    "successDescription": "Has escrito tus Etiquetas NFC correctamente, puedes intentar escanear",
+    "try": "Intentar Escanear",
+    "back": "Volver a Inicio"
+  },
+  "myTags": {
+    "myTags": "Mis Etiquetas",
+    "emptyTitle": "Las Etiquetas NFC están Vacías",
+    "emptyDescription": "Por favor escribe tus Etiquetas NFC para ver esta función",
+    "writeNFCTags": "Escribir Etiquetas NFC"
+  },
+  "history": {
+    "emptyTitle": "El Historial de Escaneo está Vacío",
+    "emptyDescription": "Escanea Etiquetas NFC para ver esta función",
+    "scanNFCTags": "Escanear Etiquetas NFC",
+    "detail": "Detalle",
+    "delete": "Eliminar"
+  },
+  "profileNotAuthenticated": {
+    "profile": "Perfil",
+    "title": "Todavía no estás autenticado",
+    "description": "Por favor inicia sesión o regístrate primero",
+    "loginOrRegister": "Iniciar sesión o Registrarse",
+    "byCompleting": "Al completar el proceso de registro, aceptas los",
+    "termsAndConditions": "Términos y Condiciones"
+  },
+  "profileAuthenticated": {
+    "profile": "Perfil",
+    "language": "Idioma",
+    "theme": "Tema",
+    "termsAndConditions": "Términos y Condiciones",
+    "logout": "Cerrar Sesión",
+    "logoutTitle": "¿Seguro que quieres cerrar sesión?",
+    "logoutYes": "Sí, Cerrar Sesión",
+    "logoutCancel": "Cancelar"
+  },
+  "menu": {
+    "home": "Inicio",
+    "tags": "Etiquetas",
+    "history": "Historial",
+    "profile": "Perfil"
+  }
+}

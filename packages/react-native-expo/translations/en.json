@@ -1,0 +1,135 @@
+{
+  "onboarding": {
+    "1": {
+      "title": "Welcome to Trustchain",
+      "description": "TrustChain utilizes ZK Smart NFC for an advanced anti-counterfeiting protocol"
+    },
+    "2": {
+      "title": "Find NFC Tag",
+      "description": "Find the NFC Tag on the product. It is usually on the label of the product"
+    },
+    "3": {
+      "title": "Scan Tag",
+      "description": "Scan the tag by bringing your phone closer for quick and easy authentication"
+    },
+    "4": {
+      "title": "Verify Product",
+      "description": "Verify a product's authenticity through a Blockchain system."
+    },
+    "next": "Next",
+    "getStarted": "Get Started",
+    "back": "Back",
+    "language": {
+      "english": "English",
+      "indonesia": "Bahasa Indonesia",
+      "spanish": "Spanish",
+      "dutch": "Dutch",
+      "chinese": "Chinese"
+    },
+    "authentication": {
+      "guest": "Continue as Guest",
+      "google": "Continue with Google",
+      "apple": "Continue with Apple",
+      "or": "or",
+      "note": "By completing the registration process, you agree to the applicable",
+      "termsAndConditions": "Terms & Conditions"
+    }
+  },
+  "home": {
+    "home": "Home",
+    "scanQuota": "Scan Quota",
+    "writeQuota": "Write Quota",
+    "write": "Write",
+    "scan": "Scan",
+    "history": "History",
+    "subscribe": "Subscribe"
+  },
+  "scan": {
+    "title": "Start to Scan",
+    "description": "Start immediately by tapping the 'Scan' button and reading the NFC tag associated to a product",
+    "ready": "Ready to Scan",
+    "cancel": "Cancel",
+    "hold": "Hold your device near the NFC Tag",
+    "success": "Successfully scanned the NFC Tag",
+    "failed": "Failed to scan NFC Tag"
+  },
+  "product": {
+    "productDetail": "Product Detail",
+    "detail": "Detail",
+    "productId": "Product ID",
+    "brandId": "Brand ID",
+    "brand": "Brand",
+    "modelName": "Model Name",
+    "releaseYear": "Release Year",
+    "color": "Color",
+    "size": "Size",
+    "view": "View Onchain Verification",
+    "onchainVerification": "Onchain Verification",
+    "proofOfAuthenticity": "Proof of Authenticity",
+    "blockchainTransactionID": "Blockchain Transaction ID",
+    "timestamp": "Timestamp",
+    "digitalSignature": "Digital Signature",
+    "status": "Status",
+    "supplyChainTransparency": "Supply Chain Transparency",
+    "manufacturer": "Manufacturer",
+    "productionDate": "ProductionDate",
+    "shippingCarrier": "Shipping Carrier",
+    "deliveryDate": "Delivery Date",
+    "seller": "Seller",
+    "ownershipConfirmation": "Ownership Confirmation",
+    "ownerName": "Owner Name",
+    "transactionId": "Transaction ID",
+    "immutableRecord": "Immutable Record"
+  },
+  "write": {
+    "writeNFCTags": "Write NFC Tags",
+    "title": "Title",
+    "url": "URL to be Embedded in Tag",
+    "content": "Content",
+    "addMoreFields": "Want to add more fields ?",
+    "upgrade": "Upgrade !",
+    "authentication": "Authentication Master Key",
+    "ready": "Ready to Scan",
+    "successTitle": "Writing NFC Tags Successfully",
+    "successDescription": "You have successfully written your NFC Tags, you can try to scan",
+    "try": "Try to Scan",
+    "back": "Back to Homepage"
+  },
+  "myTags": {
+    "myTags": "My Tags",
+    "emptyTitle": "NFC Tags Are Empty",
+    "emptyDescription": "Please write your NFC Tags to see this feature",
+    "writeNFCTags": "Write NFC Tags"
+  },
+  "history": {
+    "emptyTitle": "Scan History Are Empty",
+    "emptyDescription": "Scan NFC Tags to see this feature",
+    "scanNFCTags": "Scan NFC Tags",
+    "detail": "Detail",
+    "delete": "Delete"
+  },
+  "profileNotAuthenticated": {
+    "profile": "Profile",
+    "title": "You are not yet authenticated",
+    "description": "Please log in or register first",
+    "loginOrRegister": "Login or Register",
+    "byCompleting": "By completing the registration process, you agree to the applicable",
+    "termsAndConditions": "Terms & Conditions"
+  },
+  "profileAuthenticated": {
+    "profile": "Profile",
+    "language": "Language",
+    "theme": "Theme",
+    "termsAndConditions": "Terms & Conditions",
+    "logout": "Logout",
+    "logoutTitle": "Are you sure you want to logout?",
+    "logoutYes": "Yes, Logout",
+    "logoutCancel": "Cancel"
+  },
+  "menu": {
+    "home": "Home",
+    "tags": "Tags",
+    "history": "History",
+    "profile": "Profile"
+  }
+}

@@ -1,0 +1,135 @@
+{
+  "onboarding": {
+    "1": {
+      "title": "Welkom bij Trustchain",
+      "description": "TrustChain maakt gebruik van ZK Smart NFC voor een geavanceerd anti-vervalsingsprotocol"
+    },
+    "2": {
+      "title": "Vind NFC-tag",
+      "description": "Zoek de NFC-tag op het product. Deze bevindt zich meestal op het etiket van het product"
+    },
+    "3": {
+      "title": "Scan Tag",
+      "description": "Scan de tag door je telefoon dichterbij te brengen voor snelle en eenvoudige authenticatie"
+    },
+    "4": {
+      "title": "Controleer product",
+      "description": "Verifieer de authenticiteit van een product via een blockchainsysteem."
+    },
+    "next": "Volgende",
+    "getStarted": "Beginnen",
+    "back": "Terug",
+    "language": {
+      "english": "Engels",
+      "indonesia": "Bahasa Indonesia",
+      "spanish": "Spaans",
+      "dutch": "Nederlands",
+      "chinese": "Chinees"
+    },
+    "authentication": {
+      "guest": "Doorgaan als gast",
+      "google": "Doorgaan met Google",
+      "apple": "Doorgaan met Apple",
+      "or": "of",
+      "note": "Door het registratieproces te voltooien, ga je akkoord met de",
+      "termsAndConditions": "Algemene voorwaarden"
+    }
+  },
+  "home": {
+    "home": "Home",
+    "scanQuota": "Scanquota",
+    "writeQuota": "Schrijfquota",
+    "write": "Schrijven",
+    "scan": "Scannen",
+    "history": "Geschiedenis",
+    "subscribe": "Abonneren"
+  },
+  "scan": {
+    "title": "Begin met scannen",
+    "description": "Begin direct door op de knop 'Scannen' te tikken en de NFC-tag te lezen die aan een product is gekoppeld",
+    "ready": "Klaar om te scannen",
+    "cancel": "Annuleren",
+    "hold": "Houd uw apparaat dicht bij de NFC-tag",
+    "success": "NFC-tag succesvol gescand",
+    "failed": "NFC-tag scannen mislukt"
+  },
+  "product": {
+    "productDetail": "Productdetail",
+    "detail": "Detail",
+    "productId": "Product-ID",
+    "brandId": "Merk-ID",
+    "brand": "Merk",
+    "modelName": "Modelnaam",
+    "releaseYear": "Jaar van uitgave",
+    "color": "Kleur",
+    "size": "Maat",
+    "view": "Bekijk Onchain-verificatie",
+    "onchainVerification": "Onchain-verificatie",
+    "proofOfAuthenticity": "Bewijs van authenticiteit",
+    "blockchainTransactionID": "Blockchain Transactie ID",
+    "timestamp": "Tijdstempel",
+    "digitalSignature": "Digitale Handtekening",
+    "status": "Status",
+    "supplyChainTransparency": "Transparantie van de supply chain",
+    "manufacturer": "Fabrikant",
+    "productionDate": "Productiedatum",
+    "shippingCarrier": "Verzendende Vervoerder",
+    "deliveryDate": "Leveringsdatum",
+    "seller": "Verkoper",
+    "ownershipConfirmation": "Eigendomsbevestiging",
+    "ownerName": "Naam van de eigenaar",
+    "transactionId": "Transactie-ID",
+    "immutableRecord": "Onveranderlijk record"
+  },
+  "write": {
+    "writeNFCTags": "Schrijf NFC-tags",
+    "title": "Titel",
+    "url": "URL om in tag in te sluiten",
+    "content": "Inhoud",
+    "addMoreFields": "Meer velden toevoegen?",
+    "upgrade": "Upgraden!",
+    "authentication": "Authenticatie Master Key",
+    "ready": "Klaar om te scannen",
+    "successTitle": "NFC-tags succesvol geschreven",
+    "successDescription": "Je hebt je NFC-tags succesvol geschreven, je kunt proberen te scannen",
+    "try": "Probeer te scannen",
+    "back": "Terug naar startpagina"
+  },
+  "myTags": {
+    "myTags": "Mijn tags",
+    "emptyTitle": "NFC-tags zijn leeg",
+    "emptyDescription": "Schrijf alsjeblieft je NFC-tags om deze functie te zien",
+    "writeNFCTags": "Schrijf NFC-tags"
+  },
+  "history": {
+    "emptyTitle": "Scan-geschiedenis is leeg",
+    "emptyDescription": "Scan NFC-tags om deze functie te zien",
+    "scanNFCTags": "Scan NFC-tags",
+    "detail": "Detail",
+    "delete": "Verwijderen"
+  },
+  "profileNotAuthenticated": {
+    "profile": "Profiel",
+    "title": "Je bent nog niet geauthenticeerd",
+    "description": "Log alstublieft in of registreer eerst",
+    "loginOrRegister": "Inloggen of Registreren",
+    "byCompleting": "Door het registratieproces te voltooien, ga je akkoord met de",
+    "termsAndConditions": "Algemene voorwaarden"
+  },
+  "profileAuthenticated": {
+    "profile": "Profiel",
+    "language": "Taal",
+    "theme": "Thema",
+    "termsAndConditions": "Algemene voorwaarden",
+    "logout": "Uitloggen",
+    "logoutTitle": "Weet je zeker dat je wilt uitloggen?",
+    "logoutYes": "Ja, Uitloggen",
+    "logoutCancel": "Annuleren"
+  },
+  "menu": {
+    "home": "Thuis",
+    "tags": "Tag",
+    "history": "Geschiedenis",
+    "profile": "Profiel"
+  }
+}

@@ -1,0 +1,136 @@
+{
+  "title": "ya",
+  "onboarding": {
+    "1": {
+      "title": "Selamat datang di Trustchain",
+      "description": "TrustChain menggunakan ZK Smart NFC untuk protokol anti-pemalsuan yang canggih"
+    },
+    "2": {
+      "title": "Temukan NFC Tag",
+      "description": "Temukan NFC Tag pada produk. Biasanya terletak pada label produk"
+    },
+    "3": {
+      "title": "Pindai Tag",
+      "description": "Pindai tag dengan mendekatkan ponsel Anda untuk otentikasi yang cepat dan mudah"
+    },
+    "4": {
+      "title": "Verifikasi Produk",
+      "description": "Verifikasi keaslian produk melalui sistem Blockchain."
+    },
+    "next": "Berikutnya",
+    "getStarted": "Mulai",
+    "back": "Kembali",
+    "language": {
+      "english": "Inggris",
+      "indonesia": "Bahasa Indonesia",
+      "spanish": "Spanyol",
+      "dutch": "Belanda",
+      "chinese": "Cina"
+    },
+    "authentication": {
+      "guest": "Lanjutkan sebagai Tamu",
+      "google": "Lanjutkan dengan Google",
+      "apple": "Lanjutkan dengan Apple",
+      "or": "atau",
+      "note": "Dengan menyelesaikan proses pendaftaran, Anda menyetujui",
+      "termsAndConditions": "Syarat & Ketentuan"
+    }
+  },
+  "home": {
+    "home": "Beranda",
+    "scanQuota": "Kuota Pindai",
+    "writeQuota": "Kuota Tulis",
+    "write": "Tulis",
+    "scan": "Pindai",
+    "history": "Riwayat",
+    "subscribe": "Berlangganan"
+  },
+  "scan": {
+    "title": "Mulai Pindai",
+    "description": "Mulai langsung dengan mengetuk tombol 'Pindai' dan membaca tag NFC yang terkait dengan produk",
+    "ready": "Siap untuk Pindai",
+    "cancel": "Batal",
+    "hold": "Pegang perangkat Anda dekat dengan Tag NFC",
+    "success": "Berhasil memindai Tag NFC",
+    "failed": "Gagal memindai Tag NFC"
+  },
+  "product": {
+    "productDetail": "Detail Produk",
+    "detail": "Detail",
+    "productId": "ID Produk",
+    "brandId": "ID Merek",
+    "brand": "Merek",
+    "modelName": "Nama Model",
+    "releaseYear": "Tahun Rilis",
+    "color": "Warna",
+    "size": "Ukuran",
+    "view": "Lihat Verifikasi Onchain",
+    "onchainVerification": "Verifikasi Onchain",
+    "proofOfAuthenticity": "Bukti Keaslian",
+    "blockchainTransactionID": "ID Transaksi Blockchain",
+    "timestamp": "Cap waktu",
+    "digitalSignature": "Tanda Tangan Digital",
+    "status": "Status",
+    "supplyChainTransparency": "Transparansi Rantai Pasokan",
+    "manufacturer": "Produsen",
+    "productionDate": "Tanggal Produksi",
+    "shippingCarrier": "Pengangkut Pengiriman",
+    "deliveryDate": "Tanggal Pengiriman",
+    "seller": "Penjual",
+    "ownershipConfirmation": "Konfirmasi Kepemilikan",
+    "ownerName": "Nama Pemilik",
+    "transactionId": "ID Transaksi",
+    "immutableRecord": "Rekaman Tak Berubah"
+  },
+  "write": {
+    "writeNFCTags": "Menulis Tag NFC",
+    "title": "Judul",
+    "url": "URL yang Akan Ditanamkan dalam Tag",
+    "content": "Konten",
+    "addMoreFields": "Ingin menambahkan lebih banyak bidang?",
+    "upgrade": "Tingkatkan!",
+    "authentication": "Kunci Master Otentikasi",
+    "ready": "Siap untuk Pindai",
+    "successTitle": "Menulis Tag NFC dengan Sukses",
+    "successDescription": "Anda telah berhasil menulis Tag NFC Anda, Anda dapat mencoba untuk memindai",
+    "try": "Coba Pindai",
+    "back": "Kembali ke Beranda"
+  },
+  "myTags": {
+    "myTags": "Tag Saya",
+    "emptyTitle": "Tag NFC Kosong",
+    "emptyDescription": "Harap tulis Tag NFC Anda untuk melihat fitur ini",
+    "writeNFCTags": "Menulis Tag NFC"
+  },
+  "history": {
+    "emptyTitle": "Riwayat Pindai Kosong",
+    "emptyDescription": "Pindai Tag NFC untuk melihat fitur ini",
+    "scanNFCTags": "Pindai Tag NFC",
+    "detail": "Detail",
+    "delete": "Hapus"
+  },
+  "profileNotAuthenticated": {
+    "profile": "Profil",
+    "title": "Anda belum terotentikasi",
+    "description": "Silakan masuk atau daftar terlebih dahulu",
+    "loginOrRegister": "Masuk atau Daftar",
+    "byCompleting": "Dengan menyelesaikan proses pendaftaran, Anda menyetujui",
+    "termsAndConditions": "Syarat & Ketentuan"
+  },
+  "profileAuthenticated": {
+    "profile": "Profil",
+    "language": "Bahasa",
+    "theme": "Tema",
+    "termsAndConditions": "Syarat & Ketentuan",
+    "logout": "Keluar",
+    "logoutTitle": "Apakah Anda yakin ingin keluar?",
+    "logoutYes": "Ya, Keluar",
+    "logoutCancel": "Batal"
+  },
+  "menu": {
+    "home": "Beranda",
+    "tags": "Tag",
+    "history": "Sejarah",
+    "profile": "Profil"
+  }
+}
