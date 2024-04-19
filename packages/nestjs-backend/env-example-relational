@@ -71,6 +71,7 @@ TWILIO_SMS_RETRY=1
 WORKER_HOST=redis://redis:6379/1
 
 STRIPE_SECRET_KEY=
+STRIPE_WEBHOOK_SECRET=
 STRIPE_CURRENCY=USD
 
 MINA_NETWORK_URL=https://proxy.berkeley.minaexplorer.com/graphql

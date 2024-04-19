@@ -21,6 +21,7 @@ interface IModuleInit {
   testingModules: Type<unknown>[];
   fakeMailer?: FakeMailer;
   stripeMock?: StripeMock;
+  guardMocks?: Array<[any, any]>;
 }
 
 export class TestApp {
@@ -28,7 +29,12 @@ export class TestApp {
     protected _app: INestApplication,
     protected _module: TestingModule,
   ) {}
-  static async init({ testingModules, fakeMailer, stripeMock }: IModuleInit) {
+  static async init({
+    testingModules,
+    fakeMailer,
+    stripeMock,
+    guardMocks,
+  }: IModuleInit) {
     const moduleBuilder = Test.createTestingModule({
       imports: [TestModule, ...testingModules],
     });
@@ -39,6 +45,12 @@ export class TestApp {
 
     if (stripeMock) {
       moduleBuilder.overrideProvider(stripeProvisionToken).useValue(stripeMock);
+    }
+
+    if (guardMocks?.length) {
+      guardMocks.forEach(([guard, mock]) => {
+        moduleBuilder.overrideGuard(guard).useValue(mock);
+      });
     }
 
     const moduleFixture = await moduleBuilder.compile();
