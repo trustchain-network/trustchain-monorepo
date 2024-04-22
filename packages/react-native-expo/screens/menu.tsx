@@ -27,6 +27,7 @@ const Tab = createBottomTabNavigator<any>();
 export default function MenuScreen({ navigation }: any) {
   const { loading } = useTab();
   const { colorScheme } = useColorScheme();
+
   return (
     <>
       <Tab.Navigator

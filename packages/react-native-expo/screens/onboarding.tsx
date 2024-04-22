@@ -1,5 +1,5 @@
 import { View, Image, TouchableOpacity, Pressable, Text } from "react-native";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useLayoutEffect } from "react";
 import { AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
 import { Button } from "../components/Button";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
@@ -14,6 +14,7 @@ import { StackScreenProps } from "@react-navigation/stack";
 import useAuth from "../state/auth";
 import { showToast } from "../lib/utils";
 import CustomText from "../components/CustomText";
+import { useColorScheme } from "nativewind";
 
 type Props = StackScreenProps<RootStackParamList, "Onboarding">;
 
@@ -46,7 +47,7 @@ export const languageOptions = [
 ];
 
 export default function OnboardingScreen({ navigation }: Props) {
-  // const { colorScheme } = useColorScheme();
+  const { colorScheme } = useColorScheme();
   const [currentOnboardingIndex, setCurrentOnboardingIndex] = useState(0);
   const [showLanguages, setShowLanguages] = useState(false);
   const [showSheet, setShowSheet] = useState(false);
@@ -119,6 +120,21 @@ export default function OnboardingScreen({ navigation }: Props) {
       }
     }
   };
+
+  // Handle user state changes
+  // function onAuthStateChanged(user: any) {
+  //   if (user && !user.isAnonymous) {
+  //     console.log(user);
+  //     console.log(user.isAnonymous);
+  //     setUser(user);
+  //     navigation.navigate("Menu");
+  //   }
+  // }
+
+  // useLayoutEffect(() => {
+  //   const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+  //   return subscriber; // unsubscribe on unmount
+  // }, []);
 
   return (
     <View className="bg-primary flex-1 relative p-5 py-10 gap-5">
@@ -215,11 +231,9 @@ export default function OnboardingScreen({ navigation }: Props) {
         index={showSheet ? 0 : -1}
         onChange={handleSheetChanges}
         onClose={() => setShowSheet(false)}
-        backgroundStyle={
-          {
-            // backgroundColor: colorScheme === "dark" ? "#0F172A" : "#FFFFFF",
-          }
-        }
+        backgroundStyle={{
+          backgroundColor: colorScheme === "dark" ? "#0F172A" : "#FFFFFF",
+        }}
       >
         <BottomSheetView style={{ flex: 1, zIndex: 99 }}>
           <View className="px-5 py-3 space-y-4">

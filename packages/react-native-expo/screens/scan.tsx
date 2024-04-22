@@ -8,6 +8,7 @@ import i18n from "../lib/i18n";
 import NfcManager, { NfcTech } from "react-native-nfc-manager";
 import { StackScreenProps } from "@react-navigation/stack";
 import CustomText from "../components/CustomText";
+import { useColorScheme } from "nativewind";
 
 type Props = StackScreenProps<RootStackParamList>;
 
@@ -15,7 +16,7 @@ type Props = StackScreenProps<RootStackParamList>;
 NfcManager.start();
 
 export default function ScanScreen({ navigation }: Props) {
-  // const { colorScheme } = useColorScheme();
+  const { colorScheme } = useColorScheme();
   const bottomSheetRef = useRef<BottomSheet>(null);
   const [currentScan, setCurrentScan] = useState<"Hold" | "Success" | "Failed">(
     "Hold"
@@ -36,7 +37,6 @@ export default function ScanScreen({ navigation }: Props) {
         navigation.navigate("Product", { nfcTag: tag.ndefMessage });
       }
     } catch (ex) {
-      console.log(ex);
       setCurrentScan("Failed");
     } finally {
       NfcManager.cancelTechnologyRequest();
@@ -44,7 +44,7 @@ export default function ScanScreen({ navigation }: Props) {
   }
 
   return (
-    <SafeAreaView className="flex-1 p-5 bg-light dark:bg-background-dark">
+    <SafeAreaView className="flex-1 p-5 bg-light dark:bg-dark">
       <View className="flex-row items-center justify-between">
         <Image
           source={require("../assets/logo_blue.png")}
@@ -73,9 +73,9 @@ export default function ScanScreen({ navigation }: Props) {
         enablePanDownToClose
         onChange={handleSheetChanges}
         onClose={() => setShowSheet(false)}
-        // backgroundStyle={{
-        //   backgroundColor: colorScheme === "dark" ? "#0F172A" : "#FFFFFF",
-        // }}
+        backgroundStyle={{
+          backgroundColor: colorScheme === "dark" ? "#0F172A" : "#FFFFFF",
+        }}
         style={{
           zIndex: 99,
         }}

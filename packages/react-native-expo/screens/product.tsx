@@ -1,16 +1,14 @@
 import { View, Image, ScrollView, TouchableOpacity } from "react-native";
-import { useLayoutEffect } from "react";
 import { RootStackParamList } from "../App";
 import { SafeAreaView } from "react-native-safe-area-context";
-import i18n from "../lib/i18n";
 import { StackScreenProps } from "@react-navigation/stack";
 import CustomText from "../components/CustomText";
 import Header from "../components/Header";
+import i18n from "../lib/i18n";
 
 type Props = StackScreenProps<RootStackParamList, "Product">;
 
-export default function ProductScreen({ navigation, route }: Props) {
-  // const { colorScheme } = useColorScheme();
+export default function ProductScreen({ navigation }: Props) {
   const details = [
     {
       label: i18n.t("product.productId"),
@@ -43,7 +41,7 @@ export default function ProductScreen({ navigation, route }: Props) {
   ];
 
   return (
-    <SafeAreaView className="flex-1 px-2 pb-3 bg-background-light dark:bg-background-dark">
+    <SafeAreaView className="flex-1 px-2 pb-3 bg-light dark:bg-dark">
       <Header title="Product Details" navigation={navigation} />
       <ScrollView className="bg-background flex-1 space-y-5 p-3">
         <Image

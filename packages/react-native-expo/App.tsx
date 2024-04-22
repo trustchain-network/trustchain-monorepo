@@ -1,5 +1,5 @@
 import "react-native-gesture-handler";
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { useEffect, useState } from "react";
 
@@ -21,6 +21,7 @@ import MenuScreen from "./screens/menu";
 import ExpoStatusBar from "expo-status-bar/build/ExpoStatusBar";
 import ThemeScreen from "./screens/theme";
 import LanguageScreen from "./screens/language";
+import useAuth from "./state/auth";
 
 export type RootStackParamList = {
   Onboarding: undefined;
@@ -47,26 +48,10 @@ GoogleSignin.configure({
 // webClientId: `10292546775-sdn2m38cu803n1i5gnghmc4u6iqcqlaq.apps.googleusercontent.com`,
 
 export default function App() {
-  // Set an initializing state whilst Firebase connects
-  // const { colorScheme } = useColorScheme();
-  const [initializing, setInitializing] = useState(true);
-  const [user, setUser] = useState();
-
-  // Handle user state changes
-  function onAuthStateChanged(user: any) {
-    setUser(user);
-    if (initializing) setInitializing(false);
-  }
-
-  useEffect(() => {
-    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber; // unsubscribe on unmount
-  }, []);
-
   return (
     <>
       <NavigationContainer>
-        {/* <ExpoStatusBar style={colorScheme === "dark" ? "light" : "dark"} /> */}
+        <ExpoStatusBar style="auto" />
         <Stack.Navigator
           screenOptions={{ headerShown: false }}
           initialRouteName="Onboarding"

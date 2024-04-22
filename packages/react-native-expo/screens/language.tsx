@@ -1,20 +1,13 @@
-import { useLayoutEffect, useState } from "react";
-import {
-  View,
-  Text,
-  SafeAreaView,
-  Image,
-  TouchableNativeFeedback,
-  TouchableOpacity,
-} from "react-native";
+import { useState } from "react";
+import { View, Image, TouchableOpacity } from "react-native";
 import { RootStackParamList } from "../App";
 import { StackScreenProps } from "@react-navigation/stack";
 import { languageOptions } from "./onboarding";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import i18n from "../lib/i18n";
 import CustomText from "../components/CustomText";
-import { useColorScheme } from "nativewind";
 import Header from "../components/Header";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 type Props = StackScreenProps<RootStackParamList>;
 
@@ -22,12 +15,13 @@ export default function LanguageScreen({ navigation }: Props) {
   const [currentCode, setCurrentCode] = useState(i18n.locale);
 
   return (
-    <SafeAreaView className="flex-1">
+    <SafeAreaView className="flex-1 bg-light dark:bg-dark">
       <Header
         title={i18n.t("profileAuthenticated.language")}
         navigation={navigation}
+        navigate
       />
-      <View className="p-5 space-y-5 bg-light dark:bg-background-dark flex-1">
+      <View className="p-5 space-y-5 flex-1 bg-light dark:bg-dark">
         {languageOptions.map((x) => {
           return (
             <View key={x.code} className="rounded-[12px] overflow-hidden">

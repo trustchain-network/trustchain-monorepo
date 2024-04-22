@@ -1,10 +1,11 @@
-import { View, ScrollView, SafeAreaView } from "react-native";
+import { View, ScrollView } from "react-native";
 import { RootStackParamList } from "../App";
 import { StackScreenProps } from "@react-navigation/stack";
 import moment from "moment";
 import i18n from "../lib/i18n";
 import CustomText from "../components/CustomText";
 import Header from "../components/Header";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 type Props = StackScreenProps<RootStackParamList, "Onchain">;
 
@@ -47,11 +48,11 @@ export default function OnchainScreen({ navigation }: Props) {
           value: "ABC Logistics",
         },
         {
-          label: "Delivery Date",
+          label: i18n.t("product.deliveryDate"),
           value: moment(new Date()).format("YYYY-MM-DD"),
         },
         {
-          label: "Seller",
+          label: i18n.t("product.seller"),
           value: "Sneaker Emporium",
         },
       ],
@@ -95,7 +96,7 @@ export default function OnchainScreen({ navigation }: Props) {
   return (
     <SafeAreaView>
       <Header title="Onchain Verification" navigation={navigation} />
-      <ScrollView className="bg-light dark:bg-background-dark p-5">
+      <ScrollView className="bg-light dark:bg-dark p-5">
         {data.map((x) => (
           <View key={x.title}>
             <CustomText className="font-semibold mb-2 text-base">

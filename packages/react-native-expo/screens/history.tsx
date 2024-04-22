@@ -20,7 +20,7 @@ export default function HistoryScreen({ navigation }: Props) {
         <CustomText className="text-lg font-semibold">
           {i18n.t("history.emptyTitle")}
         </CustomText>
-        <CustomText className="text-[14px]">
+        <CustomText className="text-[14px] text-grey">
           {i18n.t("history.emptyDescription")}
         </CustomText>
         <Button

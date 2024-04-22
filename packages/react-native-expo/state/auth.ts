@@ -2,7 +2,7 @@ import { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import { User } from "@react-native-google-signin/google-signin";
 import { create } from "zustand";
 
-type userCredential = FirebaseAuthTypes.UserCredential;
+export type userCredential = FirebaseAuthTypes.UserCredential;
 
 type Auth = {
   user: userCredential | null;

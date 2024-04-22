@@ -1,4 +1,4 @@
-import { View, SafeAreaView, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity } from "react-native";
 import { RootStackParamList } from "../App";
 import { StackScreenProps } from "@react-navigation/stack";
 import {
@@ -10,6 +10,7 @@ import {
 import { useColorScheme } from "nativewind";
 import CustomText from "../components/CustomText";
 import Header from "../components/Header";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 type Props = StackScreenProps<RootStackParamList>;
 
@@ -26,12 +27,12 @@ export const themeOptions = [
     icon: <Feather name="moon" size={27} color="#979DA4" />,
     value: "dark",
   },
-  {
-    label: "Default System",
-    className: "bg-primary-bg-weak",
-    icon: <MaterialIcons name="computer" size={27} color="#0072AB" />,
-    value: "system",
-  },
+  // {
+  //   label: "Default System",
+  //   className: "bg-primary-bg-weak",
+  //   icon: <MaterialIcons name="computer" size={27} color="#0072AB" />,
+  //   value: "system",
+  // },
 ];
 
 export default function ThemeScreen({ navigation }: Props) {
@@ -40,7 +41,7 @@ export default function ThemeScreen({ navigation }: Props) {
   return (
     <SafeAreaView className="flex-1 bg-light dark:bg-dark">
       <Header title="Theme" navigation={navigation} />
-      <View className="p-5  space-y-5">
+      <View className="p-5 space-y-5">
         {themeOptions.map((x) => {
           return (
             <TouchableOpacity
@@ -49,7 +50,7 @@ export default function ThemeScreen({ navigation }: Props) {
               }}
               key={x.label}
             >
-              <View className="flex-row items-center justify-between drop-shadow-md rounded-[16px] p-3 border border-gray-300 bg-light dark:bg-black/10">
+              <View className="flex-row items-center justify-between drop-shadow-md rounded-[16px] p-3 border border-gray-300 dark:border-gray-700 bg-light dark:bg-black/10">
                 <View className="flex-row space-x-2 items-center">
                   <View>{x.icon}</View>
                   <CustomText className="text-sm font-medium">

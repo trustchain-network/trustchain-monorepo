@@ -7,15 +7,21 @@ import { useColorScheme } from "nativewind";
 
 export default function Header({
   title,
+  navigate,
   navigation,
 }: {
   title: string;
+  navigate?: boolean;
   navigation: StackNavigationProp<RootStackParamList>;
 }) {
   const { colorScheme } = useColorScheme();
   return (
-    <View className="flex-row items-center justify-between p-3 bg-light dark:bg-dark py-5">
-      <TouchableOpacity onPress={() => navigation.goBack()}>
+    <View className="flex-row items-center justify-between p-5 bg-light dark:bg-dark">
+      <TouchableOpacity
+        onPress={() =>
+          navigate ? navigation.navigate("Menu") : navigation.goBack()
+        }
+      >
         <MaterialCommunityIcons
           color={colorScheme === "dark" ? "#FFFFFF" : "#000000"}
           size={24}

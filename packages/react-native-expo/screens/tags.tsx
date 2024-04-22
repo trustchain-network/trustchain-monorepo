@@ -29,7 +29,7 @@ export default function TagsScreen({ navigation }: Props) {
         <CustomText className="text-lg font-semibold">
           {i18n.t("myTags.emptyTitle")}
         </CustomText>
-        <CustomText className="text-sm text-grey">
+        <CustomText className="text-sm text-center text-grey">
           {i18n.t("myTags.emptyDescription")}
         </CustomText>
         <Button

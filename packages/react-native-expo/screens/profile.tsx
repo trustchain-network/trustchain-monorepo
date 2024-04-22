@@ -22,7 +22,9 @@ import storage from "@react-native-firebase/storage";
 import { showToast } from "../lib/utils";
 import useTab from "../state/tab";
 import CustomText from "../components/CustomText";
-// import { useColorScheme } from "nativewind";
+import { useColorScheme } from "nativewind";
+import { useIsFocused } from "@react-navigation/native";
+
 type Props = StackScreenProps<RootStackParamList>;
 
 export default function ProfileScreen({ navigation }: Props) {
@@ -32,7 +34,9 @@ export default function ProfileScreen({ navigation }: Props) {
   const [showLogoutSheet, setShowLogoutSheet] = useState(false);
   const { user, setUser } = useAuth();
   const { setLoading } = useTab();
-  // const { colorScheme } = useColorScheme();
+  const { colorScheme } = useColorScheme();
+  const isFocused = useIsFocused();
+
   const googleLogin = async () => {
     try {
       // Check if your device supports Google Play
@@ -117,7 +121,7 @@ export default function ProfileScreen({ navigation }: Props) {
     }
   };
 
-  return (
+  return isFocused ? (
     <SafeAreaView className="p-5 bg-light dark:bg-dark flex-1">
       <View className="flex-1">
         <CustomText className="text-lg font-semibold mb-8">
@@ -219,7 +223,11 @@ export default function ProfileScreen({ navigation }: Props) {
               <View className="flex-row items-center justify-between bg-light dark:bg-dark/10 drop-shadow-md rounded-[16px] p-3 border border-gray-300 dark:border-gray-700">
                 <View className="flex-row items-center space-x-3">
                   <View className="p-3 rounded-[10px] bg-[#FAFAFA] dark:bg-[#EFFAFF]/10">
-                    <AntDesign name="filetext1" size={24} />
+                    <AntDesign
+                      name="filetext1"
+                      size={24}
+                      color={colorScheme === "dark" ? "#FFFFFF" : "#334155"}
+                    />
                   </View>
                   <CustomText className="font-medium text-sm">
                     {i18n.t("profileAuthenticated.termsAndConditions")}
@@ -262,6 +270,9 @@ export default function ProfileScreen({ navigation }: Props) {
         enablePanDownToClose
         onClose={() => setShowLoginSheet(false)}
         index={showLoginSheet ? 0 : -1}
+        backgroundStyle={{
+          backgroundColor: colorScheme === "dark" ? "#0F172A" : "#FFFFFF",
+        }}
       >
         <BottomSheetView style={{ flex: 1, zIndex: 99 }}>
           <View className="px-5 py-3 space-y-4">
@@ -308,6 +319,9 @@ export default function ProfileScreen({ navigation }: Props) {
         enablePanDownToClose
         onClose={() => setShowLogoutSheet(false)}
         index={showLogoutSheet ? 0 : -1}
+        backgroundStyle={{
+          backgroundColor: colorScheme === "dark" ? "#0F172A" : "#FFFFFF",
+        }}
       >
         <BottomSheetView style={{ flex: 1, zIndex: 99 }}>
           <View className="px-5 py-3 space-y-4 flex flex-col items-center">
@@ -342,5 +356,7 @@ export default function ProfileScreen({ navigation }: Props) {
       </BottomSheet>
       {/* Logout Sheet End  */}
     </SafeAreaView>
+  ) : (
+    <SafeAreaView className="flex-1 bg-light dark:bg-dark"></SafeAreaView>
   );
 }

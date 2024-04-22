@@ -1,9 +1,9 @@
-import { View, TouchableOpacity, Linking, SafeAreaView } from "react-native";
+import { View, TouchableOpacity, Linking } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import { Button } from "../components/Button";
 import { Input } from "../components/Input";
 import i18n from "../lib/i18n";
-import { useCallback, useLayoutEffect, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { RootStackParamList } from "../App";
 import NfcManager, { NfcTech } from "react-native-nfc-manager";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
@@ -11,6 +11,8 @@ import { Image } from "react-native";
 import { StackScreenProps } from "@react-navigation/stack";
 import CustomText from "../components/CustomText";
 import Header from "../components/Header";
+import { useColorScheme } from "nativewind";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 type FormData = {
   title: string;
@@ -26,7 +28,7 @@ NfcManager.start();
 
 export default function WriteScreen({ navigation }: Props) {
   const bottomSheetRef = useRef<BottomSheet>(null);
-  // const { colorScheme } = useColorScheme();
+  const { colorScheme } = useColorScheme();
 
   const {
     control,
@@ -74,8 +76,8 @@ export default function WriteScreen({ navigation }: Props) {
   return (
     <SafeAreaView className="flex-1">
       <Header title="Write NFC Tags" navigation={navigation} />
-      <View className="flex-1 p-3 bg-light dark:bg-dark space-y-3">
-        <CustomText className="pb-2 text-sm text-body">
+      <View className="flex-1 p-5 bg-light dark:bg-dark space-y-5">
+        <CustomText className="pb-2 text-sm text-body dark:text-white">
           {i18n.t("write.title")}
         </CustomText>
         <Controller
@@ -97,7 +99,7 @@ export default function WriteScreen({ navigation }: Props) {
         {errors.title && (
           <CustomText className="text-danger">Title is required.</CustomText>
         )}
-        <CustomText className="pb-2 text-sm text-body">
+        <CustomText className="pb-2 text-sm text-body dark:text-white">
           {i18n.t("write.url")}{" "}
         </CustomText>
         <Controller
@@ -120,7 +122,7 @@ export default function WriteScreen({ navigation }: Props) {
           <CustomText className="text-danger">URL is required.</CustomText>
         )}
         <View>
-          <CustomText className="pb-2 text-sm text-body">
+          <CustomText className="pb-2 text-sm text-body dark:text-white">
             {i18n.t("write.content")}
           </CustomText>
           <CustomText className="pb-2">
@@ -156,7 +158,7 @@ export default function WriteScreen({ navigation }: Props) {
         {errors.content && (
           <CustomText className="text-danger">Content is required.</CustomText>
         )}
-        <CustomText className="pb-2 text-sm text-body">
+        <CustomText className="pb-2 text-sm text-body dark:text-white">
           {i18n.t("write.authentication")}
         </CustomText>
         <Controller
@@ -193,6 +195,9 @@ export default function WriteScreen({ navigation }: Props) {
         enablePanDownToClose
         onChange={handleSheetChanges}
         onClose={() => setShowSheet(false)}
+        backgroundStyle={{
+          backgroundColor: colorScheme === "dark" ? "#0F172A" : "#FFFFFF",
+        }}
       >
         <BottomSheetView style={{ flex: 1, zIndex: 99 }}>
           <View className="px-5 py-3 space-y-4 flex flex-col items-center">
@@ -203,7 +208,7 @@ export default function WriteScreen({ navigation }: Props) {
               source={require("../assets/scan/device.png")}
               style={{ width: 108, height: 108 }}
             />
-            <CustomText className="text-body text-base">
+            <CustomText className="text-body dark:text-white text-base">
               {currentScan === "Hold"
                 ? i18n.t("scan.hold")
                 : currentScan === "Success"
