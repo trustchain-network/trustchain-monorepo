@@ -12,6 +12,7 @@ import { MembershipsModule } from 'src/modules/membership/memberships.module';
 import { RoleEnum } from 'src/modules/roles/roles.enum';
 import { User } from 'src/modules/users/domain/user';
 import { UpdateMembershipEvent } from 'src/providers/stripe/cqrs/update-membership.event';
+import { StripeSignatureGuard } from 'src/providers/stripe/guards/stripe-signature.guard';
 import { StripeModule } from 'src/providers/stripe/stripe.module';
 import { stripeProvisionToken } from 'src/providers/stripe/stripe.provider';
 
@@ -27,10 +28,13 @@ describe('StripeController (e2e)', () => {
 
   let spyEventBus: jest.SpyInstance;
 
+  const stripeSignatureGuardMock = { canActivate: jest.fn() };
+
   beforeAll(async () => {
     testApp = await TestApp.init({
       testingModules: [StripeModule, MembershipsModule],
       stripeMock: new StripeMock(),
+      guardMocks: [[StripeSignatureGuard, stripeSignatureGuardMock]],
     });
     userFactory = testApp.app.get(UserFactoryService);
     roleFactory = testApp.app.get(RoleFactoryService);
@@ -125,11 +129,15 @@ describe('StripeController (e2e)', () => {
   });
 
   describe('Stripe webhook: /stripe/events-webhook (POST)', () => {
+    const url = '/stripe/events-webhook';
+
     it('OK 204. Emmited valid event. Mapped stripe data correctly', async () => {
+      stripeSignatureGuardMock.canActivate.mockReturnValueOnce(true);
+
       const period = Date.now() / 1000;
       await testApp
         .httpClient()
-        .post('/stripe/events-webhook')
+        .post(url)
         .send({
           type: 'customer.subscription.updated',
           data: {
@@ -163,6 +171,12 @@ describe('StripeController (e2e)', () => {
           currentPeriodEnd: date,
         }),
       );
+    });
+
+    it('OK 403. Invalid stripe signature', async () => {
+      stripeSignatureGuardMock.canActivate.mockReturnValueOnce(false);
+
+      await testApp.httpClient().post(url).expect(403);
     });
   });
 });

@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller,
   HttpCode,
   HttpStatus,
@@ -12,6 +13,7 @@ import { Roles } from 'src/modules/roles/roles.decorator';
 import { RoleEnum } from 'src/modules/roles/roles.enum';
 import { RolesGuard } from 'src/modules/roles/roles.guard';
 import { MinaService } from './mina.service';
+import { GenerateKeyPairInputDto } from './dto/generate-key-pair-input.dto';
 
 @ApiBearerAuth()
 @Roles(RoleEnum.admin)
@@ -29,7 +31,7 @@ export class MinaController {
   })
   @Post('generate-key-pair')
   @HttpCode(HttpStatus.CREATED)
-  generateKeyPair(): Promise<string> {
-    return this.minaService.generateKeyPair();
+  generateKeyPair(@Body() data: GenerateKeyPairInputDto): Promise<string> {
+    return this.minaService.generateKeyPair(data);
   }
 }
