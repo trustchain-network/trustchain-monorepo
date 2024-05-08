@@ -5,7 +5,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: nginx-webserver
     container_name: nginx-webserver
     restart: unless-stopped
     ports:
