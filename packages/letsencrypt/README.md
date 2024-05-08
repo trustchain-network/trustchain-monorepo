@@ -7,7 +7,7 @@ docker compose run --rm certbot certonly --webroot --webroot-path /var/www/certb
 Wait for the procedure to finish. If Docker reports no errors, run the command without the --dry-run flag:
 
 ```bash
-docker compose run --rm certbot certonly --webroot --webroot-path /var/www/certbot/ -d trustchain.network -d www.trustchain.network
+docker compose run --rm certbot certonly --webroot --webroot-path /var/www/html/ -d trustchain.network -d www.trustchain.network
 ```
 
 

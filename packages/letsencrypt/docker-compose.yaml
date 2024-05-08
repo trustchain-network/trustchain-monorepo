@@ -12,7 +12,7 @@ services:
       - trustchain
     volumes:
       - ./nginx/conf/:/etc/nginx/conf.d/:ro
-      - ./certbot/www/:/var/www/certbot/:ro
+      - ./certbot/www/:/var/www/html/:ro
   
   certbot:
     image: certbot/certbot
@@ -20,7 +20,7 @@ services:
     networks:
       - trustchain
     volumes:
-      - ./certbot/www/:/var/www/certbot/:rw
+      - ./certbot/www/:/var/www/html/:rw
       - ./certbot/conf/:/etc/letsencrypt/:rw
     depends_on:
       - webserver
