@@ -3,7 +3,7 @@ services:
   webserver:
     restart: always
     build:
-      context: ./nginx
+      context: .
       dockerfile: Dockerfile
     ports:
       - "80:80"
