@@ -1,11 +1,13 @@
-services:
+version: '3'
 
+services:
   webserver:
-    restart: always
     build:
       context: .
       dockerfile: Dockerfile
+    image: nginx-webserver
     container_name: nginx-webserver
+    restart: unless-stopped
     ports:
       - "80:80"
       - "443:443"
