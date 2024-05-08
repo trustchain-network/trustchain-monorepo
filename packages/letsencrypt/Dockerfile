@@ -1,4 +1,4 @@
-FROM nginx:alpine
+FROM nginx:mainline-alpine
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY index.html /var/www/html/index.html
 EXPOSE 80

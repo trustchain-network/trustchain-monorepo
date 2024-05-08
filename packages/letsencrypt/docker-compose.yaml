@@ -5,14 +5,17 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    container_name: nginx-webserver
     ports:
       - "80:80"
       - "443:443"
     networks:
       - trustchain
     volumes:
-      - ./nginx/conf/:/etc/nginx/conf.d/:ro
-      - ./certbot/www/:/var/www/html/:ro
+      - web-root:/var/www/html
+      - ./nginx-conf:/etc/nginx/conf.d
+      - certbot-etc:/etc/letsencrypt
+      - certbot-var:/var/lib/letsencrypt
   
   certbot:
     image: certbot/certbot
@@ -20,11 +23,21 @@ services:
     networks:
       - trustchain
     volumes:
-      - ./certbot/www/:/var/www/html/:rw
-      - ./certbot/conf/:/etc/letsencrypt/:rw
+      - certbot-etc:/etc/letsencrypt
+      - certbot-var:/var/lib/letsencrypt
+      - web-root:/var/www/html
     depends_on:
       - webserver
     command: certonly --webroot --webroot-path=/var/www/html --email hello@trustchain.network --agree-tos --no-eff-email --staging -d trustchain.network  -d www.trustchain.network 
 
+volumes:
+  certbot-etc:
+  certbot-var:
+  web-root:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/ubuntu/trustchain-monorepo/packages/letsencrypt/
+      o: bind
 networks:
   trustchain:
