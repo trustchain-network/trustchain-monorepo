@@ -14,6 +14,7 @@ import { KeysService } from 'src/providers/keys/keys.service';
 import { CreateKeyDto } from 'src/providers/keys/dto/create-key.dto';
 import { AllConfigType } from 'src/config/config.type';
 import { Contract } from './domain/contract';
+import { IGenerateKeyPairInput } from './dto/generate-key-pair-input.dto';
 
 interface VerificationKeyData {
   data: string;
@@ -45,12 +46,13 @@ export class MinaService {
     this.logger.log('Mina network setted up');
   }
 
-  async generateKeyPair(): Promise<string> {
+  async generateKeyPair(data: IGenerateKeyPairInput): Promise<string> {
     const key = PrivateKey.random();
     const publicKey = key.toPublicKey().toBase58().toString();
     const createKeyDto: CreateKeyDto = {
       key: key.toBase58().toString(),
       publicKey: publicKey,
+      ...data,
     };
     await this.keyService.create(createKeyDto);
     return publicKey;
