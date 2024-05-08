@@ -52,9 +52,55 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+    healthcheck:
+      test: curl --fail http://localhost || exit 1
+      interval: 60s
+      retries: 5
+      start_period: 20s
+      timeout: 10s
+  
+  webserver:
+    image: nginx:mainline-alpine
+    container_name: nginx-webserver
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - trustchain
+    volumes:
+      - web-root:/var/www/html
+      - ../letsencrypt/nginx-conf:/etc/nginx/conf.d
+      - ../letsencrypt/html:/var/www/html
+      - certbot-etc:/etc/letsencrypt
+      - certbot-var:/var/lib/letsencrypt
+    depends_on:
+      trustchain-backend:
+        condition: service_healthy
+  
+  certbot:
+    image: certbot/certbot
+    container_name: certbot
+    networks:
+      - trustchain
+    volumes:
+      - certbot-etc:/etc/letsencrypt
+      - certbot-var:/var/lib/letsencrypt
+      - web-root:/var/www/html
+    depends_on:
+      - webserver
+    command: certonly --webroot --webroot-path=/var/www/html --email hello@trustchain.network --agree-tos --no-eff-email --staging -d trustchain.network  -d www.trustchain.network 
 
 volumes:
   trustchain-postgres-db:
+  certbot-etc:
+  certbot-var:
+  web-root:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/ubuntu/trustchain-monorepo/packages/letsencrypt/
+      o: bind
 
 networks:
   trustchain:
