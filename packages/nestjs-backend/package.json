@@ -49,6 +49,7 @@
     "@nestjs/platform-express": "10.3.3",
     "@nestjs/swagger": "7.3.0",
     "@nestjs/typeorm": "10.0.2",
+    "@trustchain/letsencrypt": "link:@trustchain/letsencrypt",
     "@types/multer-s3": "3.0.3",
     "@types/prompts": "^2.4.9",
     "apple-signin-auth": "1.7.6",
@@ -148,12 +149,13 @@
     "collectCoverageFrom": [
       "**/*.(t|j)s"
     ],
-
     "moduleDirectories": [
       "node_modules",
       "src"
     ],
-    "modulePaths": ["<rootDir>"],
+    "modulePaths": [
+      "<rootDir>"
+    ],
     "moduleNameMapper": {
       "^#src(.*)$": "<rootDir>/src/$1",
       "^#test(.*)$": "<rootDir>/test/$1"

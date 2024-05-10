@@ -70,8 +70,8 @@ services:
       - trustchain
     volumes:
       - web-root:/var/www/html
-      - ../letsencrypt/nginx-conf:/etc/nginx/conf.d
-      - ../letsencrypt/html:/var/www/html
+      - ./node_modules/@trustchain/letsencrypt/nginx-conf:/etc/nginx/conf.d
+      - ./node_modules/@trustchain/letsencrypt:/var/www/html
       - certbot-etc:/etc/letsencrypt
       - certbot-var:/var/lib/letsencrypt
     depends_on:
@@ -89,7 +89,7 @@ services:
       - web-root:/var/www/html
     depends_on:
       - webserver
-    command: certonly --webroot --webroot-path=/var/www/html --email hello@trustchain.network --agree-tos --no-eff-email --staging -d trustchain.network  -d www.trustchain.network 
+    command: certonly --webroot --webroot-path=/var/www/html --email hello@trustchain.network --agree-tos --no-eff-email --staging -d trustchain.network  -d www.trustchain.network -d api.trustchain.network
 
 volumes:
   trustchain-postgres-db:
@@ -99,7 +99,7 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      device: /home/ubuntu/trustchain-monorepo/packages/letsencrypt/
+      device: /home/ubuntu/trustchain-monorepo/packages/nestjs-backend/
       o: bind
 
 networks:
