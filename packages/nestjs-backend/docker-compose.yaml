@@ -54,12 +54,6 @@ services:
         condition: service_healthy
       sdm-backend:
         condition: service_healthy
-    healthcheck:
-      test: curl --fail http://localhost || exit 1
-      interval: 60s
-      retries: 5
-      start_period: 20s
-      timeout: 10s
   
   webserver:
     image: nginx:mainline-alpine
@@ -89,12 +83,6 @@ services:
       - ${SDM_BACKEND_PORT}:${SDM_BACKEND_PORT}
     networks:
       - trustchain
-    healthcheck:
-    test: curl --fail http://localhost || exit 1
-    interval: 60s
-    retries: 5
-    start_period: 20s
-    timeout: 10s
   
   certbot:
     image: certbot/certbot
