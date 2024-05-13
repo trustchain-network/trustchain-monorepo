@@ -70,9 +70,6 @@ services:
       - ../letsencrypt:/var/www/html
       - certbot-etc:/etc/letsencrypt
       - certbot-var:/var/lib/letsencrypt
-    depends_on:
-      trustchain-backend:
-        condition: service_healthy
 
   sdm-backend:
     build:
