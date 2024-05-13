@@ -45,7 +45,6 @@ services:
       postgres:
         condition: service_healthy
       sdm-backend:
-        condition: service_healthy
 
   sdm-backend:
     build:
