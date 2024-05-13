@@ -66,8 +66,8 @@ services:
       - trustchain
     volumes:
       - web-root:/var/www/html
-      - ./node_modules/@trustchain/letsencrypt/nginx-conf:/etc/nginx/conf.d
-      - ./node_modules/@trustchain/letsencrypt:/var/www/html
+      - ../letsencrypt/nginx-conf:/etc/nginx/conf.d
+      - ../letsencrypt:/var/www/html
       - certbot-etc:/etc/letsencrypt
       - certbot-var:/var/lib/letsencrypt
     depends_on:
@@ -76,7 +76,7 @@ services:
 
   sdm-backend:
     build:
-      context: ./node_modules/@trustchain/sdm-backend
+      context: ../sdm-backend
       dockerfile: Dockerfile
     container_name: sdm-backend
     ports:
