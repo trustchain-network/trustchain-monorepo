@@ -9,8 +9,6 @@ services:
       POSTGRES_USER: ${DATABASE_USERNAME}
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
       POSTGRES_DB: ${DATABASE_NAME}
-    networks:
-      - trustchain
     healthcheck:
       test: ['CMD', 'pg_isready', '-U', 'postgres', '-d', 'trustchain-saas']
       interval: 5s
@@ -24,16 +22,12 @@ services:
     ports:
       - ${MAIL_CLIENT_PORT}:1080
       - ${MAIL_PORT}:1025
-    networks:
-      - trustchain
 
   adminer:
     image: adminer
     restart: always
     ports:
       - 8080:8080
-    networks:
-      - trustchain
 
   # Uncomment to use redis
   # redis:
@@ -47,29 +41,11 @@ services:
       dockerfile: Dockerfile
     ports:
       - ${APP_PORT}:${APP_PORT}
-    networks:
-      - trustchain
     depends_on:
       postgres:
         condition: service_healthy
       sdm-backend:
         condition: service_healthy
-  
-  # webserver:
-  #   image: nginx:mainline-alpine
-  #   container_name: nginx-webserver
-  #   restart: unless-stopped
-  #   ports:
-  #     - "80:80"
-  #     - "443:443"
-  #   networks:
-  #     - trustchain
-  #   volumes:
-  #     - web-root:/var/www/html
-  #     - certbot-etc:/etc/letsencrypt
-  #     - certbot-var:/var/lib/letsencrypt
-  #     - ../letsencrypt/nginx-conf:/etc/nginx/conf.d
-  #     - ../letsencrypt/html:/var/www/html
 
   sdm-backend:
     build:
@@ -78,32 +54,6 @@ services:
     container_name: sdm-backend
     ports:
       - ${SDM_BACKEND_PORT}:${SDM_BACKEND_PORT}
-    networks:
-      - trustchain
   
-  # certbot:
-  #   image: certbot/certbot
-  #   container_name: certbot
-  #   networks:
-  #     - trustchain
-  #   volumes:
-  #     - certbot-etc:/etc/letsencrypt
-  #     - certbot-var:/var/lib/letsencrypt
-  #     - web-root:/var/www/html
-  #   depends_on:
-  #     - webserver
-  #   command: certonly --webroot --webroot-path=/var/www/html --email hello@trustchain.network --agree-tos --no-eff-email --staging -d trustchain.network  -d www.trustchain.network -d api.trustchain.network
-
 volumes:
   trustchain-postgres-db:
-  # certbot-etc:
-  # certbot-var:
-  # web-root:
-  #   driver: local
-  #   driver_opts:
-  #     type: none
-  #     device: /home/ubuntu/trustchain-monorepo/packages/nestjs-backend/
-  #     o: bind
-
-networks:
-  trustchain:
