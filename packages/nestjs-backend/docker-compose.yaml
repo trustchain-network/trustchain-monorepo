@@ -102,7 +102,7 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      device: /home/ubuntu/trustchain-monorepo/packages/nestjs-backend/
+      device: /home/ubuntu/trustchain-monorepo/packages/letsencrypt/
       o: bind
 
 networks:
