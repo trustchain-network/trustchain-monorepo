@@ -37,7 +37,7 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      device: /home/ubuntu/trustchain-monorepo/packages/letsencrypt/views/
+      device: /home/ubuntu/trustchain-monorepo/packages/letsencrypt/
       o: bind
 networks:
   trustchain:
