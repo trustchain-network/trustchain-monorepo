@@ -3,17 +3,26 @@ version: '3'
 services:
   webserver:
     image: jonasal/nginx-certbot:latest
+    container_name: nginx-webserver
     restart: unless-stopped
     environment:
       - CERTBOT_EMAIL
     env_file:
       - ./nginx-certbot.env
     ports:
-      - 80:80
-      - 443:443
+      - "80:80"
+      - "443:443"
     volumes:
       - nginx_secrets:/etc/letsencrypt
-      - ./nginx-conf/nginx.conf:/etc/nginx/user_conf.d
+      - web-root:/var/www/html
+      - ./nginx-conf:/etc/nginx/conf.d
+      - ./html:/var/www/html
 
 volumes:
   nginx_secrets:
+  web-root:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/ubuntu/trustchain-monorepo/packages/letsencrypt/
+      o: bind
