@@ -52,7 +52,25 @@ services:
     container_name: sdm-backend
     ports:
       - ${SDM_BACKEND_PORT}:${SDM_BACKEND_PORT}
+  
+  webserver:
+    image: jonasal/nginx-certbot:latest
+    container_name: nginx-webserver
+    restart: unless-stopped
+    environment:
+      - CERTBOT_EMAIL
+    env_file:
+      - ../letsencrypt/nginx-certbot.env
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - nginx_secrets:/etc/letsencrypt
+      - ./nginx-conf:/etc/nginx/user_conf.d
+    depends_on:
+      trustchain-backend:
 
   
 volumes:
   trustchain-postgres-db:
+  nginx_secrets:
