@@ -15,7 +15,7 @@ services:
     volumes:
       - nginx_secrets:/etc/letsencrypt
       - web-root:/var/www/html
-      - ./nginx-conf:/etc/nginx/conf.d
+      - ./nginx-conf:/etc/nginx/user_conf.d
       - ./html:/var/www/html
 
 volumes:
