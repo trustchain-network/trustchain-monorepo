@@ -2,6 +2,6 @@
 set -e
 
 /opt/wait-for-it.sh postgres:5432
-npm run migration:run
-npm run seed:run:relational
-npm run start:prod
+yarn run migration:run
+yarn run seed:run:relational
+yarn run start:prod
