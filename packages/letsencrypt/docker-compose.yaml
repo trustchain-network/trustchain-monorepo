@@ -2,36 +2,18 @@ version: '3'
 
 services:
   webserver:
-    image: nginx:mainline-alpine
-    container_name: nginx-webserver
+    image: jonasal/nginx-certbot:latest
     restart: unless-stopped
+    environment:
+      - CERTBOT_EMAIL
+    env_file:
+      - ./nginx-certbot.env
     ports:
-      - "80:80"
-      - "443:443"
+      - 80:80
+      - 443:443
     volumes:
-      - web-root:/var/www/html
-      - ./nginx-conf:/etc/nginx/conf.d
-      - ./html:/var/www/html
-      - certbot-etc:/etc/letsencrypt
-      - certbot-var:/var/lib/letsencrypt
-  
-  certbot:
-    image: certbot/certbot
-    container_name: certbot
-    volumes:
-      - certbot-etc:/etc/letsencrypt
-      - certbot-var:/var/lib/letsencrypt
-      - web-root:/var/www/html
-    depends_on:
-      - webserver
-    command: certonly --webroot --webroot-path=/var/www/html --email hello@trustchain.network --agree-tos --no-eff-email --staging -d trustchain.network  -d www.trustchain.network 
+      - nginx_secrets:/etc/letsencrypt
+      - ./nginx-conf/nginx.conf:/etc/nginx/user_conf.d
 
 volumes:
-  certbot-etc:
-  certbot-var:
-  web-root:
-    driver: local
-    driver_opts:
-      type: none
-      device: /home/ubuntu/trustchain-monorepo/packages/letsencrypt/
-      o: bind
+  nginx_secrets:
