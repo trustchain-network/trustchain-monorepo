@@ -55,21 +55,21 @@ services:
       sdm-backend:
         condition: service_healthy
   
-  webserver:
-    image: nginx:mainline-alpine
-    container_name: nginx-webserver
-    restart: unless-stopped
-    ports:
-      - "80:80"
-      - "443:443"
-    networks:
-      - trustchain
-    volumes:
-      - web-root:/var/www/html
-      - certbot-etc:/etc/letsencrypt
-      - certbot-var:/var/lib/letsencrypt
-      - ../letsencrypt/nginx-conf:/etc/nginx/conf.d
-      - ../letsencrypt/html:/var/www/html
+  # webserver:
+  #   image: nginx:mainline-alpine
+  #   container_name: nginx-webserver
+  #   restart: unless-stopped
+  #   ports:
+  #     - "80:80"
+  #     - "443:443"
+  #   networks:
+  #     - trustchain
+  #   volumes:
+  #     - web-root:/var/www/html
+  #     - certbot-etc:/etc/letsencrypt
+  #     - certbot-var:/var/lib/letsencrypt
+  #     - ../letsencrypt/nginx-conf:/etc/nginx/conf.d
+  #     - ../letsencrypt/html:/var/www/html
 
   sdm-backend:
     build:
@@ -81,29 +81,29 @@ services:
     networks:
       - trustchain
   
-  certbot:
-    image: certbot/certbot
-    container_name: certbot
-    networks:
-      - trustchain
-    volumes:
-      - certbot-etc:/etc/letsencrypt
-      - certbot-var:/var/lib/letsencrypt
-      - web-root:/var/www/html
-    depends_on:
-      - webserver
-    command: certonly --webroot --webroot-path=/var/www/html --email hello@trustchain.network --agree-tos --no-eff-email --staging -d trustchain.network  -d www.trustchain.network -d api.trustchain.network
+  # certbot:
+  #   image: certbot/certbot
+  #   container_name: certbot
+  #   networks:
+  #     - trustchain
+  #   volumes:
+  #     - certbot-etc:/etc/letsencrypt
+  #     - certbot-var:/var/lib/letsencrypt
+  #     - web-root:/var/www/html
+  #   depends_on:
+  #     - webserver
+  #   command: certonly --webroot --webroot-path=/var/www/html --email hello@trustchain.network --agree-tos --no-eff-email --staging -d trustchain.network  -d www.trustchain.network -d api.trustchain.network
 
 volumes:
   trustchain-postgres-db:
-  certbot-etc:
-  certbot-var:
-  web-root:
-    driver: local
-    driver_opts:
-      type: none
-      device: /home/ubuntu/trustchain-monorepo/packages/letsencrypt/
-      o: bind
+  # certbot-etc:
+  # certbot-var:
+  # web-root:
+  #   driver: local
+  #   driver_opts:
+  #     type: none
+  #     device: /home/ubuntu/trustchain-monorepo/packages/nestjs-backend/
+  #     o: bind
 
 networks:
   trustchain:
